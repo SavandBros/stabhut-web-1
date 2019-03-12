@@ -13,8 +13,23 @@ import { User } from '../../models/user';
 })
 export class MainComponent implements OnInit {
 
-  amir: User = new User('Amir');
-  bot: User = new User('Bot');
+  /**
+   * List of users in a dict
+   */
+  readonly users: { bot: User; amir: User } = {
+    amir: new User('Amir'),
+    bot: new User('Bot'),
+  };
+
+  /**
+   * List of labels in a dict
+   */
+  readonly labels = {
+    important: new Label('Important'),
+    urgent: new Label('Urgent'),
+    heavy: new Label('Heavy'),
+    quickie: new Label('Quickie'),
+  };
 
   /**
    * List of sections
@@ -37,12 +52,12 @@ export class MainComponent implements OnInit {
    */
   columns: Column[] = [
     new Column('Backlog', [
-      new Card('This is a card for this column.', [
-        new Label('Urgent'),
-        new Label('Component'),
+      new Card('This is a card for this column.', this.users.amir, [
+        this.labels.important,
+        this.labels.heavy,
       ]),
-      new Card('Content of this card is important and needs to be looked at, actually no.', [
-        new Label('Urgent'),
+      new Card('Content of this card is important and needs to be looked at, actually no.', this.users.amir, [
+        this.labels.urgent,
       ]),
       new Card('Wow so many cards here... Don\'t know what to do about em'),
       new Card('Small card here.'),
@@ -50,18 +65,19 @@ export class MainComponent implements OnInit {
     new Column('Do Me', [
       new Card('Wow so many cards here... Don\'t know what to do about em'),
       new Card('Small card here.'),
-      new Card('This is a card for this column.', [
-        new Label('Awesome'),
+      new Card('This is a card for this column.', null, [
+        this.labels.quickie,
       ]),
     ]),
     new Column('Doing', [
       new Card('This is a card for this column.'),
       new Card('Content of this card is important and needs to be looked at, actually no.'),
-      new Card('This is a card for this column.', [
-        new Label('Not Important'),
+      new Card('This is a card for this column.', this.users.bot, [
+        this.labels.important,
       ]),
-      new Card('Small card here.', [
-        new Label('Important'),
+      new Card('Small card here.', null, [
+        this.labels.important,
+        this.labels.quickie,
       ]),
       new Card('Wow so many cards here... Don\'t know what to do about em'),
     ]),
@@ -73,22 +89,22 @@ export class MainComponent implements OnInit {
    * List of chats
    */
   chats: Chat[] = [
-    new Chat(this.amir, 'This is a chat message.', new Date()),
-    new Chat(this.bot, 'Something awesome goes here.', new Date()),
-    new Chat(this.amir, 'Wow haha.', new Date()),
-    new Chat(this.bot, 'This message is really long tho, really really long.', new Date()),
-    new Chat(this.amir, 'This is a chat message.', new Date()),
-    new Chat(this.bot, 'Something awesome goes here.', new Date()),
-    new Chat(this.amir, 'Wow haha.', new Date()),
-    new Chat(this.bot, 'This message is really long tho, really really long.', new Date()),
-    new Chat(this.amir, 'This is a chat message.', new Date()),
-    new Chat(this.bot, 'Something awesome goes here.', new Date()),
-    new Chat(this.amir, 'Wow haha.', new Date()),
-    new Chat(this.bot, 'This message is really long tho, really really long.', new Date()),
-    new Chat(this.amir, 'This is a chat message.', new Date()),
-    new Chat(this.bot, 'Something awesome goes here.', new Date()),
-    new Chat(this.amir, 'Wow haha.', new Date()),
-    new Chat(this.bot, 'This message is really long tho, really really long.', new Date()),
+    new Chat(this.users.amir, 'This is a chat message.', new Date()),
+    new Chat(this.users.bot, 'Something awesome goes here.', new Date()),
+    new Chat(this.users.amir, 'Wow haha.', new Date()),
+    new Chat(this.users.bot, 'This message is really long tho, really really long.', new Date()),
+    new Chat(this.users.amir, 'This is a chat message.', new Date()),
+    new Chat(this.users.bot, 'Something awesome goes here.', new Date()),
+    new Chat(this.users.amir, 'Wow haha.', new Date()),
+    new Chat(this.users.bot, 'This message is really long tho, really really long.', new Date()),
+    new Chat(this.users.amir, 'This is a chat message.', new Date()),
+    new Chat(this.users.bot, 'Something awesome goes here.', new Date()),
+    new Chat(this.users.amir, 'Wow haha.', new Date()),
+    new Chat(this.users.bot, 'This message is really long tho, really really long.', new Date()),
+    new Chat(this.users.amir, 'This is a chat message.', new Date()),
+    new Chat(this.users.bot, 'Something awesome goes here.', new Date()),
+    new Chat(this.users.amir, 'Wow haha.', new Date()),
+    new Chat(this.users.bot, 'This message is really long tho, really really long.', new Date()),
   ];
 
   constructor() {
