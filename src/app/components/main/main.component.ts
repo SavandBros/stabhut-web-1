@@ -5,6 +5,7 @@ import { Card } from '../../models/card';
 import { Label } from '../../models/label';
 import { Chat } from '../../models/chat';
 import { User } from '../../models/user';
+import { Task } from '../../models/task';
 
 @Component({
   selector: 'app-main',
@@ -106,6 +107,21 @@ export class MainComponent implements OnInit {
     new Chat(this.users.amir, 'Wow haha.', new Date()),
     new Chat(this.users.bot, 'This message is really long tho, really really long.', new Date()),
   ];
+
+  /**
+   * List of tasks
+   */
+  tasks: Task[] = [
+    new Task('Do this task.'),
+    new Task('A todo here to be done.'),
+    new Task('This task is already done.', true),
+    new Task('No this one is not done.'),
+  ];
+
+  /**
+   * Show chats or tasks in the side
+   */
+  sideShow = 'chats';
 
   constructor() {
   }
