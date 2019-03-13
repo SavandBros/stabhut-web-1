@@ -7,7 +7,10 @@ import { MainComponent } from './components/main/main.component';
 import { Routes, uiRouterConfigFn } from './app.routes';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { ButtonsModule } from 'ngx-bootstrap/buttons';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faCog, faUser } from '@fortawesome/free-solid-svg-icons';
+import { TooltipModule } from 'ngx-bootstrap';
 
 @NgModule({
   declarations: [
@@ -18,14 +21,19 @@ import { ButtonsModule } from 'ngx-bootstrap/buttons';
     BrowserModule,
     HttpClientModule,
     FormsModule,
+    FontAwesomeModule,
     UIRouterModule.forRoot({
       states: Routes,
       config: uiRouterConfigFn
     }),
-    ButtonsModule.forRoot(),
+    TooltipModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {
+  constructor() {
+    library.add(faUser);
+    library.add(faCog);
+  }
 }
