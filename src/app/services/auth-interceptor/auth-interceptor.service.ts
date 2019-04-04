@@ -9,15 +9,7 @@ import { AuthService } from '../auth/auth.service';
 })
 export class AuthInterceptorService implements HttpInterceptor {
 
-  /**
-   * 401: Sign out and reload
-   */
-  static catchAuthError(error: HttpErrorResponse) {
-    if (error.status === 401) {
-      AuthService.signOut();
-      location.href = '/';
-    }
-    return throwError(error.error.message || error.statusText);
+  constructor(private authService: AuthService) {
   }
 
   /**
@@ -32,6 +24,16 @@ export class AuthInterceptorService implements HttpInterceptor {
         }
       });
     }
-    return next.handle(request).pipe(catchError(AuthInterceptorService.catchAuthError));
+    return next.handle(request).pipe(catchError(this.error));
+  }
+
+  /**
+   * 401: Sign out and reload
+   */
+  error(error: HttpErrorResponse) {
+    if (error.status === 401) {
+      this.authService.signOut();
+    }
+    return throwError(error.error.message || error.statusText);
   }
 }
