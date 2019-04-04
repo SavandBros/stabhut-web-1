@@ -2,14 +2,34 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ApiService } from '../api/api.service';
 import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { User } from '../../models/user';
+import { StateService } from '@uirouter/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor(private http: HttpClient, private api: ApiService) {
+  /**
+   * Route to redirect to after signing in
+   */
+  static readonly signInRedirect: string = 'dash';
+
+  /**
+   * User subject behavior for authenticated user
+   * @see AuthService.user
+   */
+  private userSubject: BehaviorSubject<User> = new BehaviorSubject<User>(AuthService.getUser());
+
+  /**
+   * Authenticated user
+   */
+  user: Observable<User> = this.userSubject.asObservable();
+
+  constructor(private http: HttpClient,
+              private api: ApiService,
+              private stateService: StateService,) {
   }
 
   /**
@@ -36,10 +56,10 @@ export class AuthService {
   /**
    * @returns User data from localStorage
    */
-  static getUser(): object | null {
+  static getUser(): User | null {
     const data: string = localStorage.getItem('user');
     if (data) {
-      return JSON.parse(data);
+      return new User(JSON.parse(data));
     }
     return null;
   }
@@ -47,20 +67,35 @@ export class AuthService {
   /**
    * Sign out (clear localStorage)
    */
-  static signOut(): void {
+  signOut(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    this.userSubject.next(AuthService.getUser());
+    this.stateService.go('sign-in');
   }
 
   /**
-   * Sign in (send API request and save to localStorage)
+   * Sign in (send API request, save to localStorage and redirect)
    */
-  signIn(username: string, password: string): Observable<object> {
-    return this.http.post(this.api.baseApi + 'auth/', { username, password }).pipe(
+  signIn(username: string, password: string): Observable<any> {
+    return this.http.post(ApiService.baseApi + 'auth/', { username, password }).pipe(
       map((data: any) => {
         AuthService.setToken(data.token);
         AuthService.setUser(data.user);
+        this.userSubject.next(AuthService.getUser());
+        this.stateService.go(AuthService.signInRedirect);
         return data;
+      })
+    );
+  }
+
+  /**
+   * Sign up (send API request and sign in)
+   */
+  signUp(username: string, email: string, password: string): Observable<any> {
+    return this.http.post(ApiService.baseApi + 'users/', { username, email, password }).pipe(
+      map(() => {
+        return this.signIn(username, password).subscribe();
       })
     );
   }
