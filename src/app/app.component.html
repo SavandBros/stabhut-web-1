@@ -1,14 +1,24 @@
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <!-- Project -->
-  <a class="navbar-brand text-white">StabHut.io</a>
-  <!-- Links -->
+  <!-- Title -->
+  <a class="navbar-brand text-white" uiSref="dash">StabHut.io</a>
+  <!-- Navs -->
   <ul class="navbar-nav ml-auto">
-    <!-- Setting -->
-    <li class="nav-item nav-stat" tooltip="Settings" placement="bottom">
-      <a class="nav-link">
-        <fa-icon icon="cog"></fa-icon>
-      </a>
+    <!-- Sign In -->
+    <li class="nav-item dropdown" *ngIf="!user">
+      <a class="nav-link" uiSref="sign-in">Sign In</a>
+    </li>
+    <!-- Sign Up -->
+    <li class="nav-item dropdown" *ngIf="!user">
+      <a class="nav-link" uiSref="sign-up">Sign Up</a>
+    </li>
+    <!-- User -->
+    <li class="nav-item dropdown" *ngIf="user">
+      <a class="nav-link dropdown-toggle" data-toggle="dropdown">{{ user.username }}</a>
+      <div class="dropdown-menu dropdown-menu-right">
+        <!-- Sign out -->
+        <a class="dropdown-item" (click)="authService.signOut()">Sign Out</a>
+      </div>
     </li>
   </ul>
 </nav>
