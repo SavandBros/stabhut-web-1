@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Section } from '../../models/section';
+import { Project } from '../../models/project';
 import { Column } from '../../models/column';
+import { ApiService } from '../../services/api/api.service';
 import { Card } from '../../models/card';
-import { Label } from '../../models/label';
-import { Chat } from '../../models/chat';
 import { User } from '../../models/user';
-import { Task } from '../../models/task';
 
 @Component({
   selector: 'app-main',
@@ -15,117 +13,52 @@ import { Task } from '../../models/task';
 export class MainComponent implements OnInit {
 
   /**
-   * List of users in a dict
+   * Current organization ID from route
    */
-  readonly users: { bot: User; amir: User } = {
-    amir: new User('Amir'),
-    bot: new User('Bot'),
-  };
+  organization: number;
 
   /**
-   * List of labels in a dict
+   * List of users of current organization
    */
-  readonly labels = {
-    important: new Label('Important'),
-    urgent: new Label('Urgent'),
-    heavy: new Label('Heavy'),
-    quickie: new Label('Quickie'),
-  };
+  users: User[];
 
   /**
-   * List of sections
+   * List of projects of current organization
    */
-  sections: Section[] = [
-    new Section('Back-end'),
-    new Section('Dashboard'),
-    new Section('Landing Page'),
-    new Section('Themes'),
-    new Section('Emails'),
-  ];
+  projects: Project[] = [];
 
   /**
-   * Selected section
+   * Show chats or tasks in the side panel (default view is chats)
    */
-  section: Section = this.sections[1];
+  sidePanelTab = 'chats';
 
   /**
-   * List of columns
+   * Selected project
    */
-  columns: Column[] = [
-    new Column('Backlog', [
-      new Card('This is a card for this column.', this.users.amir, [
-        this.labels.important,
-        this.labels.heavy,
-      ]),
-      new Card('Content of this card is important and needs to be looked at, actually no.', this.users.amir, [
-        this.labels.urgent,
-      ]),
-      new Card('Wow so many cards here... Don\'t know what to do about em'),
-      new Card('Small card here.'),
-    ]),
-    new Column('Do Me', [
-      new Card('Wow so many cards here... Don\'t know what to do about em'),
-      new Card('Small card here.'),
-      new Card('This is a card for this column.', null, [
-        this.labels.quickie,
-      ]),
-    ]),
-    new Column('Doing', [
-      new Card('This is a card for this column.'),
-      new Card('Content of this card is important and needs to be looked at, actually no.'),
-      new Card('This is a card for this column.', this.users.bot, [
-        this.labels.important,
-      ]),
-      new Card('Small card here.', null, [
-        this.labels.important,
-        this.labels.quickie,
-      ]),
-      new Card('Wow so many cards here... Don\'t know what to do about em'),
-    ]),
-    new Column('Hold'),
-    new Column('Done'),
-  ];
+  projectSelected: Project;
 
-  /**
-   * List of chats
-   */
-  chats: Chat[] = [
-    new Chat(this.users.amir, 'This is a chat message.', new Date()),
-    new Chat(this.users.bot, 'Something awesome goes here.', new Date()),
-    new Chat(this.users.amir, 'Wow haha.', new Date()),
-    new Chat(this.users.bot, 'This message is really long tho, really really long.', new Date()),
-    new Chat(this.users.amir, 'This is a chat message.', new Date()),
-    new Chat(this.users.bot, 'Something awesome goes here.', new Date()),
-    new Chat(this.users.amir, 'Wow haha.', new Date()),
-    new Chat(this.users.bot, 'This message is really long tho, really really long.', new Date()),
-    new Chat(this.users.amir, 'This is a chat message.', new Date()),
-    new Chat(this.users.bot, 'Something awesome goes here.', new Date()),
-    new Chat(this.users.amir, 'Wow haha.', new Date()),
-    new Chat(this.users.bot, 'This message is really long tho, really really long.', new Date()),
-    new Chat(this.users.amir, 'This is a chat message.', new Date()),
-    new Chat(this.users.bot, 'Something awesome goes here.', new Date()),
-    new Chat(this.users.amir, 'Wow haha.', new Date()),
-    new Chat(this.users.bot, 'This message is really long tho, really really long.', new Date()),
-  ];
-
-  /**
-   * List of tasks
-   */
-  tasks: Task[] = [
-    new Task('Do this task.'),
-    new Task('A todo here to be done.'),
-    new Task('This task is already done.', true),
-    new Task('No this one is not done.'),
-  ];
-
-  /**
-   * Show chats or tasks in the side
-   */
-  sideShow = 'chats';
-
-  constructor() {
+  constructor(private api: ApiService) {
+    this.organization = 1;
   }
 
   ngOnInit() {
+    this.api.getProjects(this.organization).subscribe((data: Project[]) => {
+      this.projects = data;
+      this.selectProject(data[0]);
+    });
+  }
+
+  selectProject(project: Project): void {
+    this.projectSelected = project;
+    if (!project.columns) {
+      this.api.getColumns(project.id).subscribe((columns: Column[]) => {
+        project.columns = columns;
+        for (const column of columns) {
+          this.api.getCards(column.id).subscribe((cards: Card[]) => {
+            column.cards = cards;
+          });
+        }
+      });
+    }
   }
 }
