@@ -1,7 +1,9 @@
 export class Label {
-  title: string;
+  id: number;
+  name: string;
 
-  constructor(title: string) {
-    this.title = title;
+  constructor(data) {
+    this.id = data.id;
+    this.name = data.name;
   }
 }

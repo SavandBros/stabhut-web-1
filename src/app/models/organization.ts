@@ -1,12 +1,13 @@
-import { Card } from './card';
+import { User } from './user';
 
-export class Column {
+export class Organization {
   id: number;
+  user: User;
   name: string;
-  cards: Card[];
 
   constructor(data) {
     this.id = data.id;
+    this.user = new User(data.user);
     this.name = data.name;
   }
 }

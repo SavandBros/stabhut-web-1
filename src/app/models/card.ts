@@ -1,14 +1,22 @@
 import { Label } from './label';
-import { User } from './user';
 
 export class Card {
+  id: number;
+  column: number;
   content: string;
-  assignee: User;
+  assignee: number;
+  order: number;
+  updated: Date;
+  created: Date;
   labels: Label[];
 
-  constructor(content: string, assignee?: User, labels?: Label[]) {
-    this.content = content;
-    this.assignee = assignee;
-    this.labels = labels;
+  constructor(data) {
+    this.id = data.id;
+    this.column = data.column;
+    this.content = data.content;
+    this.assignee = data.assignee;
+    this.order = data.order;
+    this.updated = new Date(data.updated);
+    this.created = new Date(data.created);
   }
 }
