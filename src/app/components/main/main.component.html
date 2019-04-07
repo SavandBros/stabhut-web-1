@@ -35,7 +35,7 @@
               <div class="card-body">
                 <div class="card-text">{{ card.content }}</div>
                 <span class="badge badge-primary font-weight-light mr-1" title="Assignee" *ngIf="card.assignee">
-                  {{ card.assignee.username }}
+                  {{ getUser(card.assignee).username }}
                 </span>
                 <span class="badge badge-secondary font-weight-light mr-1" *ngFor="let label of card.labels">
                   {{ label.title }}

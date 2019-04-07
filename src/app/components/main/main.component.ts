@@ -4,6 +4,7 @@ import { Column } from '../../models/column';
 import { ApiService } from '../../services/api/api.service';
 import { Card } from '../../models/card';
 import { User } from '../../models/user';
+import { ApiResponse } from '../../interfaces/api-response.interface';
 
 @Component({
   selector: 'app-main',
@@ -20,7 +21,7 @@ export class MainComponent implements OnInit {
   /**
    * List of users of current organization
    */
-  users: User[];
+  users: User[] = [];
 
   /**
    * List of projects of current organization
@@ -41,10 +42,13 @@ export class MainComponent implements OnInit {
     this.organization = 1;
   }
 
-  ngOnInit() {
-    this.api.getProjects(this.organization).subscribe((data: Project[]) => {
-      this.projects = data;
-      this.selectProject(data[0]);
+  ngOnInit(): void {
+    this.api.getUsers().subscribe((response: ApiResponse<User>) => {
+      this.users = response.results;
+      this.api.getProjects(this.organization).subscribe((data: Project[]) => {
+        this.projects = data;
+        this.selectProject(data[0]);
+      });
     });
   }
 
@@ -60,5 +64,9 @@ export class MainComponent implements OnInit {
         }
       });
     }
+  }
+
+  getUser(id: number): User {
+    return this.users.filter((user: User) => user.id === id)[0];
   }
 }

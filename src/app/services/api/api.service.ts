@@ -7,6 +7,7 @@ import { Project } from '../../models/project';
 import { Column } from '../../models/column';
 import { Card } from '../../models/card';
 import { User } from '../../models/user';
+import { ApiResponse } from '../../interfaces/api-response.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -48,5 +49,9 @@ export class ApiService {
 
   getUser(id: number): Observable<User> {
     return this.http.get<User>(ApiService.baseApi + 'users/' + id).pipe();
+  }
+
+  getUsers(): Observable<ApiResponse<User>> {
+    return this.http.get<ApiResponse<User>>(ApiService.baseApi + 'users/').pipe();
   }
 }
