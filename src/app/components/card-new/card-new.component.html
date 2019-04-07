@@ -1,0 +1,24 @@
+<form (ngSubmit)="submit()" [formGroup]="form">
+  <div class="modal-header">
+    <p class="modal-title">Add New Card</p>
+    <button type="button" class="close" (click)="bsModalRef.hide()">&times;</button>
+  </div>
+  <div class="modal-body text-center">
+    <div class="form-group">
+      <div class="form-group">
+        <textarea formControlName="content" rows="10" placeholder="Content" class="form-control"></textarea>
+      </div>
+      <div class="form-group mb-0">
+        <select formControlName="assignee" class="form-control">
+          <option [value]="null">Assignee</option>
+          <option *ngFor="let user of users" [value]="user.id">{{ user.username }}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer bg-light">
+    <div class="text-center">
+      <button class="btn btn-primary rounded btn-block" [disabled]="loading || form.invalid">Submit</button>
+    </div>
+  </div>
+</form>

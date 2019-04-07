@@ -3,6 +3,7 @@ import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
+import { ApiError } from '../../interfaces/api-error.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -29,10 +30,10 @@ export class AuthInterceptorService implements HttpInterceptor {
   /**
    * 401: Sign out and reload
    */
-  error(error: HttpErrorResponse) {
+  error(error: HttpErrorResponse): Observable<never> {
     if (error.status === 401) {
       this.authService.signOut();
     }
-    return throwError(error.error.message || error.statusText);
+    return throwError(error);
   }
 }

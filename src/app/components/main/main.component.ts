@@ -5,6 +5,8 @@ import { ApiService } from '../../services/api/api.service';
 import { Card } from '../../models/card';
 import { User } from '../../models/user';
 import { ApiResponse } from '../../interfaces/api-response.interface';
+import { CardNewComponent } from '../card-new/card-new.component';
+import { BsModalService } from 'ngx-bootstrap';
 
 @Component({
   selector: 'app-main',
@@ -38,14 +40,15 @@ export class MainComponent implements OnInit {
    */
   projectSelected: Project;
 
-  constructor(private api: ApiService) {
+  constructor(private apiService: ApiService,
+              private modalService: BsModalService) {
     this.organization = 1;
   }
 
   ngOnInit(): void {
-    this.api.getUsers().subscribe((response: ApiResponse<User>) => {
+    this.apiService.getUsers().subscribe((response: ApiResponse<User>) => {
       this.users = response.results;
-      this.api.getProjects(this.organization).subscribe((data: Project[]) => {
+      this.apiService.getProjects(this.organization).subscribe((data: Project[]) => {
         this.projects = data;
         this.selectProject(data[0]);
       });
@@ -55,10 +58,10 @@ export class MainComponent implements OnInit {
   selectProject(project: Project): void {
     this.projectSelected = project;
     if (!project.columns) {
-      this.api.getColumns(project.id).subscribe((columns: Column[]) => {
+      this.apiService.getColumns(project.id).subscribe((columns: Column[]) => {
         project.columns = columns;
         for (const column of columns) {
-          this.api.getCards(column.id).subscribe((cards: Card[]) => {
+          this.apiService.getCards(column.id).subscribe((cards: Card[]) => {
             column.cards = cards;
           });
         }
@@ -68,5 +71,16 @@ export class MainComponent implements OnInit {
 
   getUser(id: number): User {
     return this.users.filter((user: User) => user.id === id)[0];
+  }
+
+  addCard(column: Column): void {
+    this.modalService.show(CardNewComponent, {
+      class: 'modal-dialog-centered',
+      initialState: {
+        users: this.users,
+        cards: column.cards,
+        column,
+      },
+    });
   }
 }

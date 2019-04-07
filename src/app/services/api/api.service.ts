@@ -8,6 +8,7 @@ import { Column } from '../../models/column';
 import { Card } from '../../models/card';
 import { User } from '../../models/user';
 import { ApiResponse } from '../../interfaces/api-response.interface';
+import { ApiPayload } from '../../interfaces/api-payload.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -45,6 +46,10 @@ export class ApiService {
         column: column.toString()
       }
     }).pipe();
+  }
+
+  createCard(payload: ApiPayload): Observable<any> {
+    return this.http.post(ApiService.baseApi + 'cards/', payload).pipe();
   }
 
   getUser(id: number): Observable<User> {
