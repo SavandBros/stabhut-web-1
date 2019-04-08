@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { UIRouterModule } from '@uirouter/angular';
-import { NgPipesModule, OrderByPipe } from 'ngx-pipes';
+import { NgPipesModule } from 'ngx-pipes';
 import { AppComponent } from './app.component';
 import { MainComponent } from './components/main/main.component';
 import { SignInComponent } from './components/sign-in/sign-in.component';
@@ -48,7 +48,6 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
       useClass: AuthInterceptorService,
       multi: true
     },
-    OrderByPipe,
     ApiService,
     AuthService,
   ],
