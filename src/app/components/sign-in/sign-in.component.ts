@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth/auth.service';
 import { ApiError } from '../../interfaces/api-error.interface';
-import { HttpError } from '../../interfaces/http-error.interface';
-import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-sign-in',
@@ -20,7 +18,7 @@ export class SignInComponent implements OnInit {
               private authService: AuthService) {
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.form = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required],
@@ -35,7 +33,7 @@ export class SignInComponent implements OnInit {
     this.loading = true;
     this.errors = {};
 
-    this.authService.signIn(this.f.username.value, this.f.password.value).subscribe(null, (error: HttpError) => {
+    this.authService.signIn(this.f.username.value, this.f.password.value).subscribe(null, error => {
       this.loading = false;
       this.errors = error.error as ApiError;
     });

@@ -78,7 +78,6 @@ export class MainComponent implements OnInit {
       class: 'modal-dialog-centered',
       initialState: {
         users: this.users,
-        cards: column.cards,
         column,
       },
     });

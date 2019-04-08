@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { UIRouterModule } from '@uirouter/angular';
+import { NgPipesModule, OrderByPipe } from 'ngx-pipes';
 import { AppComponent } from './app.component';
 import { MainComponent } from './components/main/main.component';
 import { SignInComponent } from './components/sign-in/sign-in.component';
@@ -16,7 +17,7 @@ import { AuthInterceptorService } from './services/auth-interceptor/auth-interce
 import { ModalModule, TooltipModule } from 'ngx-bootstrap';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faCog, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 @NgModule({
   declarations: [
@@ -32,13 +33,14 @@ import { faCog, faUser } from '@fortawesome/free-solid-svg-icons';
     HttpClientModule,
     ReactiveFormsModule,
     FontAwesomeModule,
+    FormsModule,
+    NgPipesModule,
     UIRouterModule.forRoot({
       states: Routes,
       config: uiRouterConfigFn
     }),
     TooltipModule.forRoot(),
     ModalModule.forRoot(),
-    FormsModule,
   ],
   providers: [
     {
@@ -46,6 +48,7 @@ import { faCog, faUser } from '@fortawesome/free-solid-svg-icons';
       useClass: AuthInterceptorService,
       multi: true
     },
+    OrderByPipe,
     ApiService,
     AuthService,
   ],
@@ -56,7 +59,6 @@ import { faCog, faUser } from '@fortawesome/free-solid-svg-icons';
 })
 export class AppModule {
   constructor() {
-    library.add(faUser);
-    library.add(faCog);
+    library.add(faPlus);
   }
 }

@@ -25,25 +25,28 @@
       <!-- Columns -->
       <div class="col-lg-10">
         <div class="row">
-          <div class="col column" *ngFor="let column of projectSelected.columns">
+          <div class="col column" *ngFor="let column of projectSelected.columns | orderBy: 'order'">
 
-            <!-- Column title -->
-            <p class="text-center font-weight-bold text-secondary">{{ column.name | uppercase }}</p>
+            <!-- Column header -->
+            <p class="text-center font-weight-bold text-secondary">
 
-            <!-- Add card button -->
-            <button class="btn btn-block btn-light text-secondary rounded-0" (click)="addCard(column)">
-              <small class="text-uppercase">Add Card</small>
-            </button>
+              <!-- Title -->
+              {{ column.name }}
+
+              <!-- Add icon -->
+              <fa-icon class="float-right px-2" icon="plus" (click)="addCard(column)"></fa-icon>
+            </p>
 
             <!-- Cards -->
-            <div class="card mt-2" *ngFor="let card of column.cards">
+            <div class="card mt-2" *ngFor="let card of column.cards | orderBy: 'order'">
               <div class="card-body">
+
+                <!-- Content -->
                 <div class="card-text">{{ card.content }}</div>
+
+                <!-- Assignee -->
                 <span class="badge badge-primary font-weight-light mr-1" title="Assignee" *ngIf="card.assignee">
                   {{ getUser(card.assignee).username }}
-                </span>
-                <span class="badge badge-secondary font-weight-light mr-1" *ngFor="let label of card.labels">
-                  {{ label.title }}
                 </span>
               </div>
             </div>

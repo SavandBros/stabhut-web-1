@@ -6,7 +6,6 @@ import { User } from '../../models/user';
 import { Card } from '../../models/card';
 import { Column } from '../../models/column';
 import { ApiError } from '../../interfaces/api-error.interface';
-import { ApiPayload } from '../../interfaces/api-payload.interface';
 
 @Component({
   selector: 'app-card-new',
@@ -16,7 +15,6 @@ export class CardNewComponent implements OnInit {
 
   column: Column;
   users: User[];
-  cards: Card[];
 
   form: FormGroup;
   loading: boolean;
@@ -39,7 +37,7 @@ export class CardNewComponent implements OnInit {
     this.loading = true;
     this.errors = {};
     this.apiService.createCard(this.form.value).subscribe(data => {
-      this.cards.unshift(new Card(data));
+      this.column.cards.unshift(new Card(data));
       this.bsModalRef.hide();
     }, data => {
       this.loading = false;

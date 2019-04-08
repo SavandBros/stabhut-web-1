@@ -1,4 +1,17 @@
 .column {
+
+  p {
+    text-transform: uppercase;
+
+    fa-icon {
+      cursor: pointer;
+    }
+
+    &:not(:hover) fa-icon {
+      opacity: 0.25;
+    }
+  }
+
   .card-body {
     font-size: 0.9rem;
     padding: 15px;
@@ -10,6 +23,7 @@
 }
 
 .side {
+
   .card-body {
     max-height: 400px;
     overflow-y: auto;

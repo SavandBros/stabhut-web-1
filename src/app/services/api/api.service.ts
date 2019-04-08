@@ -52,10 +52,6 @@ export class ApiService {
     return this.http.post(ApiService.baseApi + 'cards/', payload).pipe();
   }
 
-  getUser(id: number): Observable<User> {
-    return this.http.get<User>(ApiService.baseApi + 'users/' + id).pipe();
-  }
-
   getUsers(): Observable<ApiResponse<User>> {
     return this.http.get<ApiResponse<User>>(ApiService.baseApi + 'users/').pipe();
   }
