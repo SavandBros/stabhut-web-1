@@ -9,6 +9,7 @@ import { Card } from '../../models/card';
 import { User } from '../../models/user';
 import { ApiResponse } from '../../interfaces/api-response.interface';
 import { ApiPayload } from '../../interfaces/api-payload.interface';
+import { Chat } from '../../models/chat';
 
 @Injectable({
   providedIn: 'root'
@@ -48,11 +49,23 @@ export class ApiService {
     }).pipe();
   }
 
-  createCard(payload: ApiPayload): Observable<any> {
-    return this.http.post(ApiService.baseApi + 'cards/', payload).pipe();
+  createCard(payload: ApiPayload): Observable<Card> {
+    return this.http.post<Card>(ApiService.baseApi + 'cards/', payload).pipe();
   }
 
   getUsers(): Observable<ApiResponse<User>> {
     return this.http.get<ApiResponse<User>>(ApiService.baseApi + 'users/').pipe();
+  }
+
+  getChats(project: number): Observable<Chat[]> {
+    return this.http.get<Chat[]>(ApiService.baseApi + 'chats/', {
+      params: {
+        column: project.toString()
+      }
+    }).pipe();
+  }
+
+  createChat(payload: ApiPayload): Observable<Chat> {
+    return this.http.post<Chat>(ApiService.baseApi + 'chats/', payload).pipe();
   }
 }

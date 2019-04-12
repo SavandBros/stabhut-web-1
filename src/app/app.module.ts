@@ -18,6 +18,7 @@ import { ModalModule, TooltipModule } from 'ngx-bootstrap';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { CardComponent } from './components/card/card.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
     SignUpComponent,
     DashComponent,
     CardNewComponent,
+    CardComponent,
   ],
   imports: [
     BrowserModule,

@@ -75,8 +75,9 @@
           <div class="card-body p-3">
             <!-- Chats -->
             <div *ngIf="sidePanelTab == 'chats'">
-              <p *ngFor="let chat of chats" title="{{ chat.date | date:'MMM dd, HH:MM a' }}" class="mb-2">
-                <b>{{ chat.user.username }}</b>: {{ chat.content }}
+              <p *ngFor="let chat of projectSelected.chats" title="{{ chat.created | date:'MMM dd, HH:MM a' }}"
+                 class="mb-2">
+                <b>{{ getUser(chat.user).username }}</b>: {{ chat.content }}
               </p>
             </div>
             <!-- Tasks -->
@@ -90,7 +91,10 @@
           </div>
           <!-- Input -->
           <div class="card-footer p-3">
-            <input type="text" class="form-control" placeholder="Add to {{ sidePanelTab }}" required>
+            <form (ngSubmit)="sidePanelSubmit()">
+              <input type="text" class="form-control" placeholder="Add to {{ sidePanelTab }}"
+                     [(ngModel)]="sidePanelInput" name="sidePanelInput" required>
+            </form>
           </div>
         </div>
       </div>

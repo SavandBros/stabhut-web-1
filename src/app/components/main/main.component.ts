@@ -2,11 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Project } from '../../models/project';
 import { Column } from '../../models/column';
 import { ApiService } from '../../services/api/api.service';
-import { Card } from '../../models/card';
 import { User } from '../../models/user';
-import { ApiResponse } from '../../interfaces/api-response.interface';
 import { CardNewComponent } from '../card-new/card-new.component';
 import { BsModalService } from 'ngx-bootstrap';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-main',
@@ -14,6 +13,11 @@ import { BsModalService } from 'ngx-bootstrap';
   styleUrls: ['./main.component.scss']
 })
 export class MainComponent implements OnInit {
+
+  /**
+   * Current authenticated user
+   */
+  user: User;
 
   /**
    * Current organization ID from route
@@ -36,19 +40,28 @@ export class MainComponent implements OnInit {
   sidePanelTab = 'chats';
 
   /**
+   * Side panel input model
+   */
+  sidePanelInput: string;
+
+  /**
    * Selected project
    */
   projectSelected: Project;
 
-  constructor(private apiService: ApiService,
+  constructor(private authService: AuthService,
+              private apiService: ApiService,
               private modalService: BsModalService) {
     this.organization = 1;
   }
 
   ngOnInit(): void {
-    this.apiService.getUsers().subscribe((response: ApiResponse<User>) => {
+    this.authService.user.subscribe((data: User) => {
+      this.user = data;
+    });
+    this.apiService.getUsers().subscribe((response) => {
       this.users = response.results;
-      this.apiService.getProjects(this.organization).subscribe((data: Project[]) => {
+      this.apiService.getProjects(this.organization).subscribe((data) => {
         this.projects = data;
         this.selectProject(data[0]);
       });
@@ -58,10 +71,13 @@ export class MainComponent implements OnInit {
   selectProject(project: Project): void {
     this.projectSelected = project;
     if (!project.columns) {
-      this.apiService.getColumns(project.id).subscribe((columns: Column[]) => {
+      this.apiService.getChats(project.id).subscribe((chats) => {
+        project.chats = chats.reverse();
+      });
+      this.apiService.getColumns(project.id).subscribe((columns) => {
         project.columns = columns;
         for (const column of columns) {
-          this.apiService.getCards(column.id).subscribe((cards: Card[]) => {
+          this.apiService.getCards(column.id).subscribe((cards) => {
             column.cards = cards;
           });
         }
@@ -80,6 +96,23 @@ export class MainComponent implements OnInit {
         users: this.users,
         column,
       },
+    });
+  }
+
+  sidePanelSubmit(): void {
+    if (this.sidePanelTab === 'chats') {
+      this.addChat(this.sidePanelInput);
+    }
+    this.sidePanelInput = '';
+  }
+
+  addChat(content: string): void {
+    this.apiService.createChat({
+      content,
+      project: this.projectSelected.id,
+    }).subscribe((chat) => {
+      chat.user = this.user.id;
+      this.projectSelected.chats.push(chat);
     });
   }
 }

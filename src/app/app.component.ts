@@ -9,6 +9,9 @@ import { User } from './models/user';
 })
 export class AppComponent implements OnInit {
 
+  /**
+   * Current authenticated user
+   */
   user: User;
 
   constructor(public authService: AuthService) {
