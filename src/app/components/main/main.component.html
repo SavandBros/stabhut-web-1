@@ -94,7 +94,7 @@
           <div class="card-footer p-3">
             <form (ngSubmit)="sidePanelSubmit()">
               <input type="text" class="form-control" placeholder="Add to {{ sidePanelTab }}"
-                     [(ngModel)]="sidePanelInput" name="sidePanelInput" required>
+                     [(ngModel)]="sidePanelInput" name="sidePanelInput" autocomplete="off" required>
             </form>
           </div>
         </div>
