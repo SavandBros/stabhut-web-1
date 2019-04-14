@@ -10,7 +10,7 @@
       </div>
       <div class="form-group mb-0">
         <select formControlName="assignee" class="form-control">
-          <option [value]="null">Assignee</option>
+          <option value>Assignee</option>
           <option *ngFor="let user of users" [value]="user.id">{{ user.username }}</option>
         </select>
       </div>

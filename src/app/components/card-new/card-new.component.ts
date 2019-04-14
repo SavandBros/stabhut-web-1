@@ -29,7 +29,7 @@ export class CardNewComponent implements OnInit {
     this.form = this.formBuilder.group({
       column: [this.column.id, Validators.required],
       content: ['', Validators.required],
-      assignee: [null],
+      assignee: [''],
     });
   }
 
