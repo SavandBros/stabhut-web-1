@@ -82,10 +82,11 @@
             </div>
             <!-- Tasks -->
             <div *ngIf="sidePanelTab == 'tasks'">
-              <div class="custom-control custom-checkbox" *ngFor="let task of tasks; let i = index"
-                   [ngClass]="{'text-secondary': task.check}">
-                <input type="checkbox" class="custom-control-input" id="task-{{ i }}">
-                <label class="custom-control-label" for="task-{{ i }}">{{ task.content }}</label>
+              <div *ngFor="let task of projectSelected.tasks" [ngClass]="{'text-secondary': task.checked}"
+                   class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="task-{{ task.id }}"
+                       [(ngModel)]="task.checked" (ngModelChange)="taskToggle(task)">
+                <label class="custom-control-label" for="task-{{ task.id }}">{{ task.content }}</label>
               </div>
             </div>
           </div>

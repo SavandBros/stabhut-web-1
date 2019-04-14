@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { BsModalService } from 'ngx-bootstrap';
+import { CardNewComponent } from '../card-new/card-new.component';
+import { ApiService } from '../../services/api/api.service';
+import { AuthService } from '../../services/auth/auth.service';
 import { Project } from '../../models/project';
 import { Column } from '../../models/column';
-import { ApiService } from '../../services/api/api.service';
 import { User } from '../../models/user';
-import { CardNewComponent } from '../card-new/card-new.component';
-import { BsModalService } from 'ngx-bootstrap';
-import { AuthService } from '../../services/auth/auth.service';
+import { Task } from '../../models/task';
 
 @Component({
   selector: 'app-main',
@@ -74,6 +75,9 @@ export class MainComponent implements OnInit {
       this.apiService.getChats(project.id).subscribe((chats) => {
         project.chats = chats.reverse();
       });
+      this.apiService.getTasks(project.id).subscribe((tasks) => {
+        project.tasks = tasks;
+      });
       this.apiService.getColumns(project.id).subscribe((columns) => {
         project.columns = columns;
         for (const column of columns) {
@@ -102,6 +106,8 @@ export class MainComponent implements OnInit {
   sidePanelSubmit(): void {
     if (this.sidePanelTab === 'chats') {
       this.addChat(this.sidePanelInput);
+    } else if (this.sidePanelTab === 'tasks') {
+      this.addTask(this.sidePanelInput);
     }
     this.sidePanelInput = '';
   }
@@ -114,5 +120,20 @@ export class MainComponent implements OnInit {
       chat.user = this.user.id;
       this.projectSelected.chats.push(chat);
     });
+  }
+
+  addTask(content: string): void {
+    this.apiService.createTask({
+      content,
+      project: this.projectSelected.id,
+    }).subscribe((task) => {
+      this.projectSelected.tasks.unshift(task);
+    });
+  }
+
+  taskToggle(task: Task) {
+    this.apiService.updateTask(task.id, {
+      checked: task.checked,
+    }).subscribe();
   }
 }

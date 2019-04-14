@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { ApiResponse } from '../../interfaces/api-response.interface';
+import { ApiPayload } from '../../interfaces/api-payload.interface';
 import { environment } from '../../../environments/environment';
 import { Organization } from '../../models/organization';
 import { Project } from '../../models/project';
 import { Column } from '../../models/column';
 import { Card } from '../../models/card';
 import { User } from '../../models/user';
-import { ApiResponse } from '../../interfaces/api-response.interface';
-import { ApiPayload } from '../../interfaces/api-payload.interface';
 import { Chat } from '../../models/chat';
+import { Task } from '../../models/task';
 
 @Injectable({
   providedIn: 'root'
@@ -67,5 +68,21 @@ export class ApiService {
 
   createChat(payload: ApiPayload): Observable<Chat> {
     return this.http.post<Chat>(ApiService.baseApi + 'chats/', payload).pipe();
+  }
+
+  getTasks(project: number): Observable<Task[]> {
+    return this.http.get<Task[]>(ApiService.baseApi + 'tasks/', {
+      params: {
+        column: project.toString()
+      }
+    }).pipe();
+  }
+
+  updateTask(task: number, payload: ApiPayload): Observable<Task> {
+    return this.http.patch<Task>(`${ApiService.baseApi}tasks/${task}/`, payload).pipe();
+  }
+
+  createTask(payload: ApiPayload): Observable<Task> {
+    return this.http.post<Task>(ApiService.baseApi + 'tasks/', payload).pipe();
   }
 }

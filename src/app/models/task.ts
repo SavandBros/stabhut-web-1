@@ -1,9 +1,13 @@
 export class Task {
+  id: number;
+  project: number;
   content: string;
-  check: boolean;
+  checked: boolean;
 
-  constructor(content: string, check: boolean = false) {
-    this.content = content;
-    this.check = check;
+  constructor(data) {
+    this.id = data.id;
+    this.project = data.project;
+    this.content = data.content;
+    this.checked = data.checked;
   }
 }
