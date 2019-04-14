@@ -18,7 +18,7 @@ export const Routes: any[] = [{
   component: SignUpComponent,
 }, {
   name: 'dash',
-  url: '/dash',
+  url: '/',
   component: DashComponent,
 }, {
   name: 'main',
