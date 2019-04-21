@@ -1,14 +1,14 @@
-import { Label } from './label';
+import { User } from './user';
+import { Column } from './column';
 
 export class Card {
   id: number;
-  column: number;
+  column: Column | number;
   content: string;
-  assignee: number;
+  assignee: User | number;
   order: number;
   updated: Date;
   created: Date;
-  labels: Label[];
 
   constructor(data) {
     this.id = data.id;

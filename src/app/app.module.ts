@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { UIRouterModule } from '@uirouter/angular';
-import { NgPipesModule } from 'ngx-pipes';
+import { NgArrayPipesModule, NgDatePipesModule } from 'ngx-pipes';
 import { AppComponent } from './app.component';
 import { MainComponent } from './components/main/main.component';
 import { SignInComponent } from './components/sign-in/sign-in.component';
@@ -36,7 +36,7 @@ import { CardComponent } from './components/card/card.component';
     ReactiveFormsModule,
     FontAwesomeModule,
     FormsModule,
-    NgPipesModule,
+    NgDatePipesModule,
     UIRouterModule.forRoot({
       states: Routes,
       config: uiRouterConfigFn

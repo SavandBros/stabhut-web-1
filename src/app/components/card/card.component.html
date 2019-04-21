@@ -1,3 +1,39 @@
-<p>
-  card works!
-</p>
+<div class="container" *ngIf="card">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card my-3">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-8">{{ card.content }}</div>
+            <div class="col-md-4">
+              <ul class="list-group">
+                <li class="list-group-item">
+                  <span class="badge badge-light">Column</span>
+                  <span class="float-right">{{ card.column.name }}</span>
+                </li>
+                <li class="list-group-item">
+                  <span class="badge badge-light">Assignee</span>
+                  <span class="float-right">
+                    <span *ngIf="card.assignee">{{ card.assignee.username }}</span>
+                    <span *ngIf="!card.assignee" class="text-secondary">No one</span>
+                  </span>
+                </li>
+                <li class="list-group-item">
+                  <span class="badge badge-light">Updated</span>
+                  <span class="float-right" [tooltip]="card.updated | date">
+                    <span *ngIf="card.created !== card.updated">{{ card.updated | date:'hh:MM a' }}</span>
+                    <span *ngIf="card.created === card.updated" class="text-secondary">Never</span>
+                  </span>
+                </li>
+                <li class="list-group-item">
+                  <span class="badge badge-light">Created</span>
+                  <span class="float-right" [tooltip]="card.updated | date">{{ card.created | date:'hh:MM a' }}</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
