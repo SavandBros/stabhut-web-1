@@ -42,6 +42,15 @@ export class ApiService {
     }).pipe();
   }
 
+  /**
+   * Get a card data
+   *
+   * @param card Card ID
+   */
+  getCard(card?: number): Observable<Card> {
+    return this.http.get<Card>(`${ApiService.baseApi}cards/${card}`).pipe();
+  }
+
   getCards(column?: number): Observable<Card[]> {
     return this.http.get<Card[]>(ApiService.baseApi + 'cards/', {
       params: {
