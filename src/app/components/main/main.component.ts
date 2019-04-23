@@ -23,9 +23,14 @@ export class MainComponent implements OnInit {
   user: User;
 
   /**
-   * Current organization ID from route
+   * Current organization ID from route params
    */
   organization: number;
+
+  /**
+   * Current project index from route params
+   */
+  project: number;
 
   /**
    * List of users of current organization
@@ -58,6 +63,8 @@ export class MainComponent implements OnInit {
               private modalService: BsModalService) {
     // Get organization ID from route params
     this.organization = router.globals.params.id;
+    // Get project (selected) ID from route params
+    this.project = router.globals.params.project;
   }
 
   ngOnInit(): void {
@@ -71,8 +78,12 @@ export class MainComponent implements OnInit {
       // Get all projects of this organization
       this.apiService.getProjects(this.organization).subscribe((data) => {
         this.projects = data;
-        // Select the first project
-        this.selectProject(data[0]);
+        // Select the first project if there's no project from route params
+        if (this.project) {
+          this.selectProject(this.projects[this.project]);
+        } else {
+          this.selectProject(this.projects[0]);
+        }
       });
     });
   }
@@ -85,6 +96,10 @@ export class MainComponent implements OnInit {
   selectProject(project: Project): void {
     // Change selected project
     this.projectSelected = project;
+    // Change route params as well
+    this.router.stateService.go('main', {
+      project: this.projects.indexOf(project),
+    });
     // If project columns are not loaded
     if (!project.columns) {
       // Load project chats
