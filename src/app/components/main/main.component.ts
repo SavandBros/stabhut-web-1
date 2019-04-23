@@ -56,6 +56,7 @@ export class MainComponent implements OnInit {
               private apiService: ApiService,
               private modalService: BsModalService) {
     this.organization = 1;
+    this.organization = router.globals.params.id;
   }
 
   ngOnInit(): void {
