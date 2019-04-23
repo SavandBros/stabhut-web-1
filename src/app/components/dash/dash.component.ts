@@ -9,13 +9,17 @@ import { ApiService } from '../../services/api/api.service';
 })
 export class DashComponent implements OnInit {
 
+  /**
+   * All authenticated user organizations
+   */
   organizations: Organization[] = [];
 
   constructor(private api: ApiService) {
   }
 
   ngOnInit() {
-    this.api.getOrganizations().subscribe((data: Organization[]) => {
+    // Load organizations
+    this.api.getOrganizations().subscribe(data => {
       this.organizations = data;
     });
   }
