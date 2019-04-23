@@ -1,9 +1,10 @@
 import { UIRouter } from '@uirouter/angular';
-import { SignInComponent } from './components/sign-in/sign-in.component';
-import { SignUpComponent } from './components/sign-up/sign-up.component';
+
+import { CardComponent } from './components/card/card.component';
 import { DashComponent } from './components/dash/dash.component';
 import { MainComponent } from './components/main/main.component';
-import { CardComponent } from './components/card/card.component';
+import { SignInComponent } from './components/sign-in/sign-in.component';
+import { SignUpComponent } from './components/sign-up/sign-up.component';
 
 /**
  * App router routes

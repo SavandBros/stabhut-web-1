@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../../services/api/api.service';
+import { UIRouter } from '@uirouter/core';
+
 import { Card } from '../../models/card';
+import { ApiService } from '../../services/api/api.service';
 
 @Component({
   selector: 'app-card',

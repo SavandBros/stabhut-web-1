@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
+import { UIRouter } from '@uirouter/core';
 import { BsModalService } from 'ngx-bootstrap';
-import { CardNewComponent } from '../card-new/card-new.component';
+
+import { Column } from '../../models/column';
+import { Project } from '../../models/project';
+import { Task } from '../../models/task';
+import { User } from '../../models/user';
 import { ApiService } from '../../services/api/api.service';
 import { AuthService } from '../../services/auth/auth.service';
-import { Project } from '../../models/project';
-import { Column } from '../../models/column';
-import { User } from '../../models/user';
-import { Task } from '../../models/task';
+import { CardNewComponent } from '../card-new/card-new.component';
 
 @Component({
   selector: 'app-main',
