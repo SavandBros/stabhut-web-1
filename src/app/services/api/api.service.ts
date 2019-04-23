@@ -17,7 +17,7 @@ import { Task } from '../../models/task';
 })
 export class ApiService {
 
-  static readonly baseApi: string = environment.api;
+  static readonly base: string = environment.api;
 
   constructor(private http: HttpClient) {
   }

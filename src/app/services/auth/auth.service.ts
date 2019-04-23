@@ -78,7 +78,7 @@ export class AuthService {
    * Sign in (send API request, save to localStorage and redirect)
    */
   signIn(username: string, password: string): Observable<any> {
-    return this.http.post(ApiService.baseApi + 'auth/', { username, password }).pipe(
+    return this.http.post(ApiService.base + 'auth/', { username, password }).pipe(
       map((data: any) => {
         AuthService.setToken(data.token);
         AuthService.setUser(data.user);
@@ -93,7 +93,7 @@ export class AuthService {
    * Sign up (send API request and sign in)
    */
   signUp(username: string, email: string, password: string): Observable<any> {
-    return this.http.post(ApiService.baseApi + 'users/', { username, email, password }).pipe(
+    return this.http.post(ApiService.base + 'users/', { username, email, password }).pipe(
       map(() => {
         return this.signIn(username, password).subscribe();
       })
