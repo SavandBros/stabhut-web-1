@@ -21,14 +21,14 @@ export class CardComponent implements OnInit {
    */
   card: Card;
 
-  constructor(private apiService: ApiService) {
-    this.cardId = 1;
+  constructor(private router: UIRouter,
+              private apiService: ApiService) {
+    // Get card ID from router params
+    this.cardId = router.globals.params.id;
   }
 
   ngOnInit(): void {
-    /**
-     * Load card
-     */
+    // Load card data
     this.apiService.getCard(this.cardId).subscribe(card => {
       this.card = card;
     });
