@@ -25,11 +25,6 @@ export const Routes: Ng2StateDeclaration[] = [{
   name: 'main',
   url: '/:id/:project',
   component: MainComponent,
-  params: {
-    project: {
-      dynamic: true,
-    }
-  }
 }, {
   name: 'card',
   url: '/card/:id',

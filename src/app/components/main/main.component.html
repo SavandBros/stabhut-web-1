@@ -36,7 +36,7 @@
               <div class="card-body">
 
                 <!-- Content -->
-                <div class="card-text">{{ card.content }}</div>
+                <a class="text-dark d-block" uiSref="card" [uiParams]="{id: card.id}">{{ card.content }}</a>
 
                 <!-- Assignee -->
                 <span class="badge badge-primary font-weight-light mr-1" title="Assignee" *ngIf="card.assignee">
