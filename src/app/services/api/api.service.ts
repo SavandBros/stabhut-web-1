@@ -115,7 +115,7 @@ export class ApiService {
   getChats(project: number): Observable<Chat[]> {
     return this.http.get<Chat[]>(ApiService.base + 'chats/', {
       params: {
-        column: project.toString()
+        project: project.toString(),
       }
     }).pipe();
   }
@@ -137,7 +137,7 @@ export class ApiService {
   getTasks(project: number): Observable<Task[]> {
     return this.http.get<Task[]>(ApiService.base + 'tasks/', {
       params: {
-        column: project.toString()
+        project: project.toString(),
       }
     }).pipe();
   }
