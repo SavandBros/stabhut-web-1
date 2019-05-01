@@ -24,16 +24,11 @@ export class AuthInterceptorService implements HttpInterceptor {
         }
       });
     }
-    return next.handle(request).pipe(catchError(this.error));
-  }
-
-  /**
-   * 401: Sign out and reload
-   */
-  error(error: HttpErrorResponse): Observable<never> {
-    if (error.status === 401) {
-      this.authService.signOut();
-    }
-    return throwError(error);
+    return next.handle(request).pipe(catchError((error: HttpErrorResponse) => {
+      if (error.status === 401) {
+        this.authService.signOut();
+      }
+      return throwError(error);
+    }));
   }
 }
