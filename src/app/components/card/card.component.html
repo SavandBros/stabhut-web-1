@@ -7,11 +7,11 @@
             <div class="col-md-8">{{ card.content }}</div>
             <div class="col-md-4">
               <ul class="list-group">
-                <li class="list-group-item">
+                <li class="list-group-item" [popover]="columnPopover">
                   <span class="badge badge-light">Column</span>
                   <span class="float-right">{{ card.column.name }}</span>
                 </li>
-                <li class="list-group-item">
+                <li class="list-group-item" [popover]="userPopover">
                   <span class="badge badge-light">Assignee</span>
                   <span class="float-right">
                     <span *ngIf="card.assignee">{{ card.assignee.username }}</span>
@@ -20,7 +20,8 @@
                 </li>
                 <li class="list-group-item">
                   <span class="badge badge-light">Updated</span>
-                  <span class="float-right" [tooltip]="card.updated | date">
+                  <span class="float-right" [tooltip]="card.updated | date"
+                        [isDisabled]="card.created === card.updated">
                     <span *ngIf="card.created !== card.updated">{{ card.updated | date:'hh:MM a' }}</span>
                     <span *ngIf="card.created === card.updated" class="text-secondary">Never</span>
                   </span>
@@ -37,3 +38,27 @@
     </div>
   </div>
 </div>
+
+<ng-template #columnPopover>
+  <div class="nav flex-column nav-pills">
+    <a *ngFor="let column of columns"
+       [class.active]="card.column.id === column.id"
+       (click)="update({'column': column.id})"
+       class="nav-link">
+      {{ column.name }}
+    </a>
+  </div>
+</ng-template>
+
+<ng-template #userPopover>
+  <div class="nav flex-column nav-pills">
+    <a (click)="update({'assignee': null})" [class.active]="!card.assignee"  class="nav-link">None</a>
+    <a *ngFor="let user of users"
+       (click)="update({'assignee': user.id})"
+       [class.active]="card.assignee && card.assignee.id === user.id"
+       [class.disabled]="loading"
+       class="nav-link">
+      {{ user.username }}
+    </a>
+  </div>
+</ng-template>

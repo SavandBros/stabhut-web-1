@@ -6,7 +6,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { UIRouterModule } from '@uirouter/angular';
-import { ModalModule, TooltipModule } from 'ngx-bootstrap';
+import { ModalModule, PopoverModule, TooltipModule } from 'ngx-bootstrap';
 import { NgDatePipesModule } from 'ngx-pipes';
 
 import { AppComponent } from './app.component';
@@ -44,6 +44,7 @@ import { AuthService } from './services/auth/auth.service';
     }),
     TooltipModule.forRoot(),
     ModalModule.forRoot(),
+    PopoverModule.forRoot(),
   ],
   providers: [
     {

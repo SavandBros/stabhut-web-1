@@ -12,7 +12,7 @@ export class Card {
 
   constructor(data) {
     this.id = data.id;
-    this.column = data.column;
+    this.column = data.columnInput;
     this.content = data.content;
     this.assignee = data.assignee;
     this.order = data.order;

@@ -83,6 +83,16 @@ export class ApiService {
   }
 
   /**
+   * Update a card
+   *
+   * @param card Card ID to update
+   * @param payload Task data
+   */
+  updateCard(card: number, payload: ApiPayload): Observable<Card> {
+    return this.http.patch<Card>(`${ApiService.base}cards/${card}/`, payload).pipe();
+  }
+
+  /**
    * Create a card
    *
    * @param payload Card payload
