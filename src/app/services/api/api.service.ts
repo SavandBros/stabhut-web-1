@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
+import { ApiPayloadGet } from '../../interfaces/api-payload-get.interface';
 import { ApiPayload } from '../../interfaces/api-payload.interface';
 import { ApiResponse } from '../../interfaces/api-response.interface';
 import { Card } from '../../models/card';
@@ -35,12 +36,21 @@ export class ApiService {
   }
 
   /**
+   * Organization detail
+   *
+   * @param id Organization ID
+   */
+  getOrganization(id: number): Observable<Organization> {
+    return this.http.get<Organization>(`${ApiService.base}organizations/${id}/`).pipe();
+  }
+
+  /**
    * Project list of an organization
    *
    * @param organization Organization ID
    */
-  getProjects(organization?: number): Observable<Project[]> {
-    return this.http.get<Project[]>(ApiService.base + 'projects/', {
+  getProjects(organization: number): Observable<Project[]> {
+    return this.http.get<Project[]>(`${ApiService.base}projects/`, {
       params: {
         organization: organization.toString()
       }
@@ -48,16 +58,58 @@ export class ApiService {
   }
 
   /**
+   * Get a column data
+   *
+   * @param column Column ID
+   */
+  getColumn(column: number): Observable<Column> {
+    return this.http.get<Column>(`${ApiService.base}columns/${column}/`).pipe();
+  }
+
+  /**
    * Column list of a project
    *
+   * @param organization Organization ID
    * @param project Project ID
    */
-  getColumns(project?: number): Observable<Column[]> {
-    return this.http.get<Column[]>(ApiService.base + 'columns/', {
-      params: {
-        project: project.toString()
-      }
-    }).pipe();
+  getColumns(organization?: number, project?: number): Observable<Column[]> {
+    const params: ApiPayloadGet = {};
+    if (organization) {
+      params.organization = organization.toString();
+    }
+    if (project) {
+      params.project = project.toString();
+    }
+    return this.http.get<Column[]>(ApiService.base + 'columns/', { params }).pipe();
+  }
+
+  /**
+   * Create a column
+   *
+   * @param project Project ID of the column
+   * @param name Column name
+   */
+  createColumn(project: number, name: string): Observable<Column> {
+    return this.http.post<Column>(`${ApiService.base}columns/`, { project, name }).pipe();
+  }
+
+  /**
+   * Update a column
+   *
+   * @param id Column ID
+   * @param payload Column data to update to
+   */
+  updateColumn(id: number, payload: ApiPayload): Observable<Column> {
+    return this.http.patch<Column>(`${ApiService.base}columns/${id}/`, payload).pipe();
+  }
+
+  /**
+   * Delete a column
+   *
+   * @param column Column ID
+   */
+  deleteColumn(column: number): Observable<void> {
+    return this.http.delete<void>(`${ApiService.base}columns/${column}/`).pipe();
   }
 
   /**
@@ -65,8 +117,8 @@ export class ApiService {
    *
    * @param card Card ID
    */
-  getCard(card?: number): Observable<Card> {
-    return this.http.get<Card>(`${ApiService.base}cards/${card}`).pipe();
+  getCard(card: number): Observable<Card> {
+    return this.http.get<Card>(`${ApiService.base}cards/${card}/`).pipe();
   }
 
   /**
@@ -107,7 +159,7 @@ export class ApiService {
    * @param user User ID
    */
   getUser(user: number): Observable<User> {
-    return this.http.get<User>(`${ApiService.base}users/${user}`).pipe();
+    return this.http.get<User>(`${ApiService.base}users/${user}/`).pipe();
   }
 
   /**

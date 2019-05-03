@@ -1,8 +1,9 @@
 import { Ng2StateDeclaration, UIRouter } from '@uirouter/angular';
 
 import { CardComponent } from './components/card/card.component';
+import { OrganizationSettingComponent } from './components/organization-setting/organization-setting.component';
 import { DashComponent } from './components/dash/dash.component';
-import { MainComponent } from './components/main/main.component';
+import { OrganizationComponent } from './components/main/organization.component';
 import { SignInComponent } from './components/sign-in/sign-in.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
 
@@ -22,9 +23,9 @@ export const Routes: Ng2StateDeclaration[] = [{
   url: '/',
   component: DashComponent,
 }, {
-  name: 'main',
+  name: 'organization',
   url: '/:id/:project',
-  component: MainComponent,
+  component: OrganizationComponent,
   params: {
     project: {
       dynamic: true,
@@ -34,6 +35,15 @@ export const Routes: Ng2StateDeclaration[] = [{
   name: 'card',
   url: '/card/:id',
   component: CardComponent,
+}, {
+  name: 'organization-setting',
+  url: '/organization/:id',
+  component: OrganizationSettingComponent,
+  params: {
+    id: {
+      dynamic: true,
+    },
+  },
 }];
 
 /**

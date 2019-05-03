@@ -1,0 +1,56 @@
+<div class="container py-5">
+
+  <!-- Organization -->
+  <div class="row justify-content-center" *ngIf="organization">
+    <div class="col-md-6 my-2">
+      <div class="card bg-light">
+        <div class="card-body">
+          <b>{{ organization.name }}</b> created by <b>{{ organization.user.username }}</b>
+          <a uiSref="organization" [uiParams]="{id: organization.id, project: null}" class="float-right">
+            <fa-icon icon="arrow-circle-right"></fa-icon>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panels -->
+  <div class="row justify-content-center" *ngIf="projects">
+
+    <!-- Projects -->
+    <div class="col-md-3 my-2">
+      <div class="card">
+        <div class="card-header">Projects</div>
+        <ul class="list-group list-group-flush" *ngIf="projects">
+          <li class="list-group-item list-group-item-action"
+              *ngFor="let project of projects"
+              (click)="projectSelected = project"
+              [class.active]="projectSelected === project">
+            {{ project.name }}
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Columns (of selected project) -->
+    <div class="col-md-3 my-2">
+      <div class="card">
+        <div class="card-header">Columns</div>
+        <div class="card-body" *ngIf="projectSelected.columns">
+          <div class="form-group input-group" *ngFor="let column of projectSelected.columns">
+            <input type="text" class="form-control" [(ngModel)]="column.name">
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary" (click)="deleteColumn(column)">
+                <fa-icon icon="trash"></fa-icon>
+              </button>
+            </div>
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" placeholder="New column" [(ngModel)]="columnNew">
+          </div>
+          <button class="btn btn-block btn-success" (click)="updateColumns()">Update</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

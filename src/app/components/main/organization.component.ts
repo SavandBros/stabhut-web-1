@@ -12,10 +12,10 @@ import { CardNewComponent } from '../card-new/card-new.component';
 
 @Component({
   selector: 'app-main',
-  templateUrl: './main.component.html',
-  styleUrls: ['./main.component.scss']
+  templateUrl: './organization.component.html',
+  styleUrls: ['./organization.component.scss']
 })
-export class MainComponent implements OnInit {
+export class OrganizationComponent implements OnInit {
 
   /**
    * Current authenticated user
@@ -25,7 +25,7 @@ export class MainComponent implements OnInit {
   /**
    * Current organization ID from route params
    */
-  organization: number;
+  organizationId: number;
 
   /**
    * Current project index from route params
@@ -62,7 +62,7 @@ export class MainComponent implements OnInit {
               private apiService: ApiService,
               private modalService: BsModalService) {
     // Get organization ID from route params
-    this.organization = router.globals.params.id;
+    this.organizationId = router.globals.params.id;
     // Get project (selected) ID from route params
     this.project = router.globals.params.project;
   }
@@ -76,7 +76,7 @@ export class MainComponent implements OnInit {
     this.apiService.getUsers().subscribe((response) => {
       this.users = response.results;
       // Get all projects of this organization
-      this.apiService.getProjects(this.organization).subscribe((data) => {
+      this.apiService.getProjects(this.organizationId).subscribe((data) => {
         this.projects = data;
         // Select the first project if there's no project from route params
         if (this.project) {
@@ -111,7 +111,7 @@ export class MainComponent implements OnInit {
         project.tasks = tasks;
       });
       // Load project columns
-      this.apiService.getColumns(project.id).subscribe((columns) => {
+      this.apiService.getColumns(null, project.id).subscribe((columns) => {
         project.columns = columns;
         // Load cards of each column
         for (const column of columns) {
