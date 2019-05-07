@@ -13,11 +13,6 @@ import { ApiService } from '../../services/api/api.service';
 export class OrganizationSettingComponent implements OnInit {
 
   /**
-   * API loading
-   */
-  loading = false;
-
-  /**
    * Organization ID from route
    */
   organizationId: number;
@@ -36,11 +31,6 @@ export class OrganizationSettingComponent implements OnInit {
    * Selected project
    */
   projectSelected: Project;
-
-  /**
-   * New column to add
-   */
-  columnNew: string;
 
   constructor(private router: UIRouter,
               private apiService: ApiService) {
@@ -68,6 +58,29 @@ export class OrganizationSettingComponent implements OnInit {
   }
 
   /**
+   * Add a project
+   *
+   * @param name Project name
+   */
+  addProject(name: string) {
+    this.apiService.createProject(this.organization.id, name).subscribe(data => {
+      data.columns = [];
+      this.projects.push(data);
+    });
+  }
+
+  /**
+   * Add a column
+   *
+   * @param name Column name
+   */
+  addColumn(name: string): void {
+    this.apiService.createColumn(this.projectSelected.id, name).subscribe(data => {
+      this.projectSelected.columns.push(data);
+    });
+  }
+
+  /**
    * Delete a column
    *
    * @param column Column to delete
@@ -90,12 +103,6 @@ export class OrganizationSettingComponent implements OnInit {
       this.apiService.updateColumn(column.id, { name: column.name }).subscribe(data => {
         column = data;
       });
-    }
-    if (this.columnNew.length) {
-      this.apiService.createColumn(this.projectSelected.id, this.columnNew).subscribe(data => {
-        this.projectSelected.columns.push(data);
-      });
-      this.columnNew = '';
     }
   }
 }

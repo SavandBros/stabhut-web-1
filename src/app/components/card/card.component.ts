@@ -59,7 +59,7 @@ export class CardComponent implements OnInit {
     this.apiService.getCard(this.cardId).subscribe(card => {
       this.card = card;
       // Load projects of cards organization for selection
-      this.apiService.getColumns((this.card.column as Column).project as number).subscribe(data => {
+      this.apiService.getColumns(null, (this.card.column as Column).project as number).subscribe(data => {
         this.columns = data;
       });
       // Load users for selection

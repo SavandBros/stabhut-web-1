@@ -40,14 +40,14 @@
 </div>
 
 <ng-template #columnPopover>
-  <div class="nav flex-column nav-pills">
-    <a *ngFor="let column of columns"
+  <ul class="nav flex-column nav-pills">
+    <li *ngFor="let column of columns"
        [class.active]="card.column.id === column.id"
        (click)="update({'column': column.id})"
        class="nav-link">
       {{ column.name }}
-    </a>
-  </div>
+    </li>
+  </ul>
 </ng-template>
 
 <ng-template #userPopover>

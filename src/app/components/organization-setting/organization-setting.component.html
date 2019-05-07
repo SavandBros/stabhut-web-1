@@ -20,34 +20,41 @@
     <!-- Projects -->
     <div class="col-md-3 my-2">
       <div class="card">
+        <!-- Header -->
         <div class="card-header">Projects</div>
+        <!-- Projects -->
         <ul class="list-group list-group-flush" *ngIf="projects">
-          <li class="list-group-item list-group-item-action"
+          <li class="list-group-item"
               *ngFor="let project of projects"
-              (click)="projectSelected = project"
               [class.active]="projectSelected === project">
-            {{ project.name }}
+            <a (click)="projectSelected = project">{{ project.name }}</a>
           </li>
         </ul>
+        <!-- New project -->
+        <div class="card-body">
+          <app-form-add name="project" [margin]="false" (save)="addProject($event)"></app-form-add>
+        </div>
       </div>
     </div>
 
     <!-- Columns (of selected project) -->
     <div class="col-md-3 my-2">
       <div class="card">
+        <!-- Header -->
         <div class="card-header">Columns</div>
         <div class="card-body" *ngIf="projectSelected.columns">
+          <!-- Columns -->
           <div class="form-group input-group" *ngFor="let column of projectSelected.columns">
             <input type="text" class="form-control" [(ngModel)]="column.name">
             <div class="input-group-append">
-              <button class="btn btn-outline-secondary" (click)="deleteColumn(column)">
+              <button class="btn btn-secondary" (click)="deleteColumn(column)">
                 <fa-icon icon="trash"></fa-icon>
               </button>
             </div>
           </div>
-          <div class="form-group">
-            <input type="text" class="form-control" placeholder="New column" [(ngModel)]="columnNew">
-          </div>
+          <!-- New column -->
+          <app-form-add name="column" (save)="addColumn($event)"></app-form-add>
+          <!-- Update button -->
           <button class="btn btn-block btn-success" (click)="updateColumns()">Update</button>
         </div>
       </div>

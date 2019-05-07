@@ -1,15 +1,17 @@
 <div class="card border-0">
 
-  <!-- Project selection -->
+  <!-- Projects and settings -->
   <div class="card-header px-5 pt-5">
     <ul class="nav nav-tabs card-header-tabs">
+      <!-- Projects -->
       <li class="nav-item" *ngFor="let project of projects">
         <a class="nav-link" (click)="selectProject(project)"
            [ngClass]="{'active font-weight-bold': project === projectSelected}">
           {{ project.name }}
         </a>
       </li>
-      <li class="nav-item">
+      <!-- Settings -->
+      <li class="nav-item ml-auto">
         <a class="nav-link text-secondary" uiSref="organization-setting" [uiParams]="{id: organizationId}">
           <fa-icon icon="cog"></fa-icon>
         </a>

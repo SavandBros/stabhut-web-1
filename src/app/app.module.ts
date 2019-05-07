@@ -14,13 +14,14 @@ import { Routes, uiRouterConfigFn } from './app.routes';
 import { CardNewComponent } from './components/card-new/card-new.component';
 import { CardComponent } from './components/card/card.component';
 import { DashComponent } from './components/dash/dash.component';
-import { OrganizationComponent } from './components/main/organization.component';
+import { OrganizationComponent } from './components/organization/organization.component';
 import { OrganizationSettingComponent } from './components/organization-setting/organization-setting.component';
 import { SignInComponent } from './components/sign-in/sign-in.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { ApiService } from './services/api/api.service';
 import { AuthInterceptorService } from './services/auth-interceptor/auth-interceptor.service';
 import { AuthService } from './services/auth/auth.service';
+import { FormAddComponent } from './shared/form-add/form-add.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { AuthService } from './services/auth/auth.service';
     CardNewComponent,
     CardComponent,
     OrganizationSettingComponent,
+    FormAddComponent,
   ],
   imports: [
     BrowserModule,

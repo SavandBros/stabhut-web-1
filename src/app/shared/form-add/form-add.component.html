@@ -1,0 +1,8 @@
+<form class="form-group input-group" [class.mb-0]="!margin" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <input type="text" class="form-control" placeholder="New {{ name }}" [id]="name" formControlName="name">
+  <div class="input-group-append">
+    <button class="btn btn-primary" [disabled]="form.invalid">
+      <fa-icon icon="plus"></fa-icon>
+    </button>
+  </div>
+</form>

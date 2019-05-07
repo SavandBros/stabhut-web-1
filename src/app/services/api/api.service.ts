@@ -58,6 +58,16 @@ export class ApiService {
   }
 
   /**
+   * Create a project
+   *
+   * @param organization Organization ID of the project
+   * @param name Project name
+   */
+  createProject(organization: number, name: string): Observable<Project> {
+    return this.http.post<Project>(`${ApiService.base}projects/`, { organization, name }).pipe();
+  }
+
+  /**
    * Get a column data
    *
    * @param column Column ID

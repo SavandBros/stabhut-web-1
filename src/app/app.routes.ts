@@ -3,7 +3,7 @@ import { Ng2StateDeclaration, UIRouter } from '@uirouter/angular';
 import { CardComponent } from './components/card/card.component';
 import { OrganizationSettingComponent } from './components/organization-setting/organization-setting.component';
 import { DashComponent } from './components/dash/dash.component';
-import { OrganizationComponent } from './components/main/organization.component';
+import { OrganizationComponent } from './components/organization/organization.component';
 import { SignInComponent } from './components/sign-in/sign-in.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
 
