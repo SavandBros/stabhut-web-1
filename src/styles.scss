@@ -1,8 +1,11 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto:400,700");
 
 $font-family-base: Roboto, sans-serif;
+$primary: #0097e6;
 
 $card-border-radius: none;
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
 
 $nav-tabs-border-radius: 0;
 
