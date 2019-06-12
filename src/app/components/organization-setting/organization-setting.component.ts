@@ -32,6 +32,11 @@ export class OrganizationSettingComponent implements OnInit {
    */
   projectSelected: Project;
 
+  /**
+   * Selected project tab template variable ('columns' or 'options')
+   */
+  projectTab = 'columns';
+
   constructor(private router: UIRouter,
               private apiService: ApiService) {
   }

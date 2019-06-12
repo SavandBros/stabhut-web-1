@@ -2,7 +2,7 @@
 
   <!-- Organization -->
   <div class="row justify-content-center" *ngIf="organization">
-    <div class="col-md-6 my-2">
+    <div class="col-lg-8 mb-3">
       <div class="card bg-light">
         <div class="card-body">
           <b>{{ organization.name }}</b> created by <b>{{ organization.user.username }}</b>
@@ -18,16 +18,17 @@
   <div class="row justify-content-center" *ngIf="projects">
 
     <!-- Projects -->
-    <div class="col-md-3 my-2">
+    <div class="col-lg-3 my-3">
       <div class="card">
         <!-- Header -->
         <div class="card-header">Projects</div>
         <!-- Projects -->
-        <ul class="list-group list-group-flush" *ngIf="projects">
+        <ul class="list-group list-group-flush pointer" *ngIf="projects">
           <li class="list-group-item"
               *ngFor="let project of projects"
+              (click)="projectSelected = project"
               [class.active]="projectSelected === project">
-            <a (click)="projectSelected = project">{{ project.name }}</a>
+            {{ project.name }}
           </li>
         </ul>
         <!-- New project -->
@@ -37,12 +38,29 @@
       </div>
     </div>
 
-    <!-- Columns (of selected project) -->
-    <div class="col-md-3 my-2">
+    <!-- Selected project settings and columns -->
+    <div class="col-lg-5 my-3">
       <div class="card">
         <!-- Header -->
-        <div class="card-header">Columns</div>
-        <div class="card-body" *ngIf="projectSelected.columns">
+        <div class="card-header">
+          <!-- Project name -->
+          <div class="mb-3">{{ projectSelected.name }}</div>
+          <!-- Tabs -->
+          <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item">
+              <div class="nav-link pointer" [class.active]="projectTab === 'columns'" (click)="projectTab = 'columns'">
+                Columns
+              </div>
+            </li>
+            <li class="nav-item">
+              <div class="nav-link pointer" [class.active]="projectTab === 'options'" (click)="projectTab = 'options'">
+                Options
+              </div>
+            </li>
+          </ul>
+        </div>
+        <!-- Selected project columns -->
+        <div class="card-body" *ngIf="projectTab === 'columns' && projectSelected.columns">
           <!-- Columns -->
           <div class="form-group input-group" *ngFor="let column of projectSelected.columns">
             <input type="text" class="form-control" [(ngModel)]="column.name">
@@ -53,10 +71,16 @@
             </div>
           </div>
           <!-- New column -->
-          <app-form-add name="column" (save)="addColumn($event)"></app-form-add>
+          <app-form-add name="column"
+                        [margin]="projectSelected.columns.length > 0"
+                        (save)="addColumn($event)"></app-form-add>
           <!-- Update button -->
-          <button class="btn btn-block btn-success" (click)="updateColumns()">Update</button>
+          <button class="btn btn-block btn-primary" (click)="updateColumns()" *ngIf="projectSelected.columns.length">
+            Update
+          </button>
         </div>
+        <!-- Selected project options -->
+        <div class="card-body" *ngIf="projectTab === 'options'"></div>
       </div>
     </div>
   </div>
