@@ -7,20 +7,8 @@ import { ApiService } from '../../services/api/api.service';
   templateUrl: './dash.component.html',
   styleUrls: ['./dash.component.scss']
 })
-export class DashComponent implements OnInit {
+export class DashComponent {
 
-  /**
-   * All authenticated user organizations
-   */
-  organizations: Organization[] = [];
-
-  constructor(private api: ApiService) {
-  }
-
-  ngOnInit() {
-    // Load organizations
-    this.api.getOrganizations().subscribe(data => {
-      this.organizations = data;
-    });
+  constructor() {
   }
 }
