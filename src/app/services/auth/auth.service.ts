@@ -4,7 +4,7 @@ import { ApiService } from '../api/api.service';
 import { map } from 'rxjs/operators';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { User } from '../../models/user';
-import { StateService } from '@uirouter/core';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -28,8 +28,8 @@ export class AuthService {
   user: Observable<User> = this.userSubject.asObservable();
 
   constructor(private http: HttpClient,
-              private api: ApiService,
-              private stateService: StateService,) {
+              private router: Router,
+              private api: ApiService) {
   }
 
   /**
@@ -71,7 +71,7 @@ export class AuthService {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     this.userSubject.next(AuthService.getUser());
-    this.stateService.go('sign-in');
+    this.router.navigateByUrl('sign-in');
   }
 
   /**
@@ -83,7 +83,7 @@ export class AuthService {
         AuthService.setToken(data.token);
         AuthService.setUser(data.user);
         this.userSubject.next(AuthService.getUser());
-        this.stateService.go(AuthService.signInRedirect);
+        this.router.navigateByUrl(AuthService.signInRedirect);
         return data;
       })
     );
