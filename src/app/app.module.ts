@@ -5,35 +5,24 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faArrowCircleRight, faCog, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { UIRouterModule } from '@uirouter/angular';
 import { ModalModule, PopoverModule, TooltipModule } from 'ngx-bootstrap';
 import { NgDatePipesModule } from 'ngx-pipes';
 
 import { AppComponent } from './app.component';
-import { Routes, uiRouterConfigFn } from './app.routes';
-import { CardNewComponent } from './components/card-new/card-new.component';
-import { CardComponent } from './components/card/card.component';
-import { DashComponent } from './components/dash/dash.component';
-import { OrganizationComponent } from './components/organization/organization.component';
-import { OrganizationSettingComponent } from './components/organization-setting/organization-setting.component';
+import { AppRoutesModule } from './app.routes';
+import { CardNewComponent } from './components/dash/card-new/card-new.component';
 import { SignInComponent } from './components/sign-in/sign-in.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { ApiService } from './services/api/api.service';
 import { AuthInterceptorService } from './services/auth-interceptor/auth-interceptor.service';
 import { AuthService } from './services/auth/auth.service';
-import { FormAddComponent } from './shared/form-add/form-add.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    OrganizationComponent,
     SignInComponent,
     SignUpComponent,
-    DashComponent,
     CardNewComponent,
-    CardComponent,
-    OrganizationSettingComponent,
-    FormAddComponent,
   ],
   imports: [
     BrowserModule,
@@ -42,10 +31,7 @@ import { FormAddComponent } from './shared/form-add/form-add.component';
     FontAwesomeModule,
     FormsModule,
     NgDatePipesModule,
-    UIRouterModule.forRoot({
-      states: Routes,
-      config: uiRouterConfigFn
-    }),
+    AppRoutesModule,
     TooltipModule.forRoot(),
     ModalModule.forRoot(),
     PopoverModule.forRoot(),

@@ -1,16 +1,16 @@
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <!-- Title -->
-  <a class="navbar-brand text-white" uiSref="dash">StabHut.io</a>
+  <a class="navbar-brand text-white" routerLink="dash">StabHut.io</a>
   <!-- Navs -->
   <ul class="navbar-nav ml-auto">
     <!-- Sign In -->
     <li class="nav-item dropdown" *ngIf="!user">
-      <a class="nav-link" uiSref="sign-in">Sign In</a>
+      <a class="nav-link" routerLink="sign-in">Sign In</a>
     </li>
     <!-- Sign Up -->
     <li class="nav-item dropdown" *ngIf="!user">
-      <a class="nav-link" uiSref="sign-up">Sign Up</a>
+      <a class="nav-link" routerLink="sign-up">Sign Up</a>
     </li>
     <!-- User -->
     <li class="nav-item dropdown" *ngIf="user">
@@ -24,4 +24,4 @@
 </nav>
 
 <!-- Routes -->
-<ui-view></ui-view>
+<router-outlet></router-outlet>

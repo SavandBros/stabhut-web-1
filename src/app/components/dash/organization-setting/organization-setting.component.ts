@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { UIRouter } from '@uirouter/core';
-import { Column } from '../../models/column';
-import { Organization } from '../../models/organization';
-import { Project } from '../../models/project';
-import { ApiService } from '../../services/api/api.service';
+import { Column } from '../../../models/column';
+import { Organization } from '../../../models/organization';
+import { Project } from '../../../models/project';
+import { ApiService } from '../../../services/api/api.service';
+import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
   selector: 'app-column',
@@ -37,13 +37,16 @@ export class OrganizationSettingComponent implements OnInit {
    */
   projectTab = 'columns';
 
-  constructor(private router: UIRouter,
+  constructor(private activatedRoute: ActivatedRoute,
               private apiService: ApiService) {
   }
 
   ngOnInit(): void {
     // Get current project ID from router params
-    this.organizationId = parseInt(this.router.globals.params.id, 0);
+    this.activatedRoute.params.subscribe((params: Params): void => {
+      console.log(params);
+      this.organizationId = params.id;
+    });
     // Load organisation data
     this.apiService.getOrganization(this.organizationId).subscribe(organization => {
       this.organization = organization;

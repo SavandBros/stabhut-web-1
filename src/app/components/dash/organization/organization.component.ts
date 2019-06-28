@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { UIRouter } from '@uirouter/core';
 import { BsModalService } from 'ngx-bootstrap';
 
-import { Column } from '../../models/column';
-import { Project } from '../../models/project';
-import { Task } from '../../models/task';
-import { User } from '../../models/user';
-import { ApiService } from '../../services/api/api.service';
-import { AuthService } from '../../services/auth/auth.service';
+import { Column } from '../../../models/column';
+import { Project } from '../../../models/project';
+import { Task } from '../../../models/task';
+import { User } from '../../../models/user';
+import { ApiService } from '../../../services/api/api.service';
+import { AuthService } from '../../../services/auth/auth.service';
 import { CardNewComponent } from '../card-new/card-new.component';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 
 @Component({
   selector: 'app-main',
@@ -57,17 +57,18 @@ export class OrganizationComponent implements OnInit {
    */
   projectSelected: Project;
 
-  constructor(private router: UIRouter,
+  constructor(private activatedRoute: ActivatedRoute,
+              private router: Router,
               private authService: AuthService,
               private apiService: ApiService,
               private modalService: BsModalService) {
-    // Get organization ID from route params
-    this.organizationId = router.globals.params.id;
-    // Get project (selected) ID from route params
-    this.project = router.globals.params.project;
   }
 
   ngOnInit(): void {
+    this.activatedRoute.params.subscribe((params: Params): void => {
+      this.organizationId = params.id;
+      this.project = params.project;
+    });
     // Get authenticated user
     this.authService.user.subscribe(data => {
       this.user = data;
@@ -97,9 +98,7 @@ export class OrganizationComponent implements OnInit {
     // Change selected project
     this.projectSelected = project;
     // Change route params as well
-    this.router.stateService.go('main', {
-      project: this.projects.indexOf(project),
-    });
+    // this.router.navigateByUrl('');
     // If project columns are not loaded
     if (!project.columns) {
       // Load project chats

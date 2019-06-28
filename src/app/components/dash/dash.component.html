@@ -1,7 +1,1 @@
-<div class="container justify-content-center">
-  <div class="col-lg-3 my-5 text-center" *ngFor="let organization of organizations">
-    <a class="card" uiSref="organization" [uiParams]="{ id: organization.id, project: null }">
-      <div class="card-body">{{ organization.name }}</div>
-    </a>
-  </div>
-</div>
+<router-outlet></router-outlet>

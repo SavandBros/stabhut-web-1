@@ -12,7 +12,7 @@
       </li>
       <!-- Settings -->
       <li class="nav-item ml-auto">
-        <a class="nav-link text-secondary" uiSref="organization-setting" [uiParams]="{id: organizationId}">
+        <a class="nav-link text-secondary" [routerLink]="['/dash/organization', organizationId, 'settings']">
           <fa-icon icon="cog"></fa-icon>
         </a>
       </li>
@@ -43,7 +43,7 @@
               <div class="card-body">
 
                 <!-- Content -->
-                <a class="text-dark d-block" uiSref="card" [uiParams]="{id: card.id}">{{ card.content }}</a>
+                <a class="text-dark d-block" [routerLink]="['/dash/card', card.id]">{{ card.content }}</a>
 
                 <!-- Assignee -->
                 <span class="badge badge-primary font-weight-light mr-1" title="Assignee" *ngIf="card.assignee">
