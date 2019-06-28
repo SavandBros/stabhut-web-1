@@ -6,7 +6,7 @@
       <div class="card bg-light">
         <div class="card-body">
           <b>{{ organization.name }}</b> created by <b>{{ organization.user.username }}</b>
-          <a uiSref="organization" [uiParams]="{id: organization.id, project: null}" class="float-right">
+          <a [routerLink]="['/dash/organization', organization.id]" class="float-right">
             <fa-icon icon="arrow-circle-right"></fa-icon>
           </a>
         </div>
