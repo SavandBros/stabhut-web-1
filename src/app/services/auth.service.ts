@@ -1,102 +1,174 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ApiService } from 'src/app/services/api.service';
-import { map } from 'rxjs/operators';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { User } from 'src/app/models/user';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { AuthResponse } from 'src/app/interfaces/auth-response';
+import { AuthToken } from 'src/app/interfaces/auth-token';
+import { User } from 'src/app/interfaces/user';
+import { ApiService } from 'src/app/services/api.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
 
-  /**
-   * Route to redirect to after signing in
-   */
-  static readonly signInRedirect: string = 'dash';
+  constructor(private http: HttpClient,
+              private router: Router,
+              private cookie: CookieService) {
+  }
 
   /**
-   * User subject behavior for authenticated user
-   * @see AuthService.user
+   * Cookie expires in days
+   */
+  private static readonly cookieExpireDays = 365;
+
+  /**
+   * Sign in redirect
+   */
+  private static readonly signInRedirect = '/';
+
+  /**
+   * Sign out redirect
+   */
+  private static readonly signOutRedirect = '/';
+
+  /**
+   * Authentication user subject
    */
   private userSubject: BehaviorSubject<User> = new BehaviorSubject<User>(AuthService.getUser());
-
   /**
    * Authenticated user
    */
   user: Observable<User> = this.userSubject.asObservable();
 
-  constructor(private http: HttpClient,
-              private router: Router,
-              private api: ApiService) {
-  }
-
   /**
-   * Save/update token to localStorage
+   * Parse JWT from token.
+   *
+   * @param token JWT.
+   *
+   * @return Parsed JWT token.
    */
-  static setToken(token: string): void {
-    localStorage.setItem('token', token);
-  }
-
-  /**
-   * @returns Stored token from localStorage
-   */
-  static getToken(): string | null {
-    return localStorage.getItem('token');
-  }
-
-  /**
-   * Save/update user to localStorage
-   */
-  static setUser(data: object): void {
-    localStorage.setItem('user', JSON.stringify(data));
+  private static parseJwt(token: string): AuthToken | null {
+    const base64Url = token.split('.')[1];
+    if (typeof base64Url === 'undefined') {
+      return null;
+    }
+    const base64 = base64Url.replace('-', '+').replace('_', '/');
+    return JSON.parse(atob(base64));
   }
 
   /**
    * @returns User data from localStorage
    */
-  static getUser(): User | null {
+  private static getUser(): User | null {
     const data: string = localStorage.getItem('user');
     if (data) {
-      return new User(JSON.parse(data));
+      return JSON.parse(data) as User;
     }
     return null;
   }
 
   /**
-   * Sign out (clear localStorage)
+   * @return Is user authenticated
+   */
+  isAuth(): boolean {
+    return this.cookie.check('token');
+  }
+
+  /**
+   * Set or update user data and update subscribers
+   *
+   * @param user User data
+   */
+  setUser(user: User): void {
+    localStorage.setItem('user', JSON.stringify(user));
+    this.userSubject.next(user);
+  }
+
+  /**
+   * @returns Whether the authenticated user is the user
+   *
+   * @param user User to check
+   */
+  isUser(user: User): boolean {
+    return this.userSubject.value && this.userSubject.value.id === user.id;
+  }
+
+  /**
+   * @returns Whether the authenticated user is one of the users
+   *
+   * @param users Users to check
+   */
+  isAnyUser(users: User[]): boolean {
+    return this.userSubject.value && users.some(user => user.id === this.userSubject.value.id);
+  }
+
+  /**
+   * Save/update token to cookies
+   *
+   * @param token Authentication token
+   */
+  setToken(token: string): void {
+    const parsedJwt: AuthToken = AuthService.parseJwt(token);
+    if (parsedJwt) {
+      this.cookie.set('token', token, AuthService.cookieExpireDays);
+    }
+  }
+
+  /**
+   * @returns Stored token from localStorage
+   */
+  getToken(): string | null {
+    return this.cookie.get('token');
+  }
+
+  /**
+   * Un-authenticate user by cleaning localStorage and cookies
    */
   signOut(): void {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    this.userSubject.next(AuthService.getUser());
-    this.router.navigateByUrl('sign-in');
+    localStorage.clear();
+    this.cookie.deleteAll('/');
+    this.userSubject.next(null);
+    this.router.navigateByUrl(AuthService.signOutRedirect);
   }
 
   /**
-   * Sign in (send API request, save to localStorage and redirect)
+   * Sign user in
+   *
+   * @param username User username
+   * @param password User password
+   *
+   * @return String observable which can be subscribed to.
    */
-  signIn(username: string, password: string): Observable<any> {
-    return this.http.post(ApiService.BASE + 'auth/', { username, password }).pipe(
-      map((data: any) => {
-        AuthService.setToken(data.token);
-        AuthService.setUser(data.user);
-        this.userSubject.next(AuthService.getUser());
+  signIn(username: string, password: string): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${ApiService.BASE}auth/`, { username, password }).pipe(
+      map((data: AuthResponse): AuthResponse => {
+        // Store token into cookies
+        this.setToken(data.token);
+        // Store user into local storage
+        this.setUser(data.user);
+        // Redirect
         this.router.navigateByUrl(AuthService.signInRedirect);
+        // Return response
         return data;
-      })
+      }),
     );
   }
 
   /**
-   * Sign up (send API request and sign in)
+   * Sign user up
+   *
+   * @param email User email
+   * @param username User username
+   * @param password user password
    */
-  signUp(username: string, email: string, password: string): Observable<any> {
-    return this.http.post(ApiService.BASE + 'users/', { username, email, password }).pipe(
-      map(() => {
-        return this.signIn(username, password).subscribe();
-      })
-    );
+  signUp(email: string, username: string, password: string): Observable<void> {
+    return this.http.post(ApiService.BASE + 'users/', {
+      email, username, password,
+    }).pipe(map((): void => {
+      this.signIn(username, password).subscribe();
+    }));
   }
 }

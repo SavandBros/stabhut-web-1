@@ -13,9 +13,9 @@
       <a class="nav-link" routerLink="sign-up">Sign Up</a>
     </li>
     <!-- User -->
-    <li class="nav-item dropdown" *ngIf="user">
-      <a class="nav-link dropdown-toggle" data-toggle="dropdown">{{ user.username }}</a>
-      <div class="dropdown-menu dropdown-menu-right">
+    <li class="nav-item dropdown" *ngIf="user" dropdown>
+      <a class="nav-link dropdown-toggle" dropdownToggle>{{ user.username }}</a>
+      <div class="dropdown-menu dropdown-menu-right" *dropdownMenu>
         <!-- Sign out -->
         <a class="dropdown-item" (click)="authService.signOut()">Sign Out</a>
       </div>

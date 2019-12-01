@@ -1,21 +1,21 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { ApiPayloadGet } from 'src/app/interfaces/api-payload-get';
+import { ApiPayload } from 'src/app/interfaces/api-payload';
+import { ApiResponse } from 'src/app/interfaces/api-response';
+import { Card } from 'src/app/interfaces/card';
+import { Chat } from 'src/app/interfaces/chat';
+import { Column } from 'src/app/interfaces/column';
+import { Organization } from 'src/app/interfaces/organization';
+import { Project } from 'src/app/interfaces/project';
+import { Task } from 'src/app/interfaces/task';
+import { User } from 'src/app/interfaces/user';
 
 import { environment } from 'src/environments/environment';
-import { ApiPayloadGet } from 'src/app/interfaces/api-payload-get.interface';
-import { ApiPayload } from 'src/app/interfaces/api-payload.interface';
-import { ApiResponse } from 'src/app/interfaces/api-response.interface';
-import { Card } from 'src/app/models/card';
-import { Chat } from 'src/app/models/chat';
-import { Column } from 'src/app/models/column';
-import { Organization } from 'src/app/models/organization';
-import { Project } from 'src/app/models/project';
-import { Task } from 'src/app/models/task';
-import { User } from 'src/app/models/user';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ApiService {
 
@@ -52,9 +52,9 @@ export class ApiService {
   getProjects(organization: number): Observable<Project[]> {
     return this.http.get<Project[]>(`${ApiService.BASE}projects/`, {
       params: {
-        organization: organization.toString()
-      }
-    }).pipe();
+        organization: organization.toString(),
+      },
+    });
   }
 
   /**
@@ -64,7 +64,7 @@ export class ApiService {
    * @param name Project name
    */
   createProject(organization: number, name: string): Observable<Project> {
-    return this.http.post<Project>(`${ApiService.BASE}projects/`, { organization, name }).pipe();
+    return this.http.post<Project>(`${ApiService.BASE}projects/`, { organization, name });
   }
 
   /**
@@ -90,7 +90,7 @@ export class ApiService {
     if (project) {
       params.project = project.toString();
     }
-    return this.http.get<Column[]>(ApiService.BASE + 'columns/', { params }).pipe();
+    return this.http.get<Column[]>(ApiService.BASE + 'columns/', { params });
   }
 
   /**
@@ -100,7 +100,7 @@ export class ApiService {
    * @param name Column name
    */
   createColumn(project: number, name: string): Observable<Column> {
-    return this.http.post<Column>(`${ApiService.BASE}columns/`, { project, name }).pipe();
+    return this.http.post<Column>(`${ApiService.BASE}columns/`, { project, name });
   }
 
   /**
@@ -139,9 +139,9 @@ export class ApiService {
   getCards(column?: number): Observable<Card[]> {
     return this.http.get<Card[]>(ApiService.BASE + 'cards/', {
       params: {
-        column: column.toString()
-      }
-    }).pipe();
+        column: column.toString(),
+      },
+    });
   }
 
   /**
@@ -188,8 +188,8 @@ export class ApiService {
     return this.http.get<Chat[]>(ApiService.BASE + 'chats/', {
       params: {
         project: project.toString(),
-      }
-    }).pipe();
+      },
+    });
   }
 
   /**
@@ -210,8 +210,8 @@ export class ApiService {
     return this.http.get<Task[]>(ApiService.BASE + 'tasks/', {
       params: {
         project: project.toString(),
-      }
-    }).pipe();
+      },
+    });
   }
 
   /**

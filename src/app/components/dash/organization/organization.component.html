@@ -5,7 +5,7 @@
     <ul class="nav nav-tabs card-header-tabs">
       <!-- Projects -->
       <li class="nav-item" *ngFor="let project of projects">
-        <a class="nav-link" (click)="selectProject(project)"
+        <a class="nav-link" (click)="selectProject(project)" [routerLink]="['../', project.id]"
            [ngClass]="{'active font-weight-bold': project === projectSelected}">
           {{ project.name }}
         </a>

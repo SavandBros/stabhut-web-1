@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
-import { ApiError } from '../../interfaces/api-error.interface';
+import { ApiError } from 'src/app/interfaces/api-error';
 
 @Component({
   selector: 'app-sign-in',

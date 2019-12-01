@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service';
-import { User } from '../../../models/user';
-import { Card } from '../../../models/card';
-import { Column } from '../../../models/column';
-import { ApiError } from '../../../interfaces/api-error.interface';
+import { User } from 'src/app/interfaces/user';
+import { Card } from 'src/app/interfaces/card';
+import { Column } from 'src/app/interfaces/column';
+import { ApiError } from 'src/app/interfaces/api-error';
 
 @Component({
   selector: 'app-card-new',
@@ -36,8 +36,8 @@ export class CardNewComponent implements OnInit {
   submit(): void {
     this.loading = true;
     this.errors = {};
-    this.apiService.createCard(this.form.value).subscribe(data => {
-      this.column.cards.unshift(new Card(data));
+    this.apiService.createCard(this.form.value).subscribe((data: Card): void => {
+      this.column.cards.unshift(data);
       this.bsModalRef.hide();
     }, data => {
       this.loading = false;

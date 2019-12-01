@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Column } from '../../../models/column';
-import { Organization } from '../../../models/organization';
-import { Project } from '../../../models/project';
+import { Column } from 'src/app/interfaces/column';
+import { Organization } from 'src/app/interfaces/organization';
+import { Project } from 'src/app/interfaces/project';
 import { ApiService } from 'src/app/services/api.service';
 import { ActivatedRoute, Params } from '@angular/router';
 

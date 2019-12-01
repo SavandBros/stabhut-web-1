@@ -6,8 +6,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormsModule } from '@angular/forms';
 
 const routes: Routes = [{
-  path: '',
-  component: OrganizationComponent
+  path: ':project',
+  component: OrganizationComponent,
 }];
 
 @NgModule({
@@ -16,8 +16,8 @@ const routes: Routes = [{
     CommonModule,
     RouterModule.forChild(routes),
     FontAwesomeModule,
-    FormsModule
-  ]
+    FormsModule,
+  ],
 })
 export class OrganizationModule {
 }

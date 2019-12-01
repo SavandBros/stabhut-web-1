@@ -16,10 +16,10 @@ export class ApiInterceptorService implements HttpInterceptor {
    * Add authorization header with JWT token if available
    */
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (AuthService.getToken()) {
+    if (this.authService.getToken()) {
       request = request.clone({
         setHeaders: {
-          Authorization: 'JWT ' + AuthService.getToken(),
+          Authorization: 'JWT ' + this.authService.getToken(),
         },
       });
     }

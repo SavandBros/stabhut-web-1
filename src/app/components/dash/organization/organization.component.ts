@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap';
 
-import { Column } from '../../../models/column';
-import { Project } from '../../../models/project';
-import { Task } from '../../../models/task';
-import { User } from '../../../models/user';
+import { Column } from 'src/app/interfaces/column';
+import { Project } from 'src/app/interfaces/project';
+import { Task } from 'src/app/interfaces/task';
+import { User } from 'src/app/interfaces/user';
 import { ApiService } from 'src/app/services/api.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { CardNewComponent } from '../card-new/card-new.component';
@@ -13,7 +13,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 @Component({
   selector: 'app-main',
   templateUrl: './organization.component.html',
-  styleUrls: ['./organization.component.scss']
+  styleUrls: ['./organization.component.scss'],
 })
 export class OrganizationComponent implements OnInit {
 
@@ -66,25 +66,25 @@ export class OrganizationComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe((params: Params): void => {
-      this.organizationId = params.id;
-      this.project = params.project;
-    });
-    // Get authenticated user
-    this.authService.user.subscribe(data => {
-      this.user = data;
-    });
-    // Get all users
-    this.apiService.getUsers().subscribe((response) => {
-      this.users = response.results;
-      // Get all projects of this organization
-      this.apiService.getProjects(this.organizationId).subscribe((data) => {
-        this.projects = data;
-        // Select the first project if there's no project from route params
-        if (this.project) {
-          this.selectProject(this.projects[this.project]);
-        } else {
-          this.selectProject(this.projects[0]);
-        }
+      this.organizationId = Number(params.id);
+      this.project = Number(params.project);
+      // Get authenticated user
+      this.authService.user.subscribe(data => {
+        this.user = data;
+      });
+      // Get all users
+      this.apiService.getUsers().subscribe((response) => {
+        this.users = response.results;
+        // Get all projects of this organization
+        this.apiService.getProjects(this.organizationId).subscribe((data: Project[]): void => {
+          this.projects = data;
+          // Select the first project if there's no project from route params
+          if (this.project) {
+            this.selectProject(this.projects[this.projects.findIndex(project => project.id === this.project)]);
+          } else {
+            this.selectProject(this.projects[0]);
+          }
+        });
       });
     });
   }
@@ -97,8 +97,6 @@ export class OrganizationComponent implements OnInit {
   selectProject(project: Project): void {
     // Change selected project
     this.projectSelected = project;
-    // Change route params as well
-    // this.router.navigateByUrl('');
     // If project columns are not loaded
     if (!project.columns) {
       // Load project chats

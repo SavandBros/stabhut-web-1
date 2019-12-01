@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { PopoverConfig } from 'ngx-bootstrap';
-import { Card } from '../../../models/card';
-import { Column } from '../../../models/column';
+import { Card } from 'src/app/interfaces/card';
+import { Column } from 'src/app/interfaces/column';
 import { ApiService } from 'src/app/services/api.service';
-import { User } from '../../../models/user';
-import { ApiPayload } from '../../../interfaces/api-payload.interface';
+import { User } from 'src/app/interfaces/user';
+import { ApiPayload } from 'src/app/interfaces/api-payload';
 import { ActivatedRoute, Params } from '@angular/router';
 
 export function getPopoverConfig(): PopoverConfig {
