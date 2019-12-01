@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Column } from '../../../models/column';
 import { Organization } from '../../../models/organization';
 import { Project } from '../../../models/project';
-import { ApiService } from '../../../services/api/api.service';
+import { ApiService } from 'src/app/services/api.service';
 import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({

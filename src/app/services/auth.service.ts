@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ApiService } from '../api/api.service';
+import { ApiService } from 'src/app/services/api.service';
 import { map } from 'rxjs/operators';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { User } from '../../models/user';
+import { User } from 'src/app/models/user';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -78,7 +78,7 @@ export class AuthService {
    * Sign in (send API request, save to localStorage and redirect)
    */
   signIn(username: string, password: string): Observable<any> {
-    return this.http.post(ApiService.base + 'auth/', { username, password }).pipe(
+    return this.http.post(ApiService.BASE + 'auth/', { username, password }).pipe(
       map((data: any) => {
         AuthService.setToken(data.token);
         AuthService.setUser(data.user);
@@ -93,7 +93,7 @@ export class AuthService {
    * Sign up (send API request and sign in)
    */
   signUp(username: string, email: string, password: string): Observable<any> {
-    return this.http.post(ApiService.base + 'users/', { username, email, password }).pipe(
+    return this.http.post(ApiService.BASE + 'users/', { username, email, password }).pipe(
       map(() => {
         return this.signIn(username, password).subscribe();
       })

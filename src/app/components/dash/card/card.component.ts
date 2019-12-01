@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PopoverConfig } from 'ngx-bootstrap';
 import { Card } from '../../../models/card';
 import { Column } from '../../../models/column';
-import { ApiService } from '../../../services/api/api.service';
+import { ApiService } from 'src/app/services/api.service';
 import { User } from '../../../models/user';
 import { ApiPayload } from '../../../interfaces/api-payload.interface';
 import { ActivatedRoute, Params } from '@angular/router';

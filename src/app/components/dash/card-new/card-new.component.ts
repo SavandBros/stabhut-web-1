@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ApiService } from '../../../services/api/api.service';
+import { ApiService } from 'src/app/services/api.service';
 import { User } from '../../../models/user';
 import { Card } from '../../../models/card';
 import { Column } from '../../../models/column';

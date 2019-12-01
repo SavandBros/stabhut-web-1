@@ -7,15 +7,15 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { faArrowCircleRight, faCog, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { ModalModule, PopoverModule, TooltipModule } from 'ngx-bootstrap';
 import { NgDatePipesModule } from 'ngx-pipes';
+import { ApiInterceptorService } from 'src/app/services/api-interceptor.service';
+import { ApiService } from 'src/app/services/api.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 import { AppComponent } from './app.component';
 import { AppRoutesModule } from './app.routes';
 import { CardNewComponent } from './components/dash/card-new/card-new.component';
 import { SignInComponent } from './components/sign-in/sign-in.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
-import { ApiService } from './services/api/api.service';
-import { AuthInterceptorService } from './services/auth-interceptor/auth-interceptor.service';
-import { AuthService } from './services/auth/auth.service';
 
 @NgModule({
   declarations: [
@@ -39,8 +39,8 @@ import { AuthService } from './services/auth/auth.service';
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptorService,
-      multi: true
+      useClass: ApiInterceptorService,
+      multi: true,
     },
     ApiService,
     AuthService,
@@ -48,7 +48,7 @@ import { AuthService } from './services/auth/auth.service';
   entryComponents: [
     CardNewComponent,
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {
   constructor() {

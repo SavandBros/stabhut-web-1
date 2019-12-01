@@ -5,8 +5,8 @@ import { Column } from '../../../models/column';
 import { Project } from '../../../models/project';
 import { Task } from '../../../models/task';
 import { User } from '../../../models/user';
-import { ApiService } from '../../../services/api/api.service';
-import { AuthService } from '../../../services/auth/auth.service';
+import { ApiService } from 'src/app/services/api.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { CardNewComponent } from '../card-new/card-new.component';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 

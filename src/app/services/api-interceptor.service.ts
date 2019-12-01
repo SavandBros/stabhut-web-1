@@ -1,14 +1,13 @@
-import { Injectable } from '@angular/core';
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { AuthService } from '../auth/auth.service';
-import { ApiError } from '../../interfaces/api-error.interface';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class AuthInterceptorService implements HttpInterceptor {
+export class ApiInterceptorService implements HttpInterceptor {
 
   constructor(private authService: AuthService) {
   }
@@ -21,7 +20,7 @@ export class AuthInterceptorService implements HttpInterceptor {
       request = request.clone({
         setHeaders: {
           Authorization: 'JWT ' + AuthService.getToken(),
-        }
+        },
       });
     }
     return next.handle(request).pipe(catchError((error: HttpErrorResponse) => {
