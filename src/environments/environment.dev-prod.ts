@@ -1,4 +1,4 @@
 export const environment: Environment = {
-  development: false,
+  development: true,
   api: 'https://stabhut-api.herokuapp.com/',
 };

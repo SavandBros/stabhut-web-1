@@ -61,6 +61,14 @@
                   "maximumError": "5mb"
                 }
               ]
+            },
+            "dev-prod": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.dev-prod.ts"
+                }
+              ]
             }
           }
         },
@@ -72,6 +80,9 @@
           "configurations": {
             "production": {
               "browserTarget": "stabhut:build:production"
+            },
+            "dev-prod": {
+              "browserTarget": "stabhut:build:dev-prod"
             }
           }
         },
