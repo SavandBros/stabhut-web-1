@@ -6,8 +6,6 @@ $primary: #0097e6;
 @import "~bootstrap/scss/variables";
 
 $font-family-base: "Maven Pro", sans-serif;
-$card-border-radius: none;
-$nav-tabs-border-radius: 0;
 $link-hover-decoration: none;
 
 @import "~bootstrap/scss/bootstrap";
@@ -26,7 +24,9 @@ $link-hover-decoration: none;
   background: #ddd;
 }
 
-a, .btn {
+a,
+.btn,
+.list-group-item-action {
   cursor: pointer;
 }
 

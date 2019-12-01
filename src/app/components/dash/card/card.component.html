@@ -7,11 +7,11 @@
             <div class="col-md-8">{{ card.content }}</div>
             <div class="col-md-4">
               <ul class="list-group">
-                <li class="list-group-item" [popover]="columnPopover">
+                <li class="list-group-item list-group-item-action" [popover]="columnPopover">
                   <span class="badge badge-light">Column</span>
                   <span class="float-right">{{ card.column.name }}</span>
                 </li>
-                <li class="list-group-item" [popover]="userPopover">
+                <li class="list-group-item list-group-item-action" [popover]="userPopover">
                   <span class="badge badge-light">Assignee</span>
                   <span class="float-right">
                     <span *ngIf="card.assignee">{{ card.assignee.username }}</span>
@@ -40,25 +40,29 @@
 </div>
 
 <ng-template #columnPopover>
-  <ul class="nav flex-column nav-pills">
-    <li *ngFor="let column of columns"
-       [class.active]="card.column.id === column.id"
-       (click)="update({'column': column.id})"
-       class="nav-link">
-      {{ column.name }}
+  <ul class="nav nav-pills flex-column">
+    <li class="nav-item" *ngFor="let column of columns">
+      <a class="nav-link"
+         [class.active]="card.column.id === column.id"
+         (click)="update({column: column.id})">
+        {{ column.name }}
+      </a>
     </li>
   </ul>
 </ng-template>
 
 <ng-template #userPopover>
-  <div class="nav flex-column nav-pills">
-    <a (click)="update({'assignee': null})" [class.active]="!card.assignee"  class="nav-link">None</a>
-    <a *ngFor="let user of users"
-       (click)="update({'assignee': user.id})"
-       [class.active]="card.assignee && card.assignee.id === user.id"
-       [class.disabled]="loading"
-       class="nav-link">
-      {{ user.username }}
-    </a>
-  </div>
+  <ul class="nav nav-pills flex-column">
+    <li class="nav-item">
+      <a (click)="update({assignee: null})" [class.active]="!card.assignee" class="nav-link">None</a>
+    </li>
+    <li class="nav-item" *ngFor="let user of users">
+      <a class="nav-link"
+         (click)="update({assignee: user.id})"
+         [class.active]="card.assignee && card.assignee.id === user.id"
+         [class.disabled]="loading">
+        {{ user.username }}
+      </a>
+    </li>
+  </ul>
 </ng-template>
