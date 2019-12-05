@@ -2,22 +2,36 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+import { Routes, RouterModule } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faArrowCircleRight, faCog, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { ModalModule, PopoverModule, TooltipModule } from 'ngx-bootstrap';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { CookieService } from 'ngx-cookie-service';
 import { NgDatePipesModule } from 'ngx-pipes';
+import { AppComponent } from 'src/app/app.component';
+import { CardNewComponent } from 'src/app/components/dash/card-new/card-new.component';
+import { SignInComponent } from 'src/app/components/sign-in/sign-in.component';
+import { SignUpComponent } from 'src/app/components/sign-up/sign-up.component';
 import { ApiInterceptorService } from 'src/app/services/api-interceptor.service';
 import { ApiService } from 'src/app/services/api.service';
 import { AuthService } from 'src/app/services/auth.service';
 
-import { AppComponent } from './app.component';
-import { AppRoutesModule } from './app.routes';
-import { CardNewComponent } from './components/dash/card-new/card-new.component';
-import { SignInComponent } from './components/sign-in/sign-in.component';
-import { SignUpComponent } from './components/sign-up/sign-up.component';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+const routes: Routes = [{
+  path: 'sign-in',
+  component: SignInComponent,
+}, {
+  path: 'sign-up',
+  component: SignUpComponent,
+}, {
+  path: 'dash',
+  loadChildren: () => import('./components/dash/dash.module').then(m => m.DashModule),
+}, {
+  path: '**',
+  redirectTo: 'dash',
+  pathMatch: 'full',
+}];
 
 @NgModule({
   declarations: [
@@ -27,13 +41,13 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     CardNewComponent,
   ],
   imports: [
+    RouterModule.forRoot(routes),
     BrowserModule,
     HttpClientModule,
     ReactiveFormsModule,
     FontAwesomeModule,
     FormsModule,
     NgDatePipesModule,
-    AppRoutesModule,
     TooltipModule.forRoot(),
     ModalModule.forRoot(),
     PopoverModule.forRoot(),
@@ -56,9 +70,11 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 })
 export class AppModule {
   constructor() {
-    library.add(faPlus);
-    library.add(faTrash);
-    library.add(faCog);
-    library.add(faArrowCircleRight);
+    library.add(
+      faPlus,
+      faTrash,
+      faCog,
+      faArrowCircleRight,
+    );
   }
 }

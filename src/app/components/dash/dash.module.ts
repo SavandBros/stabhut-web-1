@@ -8,29 +8,29 @@ const routes: Routes = [{
   component: DashComponent,
   children: [{
     path: 'home',
-    loadChildren: './home/home.module#HomeModule'
+    loadChildren: () => import('./home/home.module').then(m => m.HomeModule),
   }, {
     path: 'organization/:id',
-    loadChildren: './organization/organization.module#OrganizationModule'
+    loadChildren: () => import('./organization/organization.module').then(m => m.OrganizationModule),
   }, {
     path: 'card/:id',
-    loadChildren: './card/card.module#CardModule',
+    loadChildren: () => import('./card/card.module').then(m => m.CardModule),
   }, {
     path: 'organization/:id/settings',
-    loadChildren: './organization-setting/organization-setting.module#OrganizationSettingModule',
+    loadChildren: () => import('./organization-setting/organization-setting.module').then(m => m.OrganizationSettingModule),
   }, {
     path: '',
     redirectTo: 'home',
-    pathMatch: 'full'
-  }]
+    pathMatch: 'full',
+  }],
 }];
 
 @NgModule({
   declarations: [DashComponent],
   imports: [
     CommonModule,
-    RouterModule.forChild(routes)
-  ]
+    RouterModule.forChild(routes),
+  ],
 })
 export class DashModule {
 }
