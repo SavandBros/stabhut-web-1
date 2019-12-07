@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { CardNewComponent } from '@app/components/dash/card-new/card-new.component';
+import { CardNewComponent } from '@app/pages/dash/card-new/card-new.component';
 import { Column } from '@app/interfaces/column';
 import { Project } from '@app/interfaces/project';
 import { Task } from '@app/interfaces/task';

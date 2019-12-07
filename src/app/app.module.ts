@@ -5,9 +5,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { Routes, RouterModule } from '@angular/router';
 
 import { AppComponent } from '@app/app.component';
-import { CardNewComponent } from '@app/components/dash/card-new/card-new.component';
-import { SignInComponent } from '@app/components/sign-in/sign-in.component';
-import { SignUpComponent } from '@app/components/sign-up/sign-up.component';
+import { CardNewComponent } from '@app/pages/dash/card-new/card-new.component';
+import { SignInComponent } from '@app/pages/sign-in/sign-in.component';
+import { SignUpComponent } from '@app/pages/sign-up/sign-up.component';
 import { ApiInterceptorService } from '@app/services/api-interceptor.service';
 import { ApiService } from '@app/services/api.service';
 import { AuthService } from '@app/services/auth.service';
@@ -28,7 +28,7 @@ const routes: Routes = [{
   component: SignUpComponent,
 }, {
   path: 'dash',
-  loadChildren: () => import('./components/dash/dash.module').then(m => m.DashModule),
+  loadChildren: () => import('./pages/dash/dash.module').then(m => m.DashModule),
 }, {
   path: '**',
   redirectTo: 'dash',
