@@ -9,16 +9,18 @@ const routes: Routes = [{
   component: DashComponent,
   children: [{
     path: 'home',
-    loadChildren: () => import('./home/home.module').then(m => m.HomeModule),
+    loadChildren: () => import('@app/pages/dash/home/home.module').then(m => m.HomeModule),
   }, {
     path: 'organization/:id',
-    loadChildren: () => import('./organization/organization.module').then(m => m.OrganizationModule),
+    loadChildren: () => import('@app/pages/dash/organization/organization.module').then(m => m.OrganizationModule),
   }, {
     path: 'card/:id',
-    loadChildren: () => import('./card/card.module').then(m => m.CardModule),
+    loadChildren: () => import('@app/pages/dash/card/card.module').then(m => m.CardModule),
   }, {
     path: 'organization/:id/settings',
-    loadChildren: () => import('./organization-setting/organization-setting.module').then(m => m.OrganizationSettingModule),
+    loadChildren: () => import('@app/pages/dash/organization-setting/organization-setting.module').then(
+      m => m.OrganizationSettingModule,
+    ),
   }, {
     path: '',
     redirectTo: 'home',

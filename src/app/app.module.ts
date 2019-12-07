@@ -28,7 +28,7 @@ const routes: Routes = [{
   component: SignUpComponent,
 }, {
   path: 'dash',
-  loadChildren: () => import('./pages/dash/dash.module').then(m => m.DashModule),
+  loadChildren: () => import('@app/pages/dash/dash.module').then(m => m.DashModule),
 }, {
   path: '**',
   redirectTo: 'dash',
