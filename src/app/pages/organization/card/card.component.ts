@@ -28,11 +28,6 @@ export class CardComponent implements OnInit {
   loading = false;
 
   /**
-   * Current card ID from route
-   */
-  cardId: number;
-
-  /**
    * Current card
    */
   card: Card;
@@ -54,18 +49,19 @@ export class CardComponent implements OnInit {
   ngOnInit(): void {
     // Get card ID from router params
     this.activatedRoute.params.subscribe((params: Params): void => {
-      this.cardId = params.id;
-    });
-    // Load card data
-    this.apiService.getCard(this.cardId).subscribe(card => {
-      this.card = card;
-      // Load projects of cards organization for selection
-      this.apiService.getColumns(null, (this.card.column as Column).project as number).subscribe(data => {
-        this.columns = data;
-      });
-      // Load users for selection
-      this.apiService.getUsers().subscribe(data => {
-        this.users = data.results;
+      // Load card data
+      this.apiService.getCard(params.card).subscribe((card: Card): void => {
+        this.card = card;
+        // Load projects of cards organization for selection
+        this.apiService.getColumns(
+          null, (this.card.column as Column).project as number,
+        ).subscribe((data: Column[]): void => {
+          this.columns = data;
+        });
+        // Load users for selection
+        this.apiService.getUsers().subscribe(data => {
+          this.users = data.results;
+        });
       });
     });
   }

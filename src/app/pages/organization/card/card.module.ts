@@ -1,22 +1,25 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { PopoverModule, TooltipModule } from 'ngx-bootstrap';
 
-import { HomeComponent } from './home.component';
+import { CardComponent } from 'src/app/pages/organization/card/card.component';
 
 const routes: Routes = [{
   path: '',
-  component: HomeComponent,
+  component: CardComponent,
 }];
 
 @NgModule({
   declarations: [
-    HomeComponent,
+    CardComponent,
   ],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
+    PopoverModule.forRoot(),
+    TooltipModule.forRoot(),
   ],
 })
-export class HomeModule {
+export class CardModule {
 }

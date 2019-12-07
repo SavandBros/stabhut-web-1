@@ -5,14 +5,14 @@
     <ul class="nav nav-tabs card-header-tabs">
       <!-- Projects -->
       <li class="nav-item" *ngFor="let project of projects">
-        <a class="nav-link" (click)="selectProject(project)" [routerLink]="['../', project.id]"
-           [ngClass]="{'active font-weight-bold': project === projectSelected}">
+        <a class="nav-link" [routerLink]="['.']" [queryParams]="{project: project.id}"
+           [ngClass]="{'active font-weight-bold': projectSelected === project}">
           {{ project.name }}
         </a>
       </li>
       <!-- Settings -->
       <li class="nav-item ml-auto">
-        <a class="nav-link text-secondary" [routerLink]="['/dash/organization', organizationId, 'settings']">
+        <a class="nav-link text-secondary" [routerLink]="['../', 'settings']">
           <fa-icon icon="cog"></fa-icon>
         </a>
       </li>
@@ -43,7 +43,7 @@
               <div class="card-body">
 
                 <!-- Content -->
-                <a class="text-dark d-block" [routerLink]="['/dash/card', card.id]">{{ card.content }}</a>
+                <a class="text-dark d-block" [routerLink]="['./card', card.id]">{{ card.content }}</a>
 
                 <!-- Assignee -->
                 <span class="badge badge-primary font-weight-light mr-1" title="Assignee" *ngIf="card.assignee">

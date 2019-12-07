@@ -34,7 +34,7 @@ export class AuthService {
   /**
    * Sign out redirect
    */
-  private static readonly signOutRedirect = '/';
+  private static readonly signOutRedirect = '/sign-in';
 
   /**
    * Authentication user subject

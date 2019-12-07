@@ -6,7 +6,7 @@
       <div class="card bg-light">
         <div class="card-body">
           <b>{{ organization.name }}</b> created by <b>{{ organization.user.username }}</b>
-          <a [routerLink]="['/dash/organization', organization.id]" class="float-right">
+          <a [routerLink]="['../../../', organization.id]" class="float-right">
             <fa-icon icon="arrow-circle-right"></fa-icon>
           </a>
         </div>

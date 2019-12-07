@@ -1,13 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-/**
- * Inline single input form.
- */
 @Component({
   selector: 'app-form-add',
   templateUrl: './form-add.component.html',
-  styleUrls: ['./form-add.component.scss'],
 })
 export class FormAddComponent implements OnInit {
 

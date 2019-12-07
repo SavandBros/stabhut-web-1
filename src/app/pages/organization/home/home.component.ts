@@ -18,7 +18,7 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.api.getOrganizations().subscribe(data => {
+    this.api.getOrganizations().subscribe((data: Organization[]): void => {
       this.organizations = data;
     });
   }

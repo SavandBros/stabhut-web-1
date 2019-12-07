@@ -1,25 +1,24 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
-import { PopoverModule, TooltipModule } from 'ngx-bootstrap';
 
-import { CardComponent } from './card.component';
+import { SignInComponent } from './sign-in.component';
 
 const routes: Routes = [{
   path: '',
-  component: CardComponent,
+  component: SignInComponent,
 }];
 
 @NgModule({
   declarations: [
-    CardComponent,
+    SignInComponent,
   ],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
-    PopoverModule.forRoot(),
-    TooltipModule.forRoot(),
+    ReactiveFormsModule,
   ],
 })
-export class CardModule {
+export class SignInModule {
 }

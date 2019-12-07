@@ -2,25 +2,27 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
+import { FormAddModule } from '@app/shared/form-add/form-add.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-import { OrganizationComponent } from './organization.component';
+import { SettingsComponent } from './settings.component';
 
 const routes: Routes = [{
-  path: ':project',
-  component: OrganizationComponent,
+  path: '',
+  component: SettingsComponent,
 }];
 
 @NgModule({
   declarations: [
-    OrganizationComponent,
+    SettingsComponent,
   ],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
     FontAwesomeModule,
+    FormAddModule,
     FormsModule,
   ],
 })
-export class OrganizationModule {
+export class SettingsModule {
 }
