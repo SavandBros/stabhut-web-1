@@ -1,18 +1,19 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { ApiPayloadGet } from 'src/app/interfaces/api-payload-get';
-import { ApiPayload } from 'src/app/interfaces/api-payload';
-import { ApiResponse } from 'src/app/interfaces/api-response';
-import { Card } from 'src/app/interfaces/card';
-import { Chat } from 'src/app/interfaces/chat';
-import { Column } from 'src/app/interfaces/column';
-import { Organization } from 'src/app/interfaces/organization';
-import { Project } from 'src/app/interfaces/project';
-import { Task } from 'src/app/interfaces/task';
-import { User } from 'src/app/interfaces/user';
 
-import { environment } from 'src/environments/environment';
+import { ApiPayload } from '@app/interfaces/api-payload';
+import { ApiPayloadGet } from '@app/interfaces/api-payload-get';
+import { ApiResponse } from '@app/interfaces/api-response';
+import { Card } from '@app/interfaces/card';
+import { Chat } from '@app/interfaces/chat';
+import { Column } from '@app/interfaces/column';
+import { Organization } from '@app/interfaces/organization';
+import { Project } from '@app/interfaces/project';
+import { Task } from '@app/interfaces/task';
+import { User } from '@app/interfaces/user';
+import { environment } from '@environments/environment';
+
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Column } from 'src/app/interfaces/column';
-import { Organization } from 'src/app/interfaces/organization';
-import { Project } from 'src/app/interfaces/project';
-import { ApiService } from 'src/app/services/api.service';
+import { Column } from '@app/interfaces/column';
+import { Organization } from '@app/interfaces/organization';
+import { Project } from '@app/interfaces/project';
+import { ApiService } from '@app/services/api.service';
 import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({

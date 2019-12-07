@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { BsModalRef } from 'ngx-bootstrap';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ApiService } from 'src/app/services/api.service';
-import { User } from 'src/app/interfaces/user';
-import { Card } from 'src/app/interfaces/card';
-import { Column } from 'src/app/interfaces/column';
-import { ApiError } from 'src/app/interfaces/api-error';
+import { ApiError } from '@app/interfaces/api-error';
+import { Card } from '@app/interfaces/card';
+import { Column } from '@app/interfaces/column';
+import { User } from '@app/interfaces/user';
+import { ApiService } from '@app/services/api.service';
+import { BsModalRef } from 'ngx-bootstrap';
 
 @Component({
   selector: 'app-card-new',

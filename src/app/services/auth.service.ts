@@ -1,13 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+
+import { AuthResponse } from '@app/interfaces/auth-response';
+import { AuthToken } from '@app/interfaces/auth-token';
+import { User } from '@app/interfaces/user';
+import { ApiService } from '@app/services/api.service';
+
 import { CookieService } from 'ngx-cookie-service';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AuthResponse } from 'src/app/interfaces/auth-response';
-import { AuthToken } from 'src/app/interfaces/auth-token';
-import { User } from 'src/app/interfaces/user';
-import { ApiService } from 'src/app/services/api.service';
 
 @Injectable({
   providedIn: 'root',

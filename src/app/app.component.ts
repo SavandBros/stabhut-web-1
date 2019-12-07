@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from 'src/app/services/auth.service';
-import { User } from 'src/app/interfaces/user';
+import { User } from '@app/interfaces/user';
+import { AuthService } from '@app/services/auth.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
 
@@ -17,8 +17,8 @@ export class AppComponent implements OnInit {
   constructor(public authService: AuthService) {
   }
 
-  ngOnInit() {
-    this.authService.user.subscribe((data: User) => {
+  ngOnInit(): void {
+    this.authService.user.subscribe((data: User): void => {
       this.user = data;
     });
   }

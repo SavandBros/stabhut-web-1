@@ -1,9 +1,10 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Routes } from '@angular/router';
-import { OrganizationComponent } from './organization.component';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RouterModule, Routes } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
+import { OrganizationComponent } from './organization.component';
 
 const routes: Routes = [{
   path: ':project',
@@ -11,7 +12,9 @@ const routes: Routes = [{
 }];
 
 @NgModule({
-  declarations: [OrganizationComponent],
+  declarations: [
+    OrganizationComponent,
+  ],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),

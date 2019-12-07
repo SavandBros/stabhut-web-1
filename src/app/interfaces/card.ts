@@ -1,5 +1,5 @@
-import { User } from 'src/app/interfaces/user';
-import { Column } from 'src/app/interfaces/column';
+import { Column } from '@app/interfaces/column';
+import { User } from '@app/interfaces/user';
 
 export interface Card {
   id: number;

@@ -1,5 +1,5 @@
-import { Card } from 'src/app/interfaces/card';
-import { Project } from 'src/app/interfaces/project';
+import { Card } from '@app/interfaces/card';
+import { Project } from '@app/interfaces/project';
 
 export interface Column {
   id: number;

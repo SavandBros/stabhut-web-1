@@ -1,18 +1,23 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormAddComponent } from './form-add.component';
+import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
+import { FormAddComponent } from './form-add.component';
+
 @NgModule({
-  declarations: [FormAddComponent],
+  declarations: [
+    FormAddComponent,
+  ],
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    FontAwesomeModule
+    FontAwesomeModule,
   ],
-  exports: [FormAddComponent]
+  exports: [
+    FormAddComponent,
+  ],
 })
 export class FormAddModule {
 }

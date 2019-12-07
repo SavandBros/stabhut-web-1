@@ -3,6 +3,15 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { Routes, RouterModule } from '@angular/router';
+
+import { AppComponent } from '@app/app.component';
+import { CardNewComponent } from '@app/components/dash/card-new/card-new.component';
+import { SignInComponent } from '@app/components/sign-in/sign-in.component';
+import { SignUpComponent } from '@app/components/sign-up/sign-up.component';
+import { ApiInterceptorService } from '@app/services/api-interceptor.service';
+import { ApiService } from '@app/services/api.service';
+import { AuthService } from '@app/services/auth.service';
+
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faArrowCircleRight, faCog, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -10,13 +19,6 @@ import { ModalModule, PopoverModule, TooltipModule } from 'ngx-bootstrap';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { CookieService } from 'ngx-cookie-service';
 import { NgDatePipesModule } from 'ngx-pipes';
-import { AppComponent } from 'src/app/app.component';
-import { CardNewComponent } from 'src/app/components/dash/card-new/card-new.component';
-import { SignInComponent } from 'src/app/components/sign-in/sign-in.component';
-import { SignUpComponent } from 'src/app/components/sign-up/sign-up.component';
-import { ApiInterceptorService } from 'src/app/services/api-interceptor.service';
-import { ApiService } from 'src/app/services/api.service';
-import { AuthService } from 'src/app/services/auth.service';
 
 const routes: Routes = [{
   path: 'sign-in',

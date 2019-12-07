@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { BsModalService } from 'ngx-bootstrap';
-
-import { Column } from 'src/app/interfaces/column';
-import { Project } from 'src/app/interfaces/project';
-import { Task } from 'src/app/interfaces/task';
-import { User } from 'src/app/interfaces/user';
-import { ApiService } from 'src/app/services/api.service';
-import { AuthService } from 'src/app/services/auth.service';
-import { CardNewComponent } from '../card-new/card-new.component';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { CardNewComponent } from '@app/components/dash/card-new/card-new.component';
+import { Column } from '@app/interfaces/column';
+import { Project } from '@app/interfaces/project';
+import { Task } from '@app/interfaces/task';
+import { User } from '@app/interfaces/user';
+import { ApiService } from '@app/services/api.service';
+import { AuthService } from '@app/services/auth.service';
+import { BsModalService } from 'ngx-bootstrap';
 
 @Component({
   selector: 'app-main',

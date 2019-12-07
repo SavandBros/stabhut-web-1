@@ -1,7 +1,8 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DashComponent } from './dash.component';
+import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+
+import { DashComponent } from './dash.component';
 
 const routes: Routes = [{
   path: '',
@@ -26,7 +27,9 @@ const routes: Routes = [{
 }];
 
 @NgModule({
-  declarations: [DashComponent],
+  declarations: [
+    DashComponent,
+  ],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
