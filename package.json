@@ -25,6 +25,7 @@
     "@fortawesome/free-regular-svg-icons": "^5.7.2",
     "@fortawesome/free-solid-svg-icons": "^5.7.2",
     "@uirouter/angular": "^4.0.0",
+    "angular-cli-ghpages": "^0.6.0",
     "animate.css": "^3.7.0",
     "bootstrap": "^4.4.1",
     "core-js": "^2.5.4",
