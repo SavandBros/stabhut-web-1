@@ -25,7 +25,7 @@
 
       <!-- Columns -->
       <div class="col-lg-10">
-        <div class="row">
+        <div class="row" cdkDropListGroup>
           <div class="col column" *ngFor="let column of projectSelected.columns">
 
             <!-- Column header -->
@@ -39,16 +39,20 @@
             </p>
 
             <!-- Cards -->
-            <div class="card mt-2" *ngFor="let card of column.cards">
-              <div class="card-body">
+            <div class="h-100" [cdkDropListData]="column.cards" cdkDropList
+                 (cdkDropListDropped)="drop($event, column)">
+              <div class="card column-card mt-2" *ngFor="let card of column.cards" cdkDrag
+                   [cdkDragDisabled]="card.loading" [cdkDragData]="card">
+                <div class="card-body">
+                  {{ card.order }}
+                  <!-- Content -->
+                  <a class="text-dark d-block" [routerLink]="['./card', card.id]">{{ card.content }}</a>
 
-                <!-- Content -->
-                <a class="text-dark d-block" [routerLink]="['./card', card.id]">{{ card.content }}</a>
-
-                <!-- Assignee -->
-                <span class="badge badge-primary font-weight-light mr-1" title="Assignee" *ngIf="card.assignee">
+                  <!-- Assignee -->
+                  <span class="badge badge-primary font-weight-light mr-1" title="Assignee" *ngIf="card.assignee">
                   {{ getUser(card.assignee).username }}
                 </span>
+                </div>
               </div>
             </div>
           </div>
