@@ -1,5 +1,6 @@
-.column {
+$card-drag-placeholder-opacity: 0.5;
 
+.column {
   p {
     text-transform: uppercase;
 
@@ -19,4 +20,16 @@
     max-height: 400px;
     overflow-y: auto;
   }
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.cdk-drag-placeholder {
+  opacity: $card-drag-placeholder-opacity;
+}
+
+.cdk-drop-list-dragging .card:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
