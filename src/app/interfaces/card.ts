@@ -9,4 +9,5 @@ export interface Card {
   order: number;
   updated: string;
   created: string;
+  loading?: boolean;
 }
