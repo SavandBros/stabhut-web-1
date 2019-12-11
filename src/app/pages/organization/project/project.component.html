@@ -44,7 +44,7 @@
               <div class="card column-card mt-2" *ngFor="let card of column.cards" cdkDrag
                    [cdkDragDisabled]="card.loading" [cdkDragData]="card">
                 <div class="card-body">
-                  {{ card.order }}
+
                   <!-- Content -->
                   <a class="text-dark d-block" [routerLink]="['./card', card.id]">{{ card.content }}</a>
 
