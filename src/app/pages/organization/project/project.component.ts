@@ -1,5 +1,7 @@
+import { transferArrayItem, moveItemInArray, CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, Params } from '@angular/router';
+import { ApiPayload } from '@app/interfaces/api-payload';
 import { ApiResponse } from '@app/interfaces/api-response';
 import { Card } from '@app/interfaces/card';
 import { Chat } from '@app/interfaces/chat';
@@ -201,5 +203,44 @@ export class ProjectComponent implements OnInit {
     this.api.updateTask(task.id, {
       checked: task.checked,
     }).subscribe();
+  }
+
+  /**
+   * Update a card property
+   *
+   * @param id Card ID
+   * @param index Card index
+   * @param column Card column
+   * @param payload Card properties
+   */
+  updateCard(id: number, index: number, column: Column, payload: ApiPayload): void {
+    column.cards[index].loading = true;
+    this.api.updateCard(id, payload).subscribe((data: Card): void => {
+      column.cards[index] = data;
+      column.cards[index].loading = false;
+    });
+  }
+
+  /**
+   * @description
+   *
+   * On card drag and drop
+   *
+   * @param event Event emitted when the user drops a draggable item inside a drop container
+   * @param column Column that card has been dropped in
+   */
+  drop(event: CdkDragDrop<Card[]>, column: Column): void {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      this.updateCard(event.item.data.id, event.currentIndex, column, { order: event.currentIndex });
+    } else {
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex,
+      );
+      this.updateCard(event.item.data.id, event.currentIndex, column, { column: column.id, order: event.currentIndex });
+    }
   }
 }

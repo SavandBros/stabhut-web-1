@@ -38,3 +38,12 @@ body {
 .pointer {
   cursor: pointer;
 }
+
+.column-card .card-body {
+  font-size: 0.9rem;
+  padding: 15px;
+
+  .card-text {
+    white-space: pre;
+  }
+}
