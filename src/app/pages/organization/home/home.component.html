@@ -1,7 +1,14 @@
 <div class="container justify-content-center">
-  <div class="col-lg-3 my-5 text-center" *ngFor="let organization of organizations">
-    <a class="card" [routerLink]="['../../', organization.id]">
-      <div class="card-body">{{ organization.name }}</div>
-    </a>
+  <div class="row mt-3">
+    <div class="col-lg-3 mb-3 text-center" *ngFor="let organization of organizations">
+      <a class="card" [routerLink]="['../../', organization.id]">
+        <div class="card-body">{{ organization.name }}</div>
+      </a>
+    </div>
+    <div class="col-lg-3 mb-3 text-center">
+      <a class="card" [routerLink]="['../../', 'new']">
+        <div class="card-body"><fa-icon [icon]="plus"></fa-icon></div>
+      </a>
+    </div>
   </div>
 </div>
