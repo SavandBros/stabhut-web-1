@@ -6,6 +6,7 @@
     "start": "ng serve",
     "start-prod": "ng serve --configuration=dev-prod",
     "build": "ng build --prod",
+    "deploy": "ng deploy",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

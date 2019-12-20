@@ -1,0 +1,25 @@
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-4">
+      <div class="card">
+        <div class="card-header text-center" *ngIf="!organization">Create an Organization</div>
+        <div class="card-body" *ngIf="!organization">
+          <form [formGroup]="form" (ngSubmit)="submit()" *ngIf="form">
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Name" formControlName="name">
+              <div class="text-danger" *ngIf="errors.name">{{ errors.name[0] }}</div>
+            </div>
+            <div class="text-center">
+              <button class="btn btn-success btn-block" [disabled]="loading || form.invalid">Submit</button>
+            </div>
+          </form>
+        </div>
+        <div class="card-body text-center" *ngIf="organization">
+          <div class="text-success">Successfully created organization.</div>
+          <p class="small">Click on the button below to view it.</p>
+          <a class="btn btn-info" [routerLink]="['../../', organization.id]">{{ organization.name }}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

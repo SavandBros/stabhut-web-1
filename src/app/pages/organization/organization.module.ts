@@ -13,6 +13,9 @@ const routes: Routes = [{
     path: 'home',
     loadChildren: () => import('./home/home.module').then(m => m.HomeModule),
   }, {
+    path: 'new',
+    loadChildren: () => import('./new/new.module').then(m => m.NewModule),
+  }, {
     path: ':id/card/:card',
     loadChildren: () => import('./card/card.module').then(m => m.CardModule),
   }, {

@@ -46,6 +46,15 @@ export class ApiService {
   }
 
   /**
+   * Create an organization
+   *
+   * @param name Organization name
+   */
+  createOrganization(name: string): Observable<Organization> {
+    return this.http.post<Organization>(`${ApiService.BASE}organizations/`, { name });
+  }
+
+  /**
    * Project list of an organization
    *
    * @param organization Organization ID
