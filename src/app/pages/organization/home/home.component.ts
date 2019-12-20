@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Organization } from '@app/interfaces/organization';
 import { ApiService } from '@app/services/api.service';
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
+import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus';
 
 @Component({
   selector: 'app-home',
@@ -8,6 +10,8 @@ import { ApiService } from '@app/services/api.service';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
+
+  readonly plus: IconDefinition = faPlus;
 
   /**
    * All authenticated user organizations
@@ -17,9 +21,9 @@ export class HomeComponent implements OnInit {
   constructor(private api: ApiService) {
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.api.getOrganizations().subscribe((data: Organization[]): void => {
-      this.organizations = data;
+      this.organizations = [...data];
     });
   }
 }
