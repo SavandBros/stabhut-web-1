@@ -35,6 +35,15 @@ body {
   min-width: 768px;
 }
 
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+.h-100 {
+  min-height: 0;
+}
+
 .pointer {
   cursor: pointer;
 }

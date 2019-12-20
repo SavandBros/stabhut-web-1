@@ -10,6 +10,7 @@ import { AuthService } from '@app/services/auth.service';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
+import { faComment } from '@fortawesome/free-solid-svg-icons';
 import { faArrowCircleRight } from '@fortawesome/free-solid-svg-icons/faArrowCircleRight';
 import { faCog } from '@fortawesome/free-solid-svg-icons/faCog';
 import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus';
@@ -61,6 +62,7 @@ export class AppModule {
       faPlus,
       faTrash,
       faCog,
+      faComment,
       faArrowCircleRight,
     );
   }
