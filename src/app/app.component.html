@@ -1,27 +1,31 @@
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <!-- Title -->
-  <a class="navbar-brand text-white" routerLink="/">StabHut</a>
-  <!-- Navs -->
-  <ul class="navbar-nav ml-auto">
-    <!-- Sign In -->
-    <li class="nav-item dropdown" *ngIf="!user">
-      <a class="nav-link" routerLink="sign-in">Sign In</a>
-    </li>
-    <!-- Sign Up -->
-    <li class="nav-item dropdown" *ngIf="!user">
-      <a class="nav-link" routerLink="sign-up">Sign Up</a>
-    </li>
-    <!-- User -->
-    <li class="nav-item dropdown" *ngIf="user" dropdown>
-      <a class="nav-link dropdown-toggle" dropdownToggle>{{ user.username }}</a>
-      <div class="dropdown-menu dropdown-menu-right" *dropdownMenu>
-        <!-- Sign out -->
-        <a class="dropdown-item" (click)="authService.signOut()">Sign Out</a>
-      </div>
-    </li>
-  </ul>
-</nav>
+<div class="d-flex flex-column h-100">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <!-- Title -->
+    <a class="navbar-brand text-white" routerLink="/">StabHut</a>
+    <!-- Navs -->
+    <ul class="navbar-nav ml-auto">
+      <!-- Sign In -->
+      <li class="nav-item dropdown" *ngIf="!user">
+        <a class="nav-link" routerLink="sign-in">Sign In</a>
+      </li>
+      <!-- Sign Up -->
+      <li class="nav-item dropdown" *ngIf="!user">
+        <a class="nav-link" routerLink="sign-up">Sign Up</a>
+      </li>
+      <!-- User -->
+      <li class="nav-item dropdown" *ngIf="user" dropdown>
+        <a class="nav-link dropdown-toggle" dropdownToggle>{{ user.username }}</a>
+        <div class="dropdown-menu dropdown-menu-right" *dropdownMenu>
+          <!-- Sign out -->
+          <a class="dropdown-item" (click)="authService.signOut()">Sign Out</a>
+        </div>
+      </li>
+    </ul>
+  </nav>
 
-<!-- Routes -->
-<router-outlet></router-outlet>
+  <div class="h-100 main">
+    <!-- Routes -->
+    <router-outlet></router-outlet>
+  </div>
+</div>
