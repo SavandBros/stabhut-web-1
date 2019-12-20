@@ -22,6 +22,11 @@ import { BsModalService } from 'ngx-bootstrap';
 export class ProjectComponent implements OnInit {
 
   /**
+   * Determines whether to open or close chat list
+   */
+  openChat: boolean;
+
+  /**
    * Current authenticated user
    */
   user: User;
