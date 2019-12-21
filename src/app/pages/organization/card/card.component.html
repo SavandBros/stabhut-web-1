@@ -4,7 +4,17 @@
       <div class="card my-3">
         <div class="card-body">
           <div class="row">
-            <div class="col-md-8">{{ card.content }}</div>
+            <div class="col-md-8">
+              <!-- Content -->
+              <span *ngIf="!isEditing">{{ card.content }}</span>
+              <!-- Input -->
+              <div class="form-group" *ngIf="isEditing">
+                <textarea #contentInput class="form-control"
+                          [class.is-invalid]="content.hasError('required')"
+                          name="content" [formControl]="content" rows="10"></textarea>
+                <small class="text-danger" *ngIf="content.hasError('required')">This field is required</small>
+              </div>
+            </div>
             <div class="col-md-4">
               <ul class="list-group">
                 <li class="list-group-item list-group-item-action" [popover]="columnPopover">
@@ -32,6 +42,24 @@
                 </li>
               </ul>
             </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div *ngIf="isEditing" class="text-right">
+            <!-- Cancel -->
+            <a class="btn btn-link text-secondary" (click)="editCard(false)">Cancel</a>
+            <!-- Update -->
+            <button class="btn btn-primary"
+               [disabled]="content.hasError('required')"
+               (click)="update({ content: content.value }); isEditing = false">Update</button>
+          </div>
+          <div *ngIf="!isEditing" class="text-right">
+            <!-- Edit -->
+            <a class="btn btn-link" (click)="editCard(true)">Edit</a>
+            <!-- Delete -->
+            <a class="btn btn-link text-danger" (click)="deleteCard()">
+              <fa-icon [icon]="trash"></fa-icon>
+            </a>
           </div>
         </div>
       </div>
