@@ -142,6 +142,15 @@ export class ApiService {
   }
 
   /**
+   * Delete a card
+   *
+   * @param card Card ID
+   */
+  deleteCard(card: number): Observable<void> {
+    return this.http.delete<void>(`${ApiService.BASE}cards/${card}/`).pipe();
+  }
+
+  /**
    * Cards of a column
    *
    * @param column Column ID
