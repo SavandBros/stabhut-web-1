@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiError } from '@app/interfaces/api-error';
+import { ApiPayload } from '@app/interfaces/api-payload';
 import { Card } from '@app/interfaces/card';
 import { Column } from '@app/interfaces/column';
 import { User } from '@app/interfaces/user';
@@ -34,6 +35,8 @@ export class CardNewComponent implements OnInit {
   }
 
   submit(): void {
+    const payload: ApiPayload = this.form.value;
+    payload.order = this.column.cards[0] ? (this.column.cards[0].order - 1) : 0;
     this.loading = true;
     this.errors = {};
     this.apiService.createCard(this.form.value).subscribe((data: Card): void => {
