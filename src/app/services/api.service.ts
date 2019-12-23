@@ -33,7 +33,7 @@ export class ApiService {
    * Will get authenticated users organizations.
    */
   getOrganizations(): Observable<Organization[]> {
-    return this.http.get<Organization[]>(ApiService.BASE + 'organizations/').pipe();
+    return this.http.get<Organization[]>(`${ApiService.BASE}organization/`).pipe();
   }
 
   /**
@@ -42,7 +42,7 @@ export class ApiService {
    * @param id Organization ID
    */
   getOrganization(id: number): Observable<Organization> {
-    return this.http.get<Organization>(`${ApiService.BASE}organizations/${id}/`).pipe();
+    return this.http.get<Organization>(`${ApiService.BASE}organization/${id}/`).pipe();
   }
 
   /**
@@ -51,7 +51,7 @@ export class ApiService {
    * @param name Organization name
    */
   createOrganization(name: string): Observable<Organization> {
-    return this.http.post<Organization>(`${ApiService.BASE}organizations/`, { name });
+    return this.http.post<Organization>(`${ApiService.BASE}organization/`, { name });
   }
 
   /**
@@ -60,7 +60,7 @@ export class ApiService {
    * @param organization Organization ID
    */
   getProjects(organization: number): Observable<Project[]> {
-    return this.http.get<Project[]>(`${ApiService.BASE}projects/`, {
+    return this.http.get<Project[]>(`${ApiService.BASE}project/`, {
       params: {
         organization: organization.toString(),
       },
@@ -74,7 +74,7 @@ export class ApiService {
    * @param name Project name
    */
   createProject(organization: number, name: string): Observable<Project> {
-    return this.http.post<Project>(`${ApiService.BASE}projects/`, { organization, name });
+    return this.http.post<Project>(`${ApiService.BASE}project/`, { organization, name });
   }
 
   /**
@@ -83,7 +83,7 @@ export class ApiService {
    * @param column Column ID
    */
   getColumn(column: number): Observable<Column> {
-    return this.http.get<Column>(`${ApiService.BASE}columns/${column}/`).pipe();
+    return this.http.get<Column>(`${ApiService.BASE}column/${column}/`).pipe();
   }
 
   /**
@@ -100,7 +100,7 @@ export class ApiService {
     if (project) {
       params.project = project.toString();
     }
-    return this.http.get<Column[]>(ApiService.BASE + 'columns/', { params });
+    return this.http.get<Column[]>(`${ApiService.BASE}column/`, { params });
   }
 
   /**
@@ -110,7 +110,7 @@ export class ApiService {
    * @param name Column name
    */
   createColumn(project: number, name: string): Observable<Column> {
-    return this.http.post<Column>(`${ApiService.BASE}columns/`, { project, name });
+    return this.http.post<Column>(`${ApiService.BASE}column/`, { project, name });
   }
 
   /**
@@ -120,7 +120,7 @@ export class ApiService {
    * @param payload Column data to update to
    */
   updateColumn(id: number, payload: ApiPayload): Observable<Column> {
-    return this.http.patch<Column>(`${ApiService.BASE}columns/${id}/`, payload).pipe();
+    return this.http.patch<Column>(`${ApiService.BASE}column/${id}/`, payload).pipe();
   }
 
   /**
@@ -129,7 +129,7 @@ export class ApiService {
    * @param column Column ID
    */
   deleteColumn(column: number): Observable<void> {
-    return this.http.delete<void>(`${ApiService.BASE}columns/${column}/`).pipe();
+    return this.http.delete<void>(`${ApiService.BASE}column/${column}/`).pipe();
   }
 
   /**
@@ -138,7 +138,7 @@ export class ApiService {
    * @param card Card ID
    */
   getCard(card: number): Observable<Card> {
-    return this.http.get<Card>(`${ApiService.BASE}cards/${card}/`).pipe();
+    return this.http.get<Card>(`${ApiService.BASE}card/${card}/`).pipe();
   }
 
   /**
@@ -147,7 +147,7 @@ export class ApiService {
    * @param card Card ID
    */
   deleteCard(card: number): Observable<void> {
-    return this.http.delete<void>(`${ApiService.BASE}cards/${card}/`).pipe();
+    return this.http.delete<void>(`${ApiService.BASE}card/${card}/`).pipe();
   }
 
   /**
@@ -156,7 +156,7 @@ export class ApiService {
    * @param column Column ID
    */
   getCards(column?: number): Observable<Card[]> {
-    return this.http.get<Card[]>(ApiService.BASE + 'cards/', {
+    return this.http.get<Card[]>(`${ApiService.BASE}card/`, {
       params: {
         column: column.toString(),
       },
@@ -170,7 +170,7 @@ export class ApiService {
    * @param payload Task data
    */
   updateCard(card: number, payload: ApiPayload): Observable<Card> {
-    return this.http.patch<Card>(`${ApiService.BASE}cards/${card}/`, payload).pipe();
+    return this.http.patch<Card>(`${ApiService.BASE}card/${card}/`, payload).pipe();
   }
 
   /**
@@ -179,7 +179,7 @@ export class ApiService {
    * @param payload Card payload
    */
   createCard(payload: ApiPayload): Observable<Card> {
-    return this.http.post<Card>(ApiService.BASE + 'cards/', payload).pipe();
+    return this.http.post<Card>(`${ApiService.BASE}card/`, payload).pipe();
   }
 
   /**
@@ -188,14 +188,14 @@ export class ApiService {
    * @param user User ID
    */
   getUser(user: number): Observable<User> {
-    return this.http.get<User>(`${ApiService.BASE}users/${user}/`).pipe();
+    return this.http.get<User>(`${ApiService.BASE}user/${user}/`).pipe();
   }
 
   /**
    * User list
    */
   getUsers(): Observable<ApiResponse<User>> {
-    return this.http.get<ApiResponse<User>>(ApiService.BASE + 'users/').pipe();
+    return this.http.get<ApiResponse<User>>(`${ApiService.BASE}user/`).pipe();
   }
 
   /**
@@ -204,7 +204,7 @@ export class ApiService {
    * @param project Project ID
    */
   getChats(project: number): Observable<Chat[]> {
-    return this.http.get<Chat[]>(ApiService.BASE + 'chats/', {
+    return this.http.get<Chat[]>(`${ApiService.BASE}chat/`, {
       params: {
         project: project.toString(),
       },
@@ -217,7 +217,7 @@ export class ApiService {
    * @param payload Chat data
    */
   createChat(payload: ApiPayload): Observable<Chat> {
-    return this.http.post<Chat>(ApiService.BASE + 'chats/', payload).pipe();
+    return this.http.post<Chat>(`${ApiService.BASE}chat/`, payload).pipe();
   }
 
   /**
@@ -226,7 +226,7 @@ export class ApiService {
    * @param project Project ID
    */
   getTasks(project: number): Observable<Task[]> {
-    return this.http.get<Task[]>(ApiService.BASE + 'tasks/', {
+    return this.http.get<Task[]>(`${ApiService.BASE}task/`, {
       params: {
         project: project.toString(),
       },
@@ -240,7 +240,7 @@ export class ApiService {
    * @param payload Task data
    */
   updateTask(task: number, payload: ApiPayload): Observable<Task> {
-    return this.http.patch<Task>(`${ApiService.BASE}tasks/${task}/`, payload).pipe();
+    return this.http.patch<Task>(`${ApiService.BASE}task/${task}/`, payload).pipe();
   }
 
   /**
@@ -249,6 +249,6 @@ export class ApiService {
    * @param payload Task data
    */
   createTask(payload: ApiPayload): Observable<Task> {
-    return this.http.post<Task>(ApiService.BASE + 'tasks/', payload).pipe();
+    return this.http.post<Task>(`${ApiService.BASE}task/`, payload).pipe();
   }
 }
