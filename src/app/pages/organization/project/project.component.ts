@@ -235,6 +235,18 @@ export class ProjectComponent implements OnInit {
    * @param column Column that card has been dropped in
    */
   drop(event: CdkDragDrop<Card[]>, column: Column): void {
+    // /**
+    //  * Previous card
+    //  */
+    // const previousCard: Card = column.cards[event.currentIndex - 1];
+    // /**
+    //  * Next card
+    //  */
+    // const nextCard: Card = column.cards[event.currentIndex + 1];
+    // /**
+    //  * Set order
+    //  */
+    // const order: number = ((previousCard ? previousCard.order : 0) + (nextCard ? nextCard.order : 0)) / 2;
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
       this.updateCard(event.item.data.id, event.currentIndex, column, { order: event.currentIndex });
