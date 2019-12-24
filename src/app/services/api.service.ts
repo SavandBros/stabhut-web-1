@@ -190,9 +190,8 @@ export class ApiService {
    */
   getLabels(organization: number): Observable<Label[]> {
     const httpParams: HttpParams = new HttpParams().set('organization', String(organization));
-    return this.http.get<Label[]>(`${ApiService.BASE}labels/`, { params: httpParams });
+    return this.http.get<Label[]>(`${ApiService.BASE}label/`, { params: httpParams });
   }
-
 
   /**
    * Create a label
@@ -202,7 +201,26 @@ export class ApiService {
    * @param color Label color
    */
   createLabel(organization: number, name: string, color: string = '#eee'): Observable<Label> {
-    return this.http.post<Label>(`${ApiService.BASE}labels/`, { organization, name, color });
+    return this.http.post<Label>(`${ApiService.BASE}label/`, { organization, name, color });
+  }
+
+  /**
+   * Update a label
+   *
+   * @param id Label ID
+   * @param payload Label data to update to
+   */
+  updateLabel(id: number, payload: ApiPayload): Observable<Label> {
+    return this.http.patch<Label>(`${ApiService.BASE}label/${id}/`, payload);
+  }
+
+  /**
+   * Delete a label
+   *
+   * @param label Label ID
+   */
+  deleteLabel(label: number): Observable<void> {
+    return this.http.delete<void>(`${ApiService.BASE}label/${label}/`);
   }
 
   /**
