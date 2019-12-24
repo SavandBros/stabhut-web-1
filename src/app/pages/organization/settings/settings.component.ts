@@ -4,6 +4,7 @@ import { Column } from '@app/interfaces/column';
 import { Organization } from '@app/interfaces/organization';
 import { Project } from '@app/interfaces/project';
 import { ApiService } from '@app/services/api.service';
+import { Label } from '@app/interfaces/label';
 
 @Component({
   selector: 'app-settings',
@@ -23,9 +24,19 @@ export class SettingsComponent implements OnInit {
   projects: Project[];
 
   /**
+   * Labels of organization
+   */
+  labels: Label[];
+
+  /**
    * Selected project
    */
   projectSelected: Project;
+
+  /**
+   * Selected label
+   */
+  labelSelected: Label;
 
   /**
    * Selected project tab template variable ('columns' or 'options')
@@ -42,6 +53,10 @@ export class SettingsComponent implements OnInit {
       // Load organisation data
       this.api.getOrganization(params.id).subscribe(organization => {
         this.organization = organization;
+      });
+      // Load labels of organization
+      this.api.getLabels(params.id).subscribe((labels: Label[]): void => {
+        this.labels = labels;
       });
       // Load projects of organization
       this.api.getProjects(params.id).subscribe(projects => {
@@ -67,6 +82,17 @@ export class SettingsComponent implements OnInit {
     this.api.createProject(this.organization.id, name).subscribe(data => {
       data.columns = [];
       this.projects.push(data);
+    });
+  }
+
+  /**
+   * Add a label
+   *
+   * @param name Label name
+   */
+  addLabel(name: string) {
+    this.api.createLabel(this.organization.id, name).subscribe((data: Label): void => {
+      this.labels.push(data);
     });
   }
 
@@ -105,5 +131,32 @@ export class SettingsComponent implements OnInit {
         column = data;
       });
     }
+  }
+
+  /**
+   * Update a label
+   *
+   * @param label Label to update
+   */
+  updateLabel(label: Label): void {
+    this.api.updateLabel(label.id, { name: label.name }).subscribe((data: Label): void => {
+      label = data;
+    });
+  }
+
+  /**
+   * Delete a label
+   *
+   * @param label Label to delete
+   */
+  deleteLabel(label: Label): void {
+    if (!confirm('Are you sure you want to delete this label?')) {
+      return;
+    }
+    this.api.deleteLabel(label.id).subscribe((): void => {
+      const index: number = this.labels.findIndex((item: Label): boolean => item.id === label.id);
+      this.labels.splice(index, 1);
+      this.labelSelected = null;
+    });
   }
 }
