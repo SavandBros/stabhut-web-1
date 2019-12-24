@@ -6,7 +6,7 @@
           <div class="row">
             <div class="col-md-8">
               <!-- Content -->
-              <span *ngIf="!isEditing">{{ card.content }}</span>
+              <span class="white-space-pre" *ngIf="!isEditing">{{ card.content }}</span>
               <!-- Input -->
               <div class="form-group" *ngIf="isEditing">
                 <textarea #contentInput class="form-control"
@@ -57,7 +57,7 @@
             <!-- Edit -->
             <a class="btn btn-link" (click)="editCard(true)">Edit</a>
             <!-- Delete -->
-            <a class="btn btn-link text-danger" (click)="deleteCard()">
+            <a class="btn btn-link text-secondary" (click)="deleteCard()">
               <fa-icon [icon]="trash"></fa-icon>
             </a>
           </div>
