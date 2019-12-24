@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { ApiPayload } from '@app/interfaces/api-payload';
@@ -14,6 +14,7 @@ import { User } from '@app/interfaces/user';
 import { environment } from '@environments/environment';
 
 import { Observable } from 'rxjs';
+import { Label } from '@app/interfaces/label';
 
 @Injectable({
   providedIn: 'root',
@@ -180,6 +181,28 @@ export class ApiService {
    */
   createCard(payload: ApiPayload): Observable<Card> {
     return this.http.post<Card>(ApiService.BASE + 'cards/', payload).pipe();
+  }
+
+  /**
+   * Get current organization's labels
+   *
+   * @param organization Organization ID
+   */
+  getLabels(organization: number): Observable<Label[]> {
+    const httpParams: HttpParams = new HttpParams().set('organization', String(organization));
+    return this.http.get<Label[]>(`${ApiService.BASE}labels/`, { params: httpParams });
+  }
+
+
+  /**
+   * Create a label
+   *
+   * @param organization Organization ID of the label
+   * @param name Label name
+   * @param color Label color
+   */
+  createLabel(organization: number, name: string, color: string = '#eee'): Observable<Label> {
+    return this.http.post<Label>(`${ApiService.BASE}labels/`, { organization, name, color });
   }
 
   /**
