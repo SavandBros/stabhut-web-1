@@ -24,8 +24,8 @@
                 <li class="list-group-item list-group-item-action" [popover]="userPopover">
                   <span class="badge badge-light">Assignee</span>
                   <span class="float-right">
-                    <span *ngIf="card.assignee">{{ card.assignee.username }}</span>
-                    <span *ngIf="!card.assignee" class="text-secondary">No one</span>
+                    <span *ngIf="getUser(card.assignee)">{{ getUser(card.assignee).username }}</span>
+                    <span *ngIf="!getUser(card.assignee)" class="text-secondary">No one</span>
                   </span>
                 </li>
                 <li class="list-group-item">
@@ -50,8 +50,9 @@
             <a class="btn btn-link text-secondary" (click)="editCard(false)">Cancel</a>
             <!-- Update -->
             <button class="btn btn-primary"
-               [disabled]="content.hasError('required')"
-               (click)="update({ content: content.value }); isEditing = false">Update</button>
+                    [disabled]="content.hasError('required')"
+                    (click)="update({ content: content.value }); isEditing = false">Update
+            </button>
           </div>
           <div *ngIf="!isEditing" class="text-right">
             <!-- Edit -->
@@ -82,12 +83,12 @@
 <ng-template #userPopover>
   <ul class="nav nav-pills flex-column">
     <li class="nav-item">
-      <a (click)="update({assignee: null})" [class.active]="!card.assignee" class="nav-link">None</a>
+      <a (click)="update({assignee: null})" [class.active]="!getUser(card.assignee)" class="nav-link">None</a>
     </li>
     <li class="nav-item" *ngFor="let user of users">
       <a class="nav-link"
          (click)="update({assignee: user.id})"
-         [class.active]="card.assignee && card.assignee.id === user.id"
+         [class.active]="getUser(card.assignee) && getUser(card.assignee).id === user.id"
          [class.disabled]="loading">
         {{ user.username }}
       </a>

@@ -5,10 +5,12 @@ import { ApiPayload } from '@app/interfaces/api-payload';
 import { Card } from '@app/interfaces/card';
 import { Column } from '@app/interfaces/column';
 import { User } from '@app/interfaces/user';
+import { OrganizationBase } from '@app/pages/organization/shared/organization-base';
 import { ApiService } from '@app/services/api.service';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faTrash } from '@fortawesome/free-solid-svg-icons/faTrash';
 import { PopoverConfig } from 'ngx-bootstrap';
+import construct = Reflect.construct;
 
 export function getPopoverConfig(): PopoverConfig {
   return Object.assign(new PopoverConfig(), {
@@ -23,7 +25,7 @@ export function getPopoverConfig(): PopoverConfig {
   styleUrls: ['./card.component.scss'],
   providers: [{ provide: PopoverConfig, useFactory: getPopoverConfig }],
 })
-export class CardComponent implements OnInit {
+export class CardComponent extends OrganizationBase implements OnInit {
 
   readonly trash: IconDefinition = faTrash;
 
@@ -45,11 +47,6 @@ export class CardComponent implements OnInit {
   columns: Column[];
 
   /**
-   * Users to be selected
-   */
-  users: User[];
-
-  /**
    * Content form control
    */
   content: FormControl = new FormControl('', Validators.required);
@@ -63,9 +60,11 @@ export class CardComponent implements OnInit {
               private router: Router,
               private changeDetectorRef: ChangeDetectorRef,
               private apiService: ApiService) {
+    super();
   }
 
   ngOnInit(): void {
+    super.ngOnInit();
     // Get card ID from router params
     this.activatedRoute.params.subscribe((params: Params): void => {
       // Load card data
@@ -77,10 +76,6 @@ export class CardComponent implements OnInit {
           null, (this.card.column as Column).project as number,
         ).subscribe((data: Column[]): void => {
           this.columns = data;
-        });
-        // Load users for selection
-        this.apiService.getUsers().subscribe(data => {
-          this.users = data.results;
         });
       });
     });
