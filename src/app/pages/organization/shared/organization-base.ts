@@ -53,11 +53,11 @@ export class OrganizationBase implements OnInit {
 
   /**
    * @returns Local user data
-   * @param username User username
+   * @param id User ID
    */
-  getUser(username: string): User {
+  getUser(id: number): User {
     if (this.users) {
-      return this.users.find(item => item.username === username);
+      return this.users.find(item => item.id === id);
     }
   }
 }
