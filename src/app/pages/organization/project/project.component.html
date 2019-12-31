@@ -51,11 +51,17 @@
               <div class="card-body">
                 <!-- Content -->
                 <a class="text-dark d-block" [routerLink]="['./card', card.id]">{{ card.content }}</a>
-
                 <!-- Assignee -->
-                <span class="badge badge-primary font-weight-light mr-1" title="Assignee" *ngIf="card.assignee">
-                {{ getUser(card.assignee).username }}
-              </span>
+                <span class="badge badge-primary font-weight-light mr-1" *ngIf="users && card.assignee">
+                  {{ getUser(card.assignee).username }}
+                </span>
+                <!-- Labels -->
+                <span class="labels" *ngIf="labels">
+                  <span class="badge badge-light font-weight-light mr-1"
+                        *ngFor="let label of card.labels">
+                    {{ getLabel(label).name }}
+                  </span>
+                </span>
               </div>
             </div>
           </div>

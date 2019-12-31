@@ -9,6 +9,7 @@ import { Column } from '@app/interfaces/column';
 import { Project } from '@app/interfaces/project';
 import { Task } from '@app/interfaces/task';
 import { User } from '@app/interfaces/user';
+import { OrganizationBase } from '@app/pages/organization/shared/organization-base';
 import { ApiService } from '@app/services/api.service';
 import { AuthService } from '@app/services/auth.service';
 import { CardNewComponent } from '@app/shared/card-new/card-new.component';
@@ -19,7 +20,7 @@ import { BsModalService } from 'ngx-bootstrap';
   templateUrl: './project.component.html',
   styleUrls: ['./project.component.scss'],
 })
-export class ProjectComponent implements OnInit {
+export class ProjectComponent extends OrganizationBase implements OnInit {
 
   /**
    * Determines whether to open or close chat list
@@ -37,16 +38,6 @@ export class ProjectComponent implements OnInit {
   projectSelected: Project;
 
   /**
-   * List of users of current organization
-   */
-  users: User[] = [];
-
-  /**
-   * List of projects of current organization
-   */
-  projects: Project[] = [];
-
-  /**
    * Show chats or tasks in the side panel (default view is chats)
    */
   sidePanelTab: 'chats' | 'tasks' = 'chats';
@@ -61,9 +52,11 @@ export class ProjectComponent implements OnInit {
               private auth: AuthService,
               private api: ApiService,
               private modal: BsModalService) {
+    super();
   }
 
   ngOnInit(): void {
+    super.ngOnInit();
     /**
      * Get and watch authenticated user
      */
@@ -130,14 +123,6 @@ export class ProjectComponent implements OnInit {
         this.users = data.results;
       });
     });
-  }
-
-  /**
-   * @returns User data
-   * @param id User ID to get data
-   */
-  getUser(id: number): User {
-    return this.users.filter((user: User) => user.id === id)[0];
   }
 
   /**
