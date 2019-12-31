@@ -55,7 +55,7 @@ export class OrganizationService {
       OrganizationService.projectsSubject.next(data);
     });
     this.api.getLabels(OrganizationService.currentOrganization.id).subscribe((data: Label[]): void => {
-      OrganizationService.projectsSubject.next(data);
+      OrganizationService.labelsSubject.next(data);
     });
     this.api.getUsers().subscribe((data: ApiResponse<User>): void => {
       OrganizationService.usersSubject.next(data.results);
