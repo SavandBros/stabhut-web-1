@@ -1,16 +1,20 @@
 import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { LabelKind } from '@app/enums/label-kind.enum';
 import { ApiPayload } from '@app/interfaces/api-payload';
 import { Card } from '@app/interfaces/card';
+import { CardLabel } from '@app/interfaces/card-label';
 import { Column } from '@app/interfaces/column';
-import { User } from '@app/interfaces/user';
+import { Label } from '@app/interfaces/label';
+import { LabelObjectCreated } from '@app/interfaces/label-object-created';
+import { OrganizationService } from '@app/pages/organization/organization.service';
 import { OrganizationBase } from '@app/pages/organization/shared/organization-base';
 import { ApiService } from '@app/services/api.service';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
+import { faCheck } from '@fortawesome/free-solid-svg-icons/faCheck';
 import { faTrash } from '@fortawesome/free-solid-svg-icons/faTrash';
 import { PopoverConfig } from 'ngx-bootstrap';
-import construct = Reflect.construct;
 
 export function getPopoverConfig(): PopoverConfig {
   return Object.assign(new PopoverConfig(), {
@@ -28,6 +32,7 @@ export function getPopoverConfig(): PopoverConfig {
 export class CardComponent extends OrganizationBase implements OnInit {
 
   readonly trash: IconDefinition = faTrash;
+  readonly check: IconDefinition = faCheck;
 
   @ViewChild('contentInput', { static: false }) contentInput: ElementRef<HTMLTextAreaElement>;
 
@@ -40,6 +45,11 @@ export class CardComponent extends OrganizationBase implements OnInit {
    * Current card
    */
   card: Card;
+
+  /**
+   * Labels list
+   */
+  labels: Label[] = [];
 
   /**
    * Columns to be selected
@@ -64,13 +74,26 @@ export class CardComponent extends OrganizationBase implements OnInit {
   }
 
   ngOnInit(): void {
-    super.ngOnInit();
     // Get card ID from router params
     this.activatedRoute.params.subscribe((params: Params): void => {
       // Load card data
       this.apiService.getCard(params.card).subscribe((card: Card): void => {
         this.card = card;
         this.content.setValue(card.content);
+        OrganizationService.labels.subscribe((data: Label[]): void => {
+          this.labels = data || [];
+          this.labels.forEach((label: Label): void => {
+            /**
+             * Find label
+             */
+            const foundLabel: CardLabel = this.card.labels
+              .find((cardLabel: CardLabel): boolean => cardLabel.label === label.id);
+            /**
+             * Mark label as selected if found
+             */
+            label.selected = !!foundLabel;
+          });
+        });
         // Load projects of cards organization for selection
         this.apiService.getColumns(
           null, (this.card.column as Column).project as number,
@@ -131,4 +154,32 @@ export class CardComponent extends OrganizationBase implements OnInit {
     this.changeDetectorRef.detectChanges();
     this.contentInput.nativeElement.focus();
   }
+
+  /**
+   * Update card labels on tooltip hidden
+   */
+  updateCardLabels(): void {
+    this.labels.forEach((label: Label): void => {
+      /**
+       * Find label
+       */
+      const foundLabel: CardLabel = this.card.labels
+        .find((cardLabel: CardLabel): boolean => cardLabel.label === label.id);
+      /**
+       * Assign label if it was selected and was not in the card's label list, and remove label
+       * if it was deselected and was in the card's label list.
+       */
+      if (label.selected && !foundLabel) {
+        this.apiService.assignLabel(LabelKind.CARD, this.card.id, label.id)
+          .subscribe((data: LabelObjectCreated): void => {
+            this.card.labels.push({ label: data.label, id: data.id });
+          });
+      } else if (!label.selected && foundLabel) {
+        this.apiService.deAttachLabel(foundLabel.id).subscribe((): void => {
+          this.card.labels.splice(this.card.labels.indexOf(foundLabel), 1);
+        });
+      }
+    });
+  }
 }
+

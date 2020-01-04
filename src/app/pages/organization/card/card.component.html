@@ -25,7 +25,15 @@
                   <span class="badge badge-light">Assignee</span>
                   <span class="float-right">
                     <span *ngIf="getUser(card.assignee)">{{ getUser(card.assignee).username }}</span>
-                    <span *ngIf="!getUser(card.assignee)" class="text-secondary">No one</span>
+                    <span *ngIf="!getUser(card.assignee)"
+                          class="text-secondary">No one</span>
+                  </span>
+                </li>
+                <li class="list-group-item list-group-item-action" [popover]="labelsPopover"
+                    (onHidden)="updateCardLabels()">
+                  <span class="badge badge-light">Labels</span>
+                  <span class="float-right">
+                    <span *ngIf="!card.labels" class="text-secondary">No label</span>
                   </span>
                 </li>
                 <li class="list-group-item">
@@ -75,6 +83,20 @@
          [class.active]="card.column.id === column.id"
          (click)="update({column: column.id})">
         {{ column.name }}
+      </a>
+    </li>
+  </ul>
+</ng-template>
+
+<ng-template #labelsPopover>
+  <ul class="nav nav-pills flex-column">
+    <li class="nav-item" *ngFor="let label of labels">
+      <a class="nav-link"
+         (click)="label.selected = !label.selected"
+         [class.active]="label.selected"
+         [class.disabled]="loading">
+        {{ label.name }}
+        <fa-icon [icon]="check" class="float-right ml-2" size="sm" *ngIf="label.selected"></fa-icon>
       </a>
     </li>
   </ul>
