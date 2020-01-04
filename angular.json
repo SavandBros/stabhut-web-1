@@ -73,9 +73,6 @@
             "browserTarget": "stabhut:build"
           },
           "configurations": {
-            "production": {
-              "browserTarget": "stabhut:build:production"
-            },
             "dev-prod": {
               "browserTarget": "stabhut:build:dev-prod"
             }
