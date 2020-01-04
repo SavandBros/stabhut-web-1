@@ -1,5 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { LabelKind } from '@app/enums/label-kind.enum';
 
 import { ApiPayload } from '@app/interfaces/api-payload';
 import { ApiPayloadGet } from '@app/interfaces/api-payload-get';
@@ -7,6 +8,8 @@ import { ApiResponse } from '@app/interfaces/api-response';
 import { Card } from '@app/interfaces/card';
 import { Chat } from '@app/interfaces/chat';
 import { Column } from '@app/interfaces/column';
+import { Label } from '@app/interfaces/label';
+import { LabelObjectCreated } from '@app/interfaces/label-object-created';
 import { Organization } from '@app/interfaces/organization';
 import { Project } from '@app/interfaces/project';
 import { Task } from '@app/interfaces/task';
@@ -14,7 +17,6 @@ import { User } from '@app/interfaces/user';
 import { environment } from '@environments/environment';
 
 import { Observable } from 'rxjs';
-import { Label } from '@app/interfaces/label';
 
 @Injectable({
   providedIn: 'root',
@@ -197,8 +199,28 @@ export class ApiService {
    * @param name Label name
    * @param color Label color
    */
-  createLabel(organization: number, name: string, color: string = '#eee'): Observable<Label> {
+  createLabel(organization: number, name: string, color: string = '#eeeeee'): Observable<Label> {
     return this.http.post<Label>(`${ApiService.BASE}label/`, { organization, name, color });
+  }
+
+  /**
+   * Assign a label
+   *
+   * @param kind Label kind
+   * @param to ID to assign label to
+   * @param labelId Label ID
+   */
+  assignLabel(kind: LabelKind, to: number, labelId: number): Observable<LabelObjectCreated> {
+    return this.http.post<LabelObjectCreated>(`${ApiService.BASE}label-object/`, { kind, to, label: labelId });
+  }
+
+  /**
+   * De attach a label
+   *
+   * @param id Label ID
+   */
+  deAttachLabel(id: number): Observable<void> {
+    return this.http.delete<void>(`${ApiService.BASE}label-object/${id}/`);
   }
 
   /**

@@ -101,7 +101,7 @@
         <div class="card-body" *ngIf="projectTab === 'options' && projectSelected"></div>
         <!-- Selected label options -->
         <div class="card-body" *ngIf="labelSelected">
-          <!-- Labels -->
+          <!-- Label name -->
           <div class="form-group input-group">
             <input type="text" class="form-control" [(ngModel)]="labelSelected.name">
             <div class="input-group-append">
@@ -109,6 +109,10 @@
                 <fa-icon icon="trash"></fa-icon>
               </button>
             </div>
+          </div>
+          <!-- Label color -->
+          <div class="form-group">
+            <input type="color" class="form-control" [(ngModel)]="labelSelected.color">
           </div>
           <!-- Update button -->
           <button class="btn btn-primary btn-block" (click)="updateLabel(labelSelected)">Update</button>

@@ -58,8 +58,9 @@
                 <!-- Labels -->
                 <span class="labels" *ngIf="labels">
                   <span class="badge badge-light font-weight-light mr-1"
-                        *ngFor="let label of card.labels">
-                    {{ getLabel(label).name }}
+                        *ngFor="let label of card.labels"
+                        [ngStyle]="{color: getContrast(getLabel(label.label).color), backgroundColor: getLabel(label.label).color}">
+                    {{ getLabel(label.label).name }}
                   </span>
                 </span>
               </div>
