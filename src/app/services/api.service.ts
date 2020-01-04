@@ -36,7 +36,7 @@ export class ApiService {
    * Will get authenticated users organizations.
    */
   getOrganizations(): Observable<Organization[]> {
-    return this.http.get<Organization[]>(`${ApiService.BASE}organization/`).pipe();
+    return this.http.get<Organization[]>(`${ApiService.BASE}organization/`);
   }
 
   /**
@@ -45,7 +45,7 @@ export class ApiService {
    * @param id Organization ID
    */
   getOrganization(id: number): Observable<Organization> {
-    return this.http.get<Organization>(`${ApiService.BASE}organization/${id}/`).pipe();
+    return this.http.get<Organization>(`${ApiService.BASE}organization/${id}/`);
   }
 
   /**
@@ -86,7 +86,7 @@ export class ApiService {
    * @param column Column ID
    */
   getColumn(column: number): Observable<Column> {
-    return this.http.get<Column>(`${ApiService.BASE}column/${column}/`).pipe();
+    return this.http.get<Column>(`${ApiService.BASE}column/${column}/`);
   }
 
   /**
@@ -108,12 +108,9 @@ export class ApiService {
 
   /**
    * Create a column
-   *
-   * @param project Project ID of the column
-   * @param name Column name
    */
-  createColumn(project: number, name: string): Observable<Column> {
-    return this.http.post<Column>(`${ApiService.BASE}column/`, { project, name });
+  createColumn(payload: Partial<Column>): Observable<Column> {
+    return this.http.post<Column>(`${ApiService.BASE}column/`, payload);
   }
 
   /**
@@ -122,8 +119,8 @@ export class ApiService {
    * @param id Column ID
    * @param payload Column data to update to
    */
-  updateColumn(id: number, payload: ApiPayload): Observable<Column> {
-    return this.http.patch<Column>(`${ApiService.BASE}column/${id}/`, payload).pipe();
+  updateColumn(id: number, payload: Partial<Column>): Observable<Column> {
+    return this.http.patch<Column>(`${ApiService.BASE}column/${id}/`, payload);
   }
 
   /**
@@ -132,7 +129,7 @@ export class ApiService {
    * @param column Column ID
    */
   deleteColumn(column: number): Observable<void> {
-    return this.http.delete<void>(`${ApiService.BASE}column/${column}/`).pipe();
+    return this.http.delete<void>(`${ApiService.BASE}column/${column}/`);
   }
 
   /**
@@ -141,7 +138,7 @@ export class ApiService {
    * @param card Card ID
    */
   getCard(card: number): Observable<Card> {
-    return this.http.get<Card>(`${ApiService.BASE}card/${card}/`).pipe();
+    return this.http.get<Card>(`${ApiService.BASE}card/${card}/`);
   }
 
   /**
@@ -150,7 +147,7 @@ export class ApiService {
    * @param card Card ID
    */
   deleteCard(card: number): Observable<void> {
-    return this.http.delete<void>(`${ApiService.BASE}card/${card}/`).pipe();
+    return this.http.delete<void>(`${ApiService.BASE}card/${card}/`);
   }
 
   /**
@@ -173,7 +170,7 @@ export class ApiService {
    * @param payload Task data
    */
   updateCard(card: number, payload: ApiPayload): Observable<Card> {
-    return this.http.patch<Card>(`${ApiService.BASE}card/${card}/`, payload).pipe();
+    return this.http.patch<Card>(`${ApiService.BASE}card/${card}/`, payload);
   }
 
   /**
@@ -182,7 +179,7 @@ export class ApiService {
    * @param payload Card payload
    */
   createCard(payload: ApiPayload): Observable<Card> {
-    return this.http.post<Card>(`${ApiService.BASE}card/`, payload).pipe();
+    return this.http.post<Card>(`${ApiService.BASE}card/`, payload);
   }
 
   /**
@@ -251,14 +248,14 @@ export class ApiService {
    * @param user User ID
    */
   getUser(user: number): Observable<User> {
-    return this.http.get<User>(`${ApiService.BASE}user/${user}/`).pipe();
+    return this.http.get<User>(`${ApiService.BASE}user/${user}/`);
   }
 
   /**
    * User list
    */
   getUsers(): Observable<ApiResponse<User>> {
-    return this.http.get<ApiResponse<User>>(`${ApiService.BASE}user/`).pipe();
+    return this.http.get<ApiResponse<User>>(`${ApiService.BASE}user/`);
   }
 
   /**
@@ -280,7 +277,7 @@ export class ApiService {
    * @param payload Chat data
    */
   createChat(payload: ApiPayload): Observable<Chat> {
-    return this.http.post<Chat>(`${ApiService.BASE}chat/`, payload).pipe();
+    return this.http.post<Chat>(`${ApiService.BASE}chat/`, payload);
   }
 
   /**
@@ -303,7 +300,7 @@ export class ApiService {
    * @param payload Task data
    */
   updateTask(task: number, payload: ApiPayload): Observable<Task> {
-    return this.http.patch<Task>(`${ApiService.BASE}task/${task}/`, payload).pipe();
+    return this.http.patch<Task>(`${ApiService.BASE}task/${task}/`, payload);
   }
 
   /**
@@ -312,6 +309,6 @@ export class ApiService {
    * @param payload Task data
    */
   createTask(payload: ApiPayload): Observable<Task> {
-    return this.http.post<Task>(`${ApiService.BASE}task/`, payload).pipe();
+    return this.http.post<Task>(`${ApiService.BASE}task/`, payload);
   }
 }

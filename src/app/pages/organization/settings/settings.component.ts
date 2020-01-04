@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Column } from '@app/interfaces/column';
+import { Label } from '@app/interfaces/label';
 import { Organization } from '@app/interfaces/organization';
 import { Project } from '@app/interfaces/project';
 import { ApiService } from '@app/services/api.service';
-import { Label } from '@app/interfaces/label';
 
 @Component({
   selector: 'app-settings',
@@ -102,7 +102,7 @@ export class SettingsComponent implements OnInit {
    * @param name Column name
    */
   addColumn(name: string): void {
-    this.api.createColumn(this.projectSelected.id, name).subscribe(data => {
+    this.api.createColumn({ project: this.projectSelected.id, name }).subscribe(data => {
       this.projectSelected.columns.push(data);
     });
   }
@@ -125,7 +125,7 @@ export class SettingsComponent implements OnInit {
   /**
    * Update all columns
    */
-  updateColumns() {
+  updateColumns(): void {
     for (let column of this.projectSelected.columns) {
       this.api.updateColumn(column.id, { name: column.name }).subscribe(data => {
         column = data;

@@ -15,11 +15,12 @@ export class OrganizationComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.api.getOrganization(
-      Number(location.pathname.split('/organization/')[1].split('/')[0]),
-    ).subscribe((data: Organization): void => {
-      OrganizationService.currentOrganization = data;
-      this.organizationService.initialise();
-    });
+    const organizationId = Number(location.pathname.split('/organization/')[1].split('/')[0]);
+    if (organizationId) {
+      this.api.getOrganization(organizationId).subscribe((data: Organization): void => {
+        OrganizationService.currentOrganization = data;
+        this.organizationService.initialise();
+      });
+    }
   }
 }

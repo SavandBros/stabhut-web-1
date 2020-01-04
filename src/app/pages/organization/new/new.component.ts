@@ -44,15 +44,15 @@ export class NewComponent implements OnInit {
           project: project.id,
           content: 'Setup this organization',
         }).subscribe();
-        this.api.createColumn(project.id, 'Ready').subscribe((column: Column): void => {
+        this.api.createColumn({ project: project.id, order: 0, name: 'Ready' }).subscribe((column: Column): void => {
           this.api.createCard({
             column: column.id,
             content: 'Hey, I\'m a sample card here. Do whatever you want with me.',
           }).subscribe();
         });
-        this.api.createColumn(project.id, 'In Progress').subscribe();
-        this.api.createColumn(project.id, 'Needs Review').subscribe();
-        this.api.createColumn(project.id, 'Done').subscribe();
+        this.api.createColumn({ project: project.id, order: 1, name: 'In Progress' }).subscribe();
+        this.api.createColumn({ project: project.id, order: 2, name: 'Needs Review' }).subscribe();
+        this.api.createColumn({ project: project.id, order: 3, name: 'Done' }).subscribe();
       });
     }, (error: HttpErrorResponse): void => {
       this.loading = false;
