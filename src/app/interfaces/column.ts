@@ -5,5 +5,6 @@ export interface Column {
   id: number;
   name: string;
   project: Project | number;
+  order: number;
   cards?: Card[];
 }
