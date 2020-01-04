@@ -139,7 +139,7 @@ export class SettingsComponent implements OnInit {
    * @param label Label to update
    */
   updateLabel(label: Label): void {
-    this.api.updateLabel(label.id, { name: label.name }).subscribe((data: Label): void => {
+    this.api.updateLabel(label.id, { name: label.name, color: label.color }).subscribe((data: Label): void => {
       label = data;
     });
   }
