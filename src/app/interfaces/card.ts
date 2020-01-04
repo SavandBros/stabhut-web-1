@@ -1,5 +1,5 @@
+import { CardLabel } from '@app/interfaces/card-label';
 import { Column } from '@app/interfaces/column';
-import { User } from '@app/interfaces/user';
 
 export interface Card {
   id: number;
@@ -9,7 +9,7 @@ export interface Card {
   order: number;
   updated: string;
   created: string;
-  labels: number[];
+  labels: CardLabel[];
   /**
    * Extra properties
    */
