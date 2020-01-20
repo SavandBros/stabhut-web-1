@@ -20,7 +20,7 @@ import { BsModalService } from 'ngx-bootstrap';
   templateUrl: './project.component.html',
   styleUrls: ['./project.component.scss'],
 })
-export class ProjectComponent extends OrganizationBase implements OnInit {
+export class ProjectComponent extends OrganizationBase {
 
   /**
    * Determines whether to open or close chat list

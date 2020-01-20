@@ -12,20 +12,20 @@ export class OrganizationBase implements OnInit {
   labels: Label[];
   users: User[];
 
+  get isOrganizationInitialised(): boolean {
+    return OrganizationService.isInitialised;
+  };
+
   ngOnInit(): void {
-    // Initialize organization
     OrganizationService.organization.subscribe((data: Organization): void => {
       this.organization = data;
     });
-    // Initialize projects
     OrganizationService.projects.subscribe((data: Project[]): void => {
       this.projects = data;
     });
-    // Initialize labels
     OrganizationService.labels.subscribe((data: Label[]): void => {
       this.labels = data;
     });
-    // Initialize users
     OrganizationService.users.subscribe((data: User[]): void => {
       this.users = data;
     });

@@ -29,7 +29,7 @@ export function getPopoverConfig(): PopoverConfig {
   styleUrls: ['./card.component.scss'],
   providers: [{ provide: PopoverConfig, useFactory: getPopoverConfig }],
 })
-export class CardComponent extends OrganizationBase implements OnInit {
+export class CardComponent extends OrganizationBase {
 
   readonly trash: IconDefinition = faTrash;
   readonly check: IconDefinition = faCheck;
@@ -86,8 +86,7 @@ export class CardComponent extends OrganizationBase implements OnInit {
             /**
              * Find label
              */
-            const foundLabel: CardLabel = this.card.labels
-              .find((cardLabel: CardLabel): boolean => cardLabel.label === label.id);
+            const foundLabel: CardLabel = this.card.labels.find(cardLabel => cardLabel.label === label.id);
             /**
              * Mark label as selected if found
              */
@@ -96,7 +95,7 @@ export class CardComponent extends OrganizationBase implements OnInit {
         });
         // Load projects of cards organization for selection
         this.apiService.getColumns(
-          null, (this.card.column as Column).project as number,
+          null, (this.card.column as Column).project as number
         ).subscribe((data: Column[]): void => {
           this.columns = data;
         });
