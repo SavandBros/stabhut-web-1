@@ -29,7 +29,7 @@ export function getPopoverConfig(): PopoverConfig {
   styleUrls: ['./card.component.scss'],
   providers: [{ provide: PopoverConfig, useFactory: getPopoverConfig }],
 })
-export class CardComponent extends OrganizationBase {
+export class CardComponent extends OrganizationBase implements OnInit{
 
   readonly trash: IconDefinition = faTrash;
   readonly check: IconDefinition = faCheck;

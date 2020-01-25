@@ -6,7 +6,7 @@
       <!-- Projects -->
       <li class="nav-item" *ngFor="let project of projects">
         <a class="nav-link" [routerLink]="['.']" [queryParams]="{project: project.id}"
-           [ngClass]="{'active font-weight-bold': projectSelected === project}">
+           [ngClass]="{'active font-weight-bold': projectSelected && projectSelected.id === project.id}">
           {{ project.name }}
         </a>
       </li>
@@ -30,7 +30,7 @@
 
     <!-- Columns -->
     <div class="w-100 h-100 overflow-auto">
-      <div class="d-inline-flex h-100 py-3" cdkDropListGroup>
+      <div class="d-inline-flex h-100 pt-3" cdkDropListGroup>
         <div class="column" *ngFor="let column of projectSelected.columns">
 
           <!-- Column header -->
@@ -44,7 +44,7 @@
           </p>
 
           <!-- Cards -->
-          <div class="h-100 tickets overflow-auto" [cdkDropListData]="column.cards" cdkDropList
+          <div class="h-100 cards overflow-auto" [cdkDropListData]="column.cards" cdkDropList
                (cdkDropListDropped)="drop($event, column)">
             <div class="card column-card mb-2" *ngFor="let card of column.cards" cdkDrag
                  [cdkDragDisabled]="card.loading" [cdkDragData]="card">
@@ -59,7 +59,7 @@
                 <span class="labels" *ngIf="labels">
                   <span class="badge badge-light font-weight-light mr-1"
                         *ngFor="let label of card.labels"
-                        [ngStyle]="{color: getContrast(getLabel(label.label).color), backgroundColor: getLabel(label.label).color}">
+                        [ngStyle]="getLabelStyle(label)">
                     {{ getLabel(label.label).name }}
                   </span>
                 </span>

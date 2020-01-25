@@ -20,7 +20,7 @@ import { BsModalService } from 'ngx-bootstrap';
   templateUrl: './project.component.html',
   styleUrls: ['./project.component.scss'],
 })
-export class ProjectComponent extends OrganizationBase {
+export class ProjectComponent extends OrganizationBase implements OnInit {
 
   /**
    * Determines whether to open or close chat list
@@ -236,40 +236,5 @@ export class ProjectComponent extends OrganizationBase {
       );
       this.updateCard(event.item.data.id, event.currentIndex, column, { column: column.id, order: event.currentIndex });
     }
-  }
-
-  /**
-   * Get the contrasting color for any hex color
-   *
-   * @param hexColor Hex color value
-   * @return The contrasting color (black or white)
-   */
-  getContrast(hexColor: string): string {
-    /**
-     * If a leading # is provided, remove it
-     */
-    if (hexColor.slice(0, 1) === '#') {
-      hexColor = hexColor.slice(1);
-    }
-    /**
-     * If a three-character hex code, make six-character
-     */
-    if (hexColor.length === 3) {
-      hexColor = hexColor.split('').map((hex: string): string => hex + hex).join('');
-    }
-    /**
-     * Convert to RGB value
-     */
-    const r = parseInt(hexColor.substr(0, 2), 16);
-    const g = parseInt(hexColor.substr(2, 2), 16);
-    const b = parseInt(hexColor.substr(4, 2), 16);
-    /**
-     * Get YIQ ratio
-     */
-    const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
-    /**
-     * Check contrast
-     */
-    return (yiq >= 128) ? 'black' : 'white';
   }
 }

@@ -25,8 +25,9 @@ $card-drag-placeholder-opacity: 0.5;
   max-width: 300px;
   margin-left: map-get($spacers, 3);
 
-  .tickets {
+  .cards {
     height: 100%;
+    padding-right: 5px;
   }
 
   &:last-of-type {

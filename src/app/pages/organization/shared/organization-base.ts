@@ -1,4 +1,5 @@
 import { OnInit } from '@angular/core';
+import { CardLabel } from '@app/interfaces/card-label';
 import { Label } from '@app/interfaces/label';
 import { Organization } from '@app/interfaces/organization';
 import { Project } from '@app/interfaces/project';
@@ -14,7 +15,7 @@ export class OrganizationBase implements OnInit {
 
   get isOrganizationInitialised(): boolean {
     return OrganizationService.isInitialised;
-  };
+  }
 
   ngOnInit(): void {
     OrganizationService.organization.subscribe((data: Organization): void => {
@@ -59,5 +60,49 @@ export class OrganizationBase implements OnInit {
     if (this.users) {
       return this.users.find(item => item.id === id);
     }
+  }
+
+  // Extra
+
+  /**
+   * Get the contrasting color for any hex color
+   *
+   * @param hexColor Hex color value
+   * @return The contrasting color (black or white)
+   */
+  getContrast(hexColor: string): string {
+    /**
+     * If a leading # is provided, remove it
+     */
+    if (hexColor.slice(0, 1) === '#') {
+      hexColor = hexColor.slice(1);
+    }
+    /**
+     * If a three-character hex code, make six-character
+     */
+    if (hexColor.length === 3) {
+      hexColor = hexColor.split('').map((hex: string): string => hex + hex).join('');
+    }
+    /**
+     * Convert to RGB value
+     */
+    const r = parseInt(hexColor.substr(0, 2), 16);
+    const g = parseInt(hexColor.substr(2, 2), 16);
+    const b = parseInt(hexColor.substr(4, 2), 16);
+    /**
+     * Get YIQ ratio
+     */
+    const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+    /**
+     * Check contrast
+     */
+    return (yiq >= 128) ? 'black' : 'white';
+  }
+
+  getLabelStyle(cardLabel: CardLabel): { backgroundColor: string; color: string } {
+    return {
+      color: this.getContrast(this.getLabel(cardLabel.label).color),
+      backgroundColor: this.getLabel(cardLabel.label).color,
+    };
   }
 }
