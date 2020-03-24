@@ -34,7 +34,7 @@ export class CardComponent extends OrganizationBase implements OnInit{
   readonly trash: IconDefinition = faTrash;
   readonly check: IconDefinition = faCheck;
 
-  @ViewChild('contentInput', { static: false }) contentInput: ElementRef<HTMLTextAreaElement>;
+  @ViewChild('contentInput') contentInput: ElementRef<HTMLTextAreaElement>;
 
   /**
    * API loading
