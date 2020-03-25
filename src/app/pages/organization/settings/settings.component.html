@@ -98,7 +98,20 @@
           </button>
         </div>
         <!-- Selected project options -->
-        <div class="card-body" *ngIf="projectTab === 'options' && projectSelected"></div>
+        <div class="card-body" *ngIf="projectTab === 'options' && projectSelected">
+          <div class="form-group input-group">
+            <input type="text" class="form-control" [(ngModel)]="projectSelected.name">
+            <div class="input-group-append">
+              <button class="btn btn-secondary" (click)="deleteProject()">
+                <fa-icon icon="trash"></fa-icon>
+              </button>
+            </div>
+          </div>
+          <!-- Update button -->
+          <button class="btn btn-block btn-primary" (click)="updateProject()">
+            Update
+          </button>
+        </div>
         <!-- Selected label options -->
         <div class="card-body" *ngIf="labelSelected">
           <!-- Label name -->
