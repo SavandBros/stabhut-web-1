@@ -12,6 +12,7 @@ import { User } from '@app/interfaces/user';
 import { OrganizationBase } from '@app/pages/organization/shared/organization-base';
 import { ApiService } from '@app/services/api.service';
 import { AuthService } from '@app/services/auth.service';
+import { CardModalComponent } from '@app/shared/card-modal/card-modal.component';
 import { CardNewComponent } from '@app/shared/card-new/card-new.component';
 import { BsModalService } from 'ngx-bootstrap';
 
@@ -141,6 +142,12 @@ export class ProjectComponent extends OrganizationBase implements OnInit {
   }
 
   /**
+   * Edit Card
+   */
+  editCard(): void {
+  }
+
+  /**
    * Called when user enters an input in the side panel
    */
   sidePanelSubmit(): void {
@@ -235,6 +242,15 @@ export class ProjectComponent extends OrganizationBase implements OnInit {
         event.currentIndex,
       );
       this.updateCard(event.item.data.id, event.currentIndex, column, { column: column.id, order: event.currentIndex });
+    }
+  }
+
+  getCardViewParams(card: Card) {
+    if (this.route.snapshot.queryParams) {
+      return Object.assign(
+        this.route.snapshot.queryParams,
+        { card: card.id },
+      );
     }
   }
 }

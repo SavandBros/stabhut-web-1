@@ -17,6 +17,7 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus';
 import { faTrash } from '@fortawesome/free-solid-svg-icons/faTrash';
 import { BsDropdownModule } from 'ngx-bootstrap';
 import { CookieService } from 'ngx-cookie-service';
+import { CardModalComponent } from './shared/card-modal/card-modal.component';
 
 const routes: Routes = [{
   path: 'sign-in',
@@ -36,6 +37,7 @@ const routes: Routes = [{
 @NgModule({
   declarations: [
     AppComponent,
+    CardModalComponent,
   ],
   imports: [
     RouterModule.forRoot(routes),
