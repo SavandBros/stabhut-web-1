@@ -50,7 +50,12 @@
                  [cdkDragDisabled]="card.loading" [cdkDragData]="card">
               <div class="card-body">
                 <!-- Content -->
-                <a class="text-dark d-block" [routerLink]="['.']" [queryParams]="getCardViewParams(card)">{{ card.content }}</a>
+                <a class="text-dark d-block"
+                   [routerLink]="['.']"
+                   [queryParams]="{ card:card.id }"
+                   [queryParamsHandling]="'merge'">
+                  {{ card.content }}
+                </a>
                 <!-- Assignee -->
                 <span class="badge badge-primary font-weight-light mr-1" *ngIf="users && card.assignee">
                   {{ getUser(card.assignee).username }}
