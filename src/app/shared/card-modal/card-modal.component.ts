@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef, Input } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LabelKind } from '@app/enums/label-kind.enum';
@@ -9,7 +9,6 @@ import { CardLabel } from '@app/interfaces/card-label';
 import { Column } from '@app/interfaces/column';
 import { Label } from '@app/interfaces/label';
 import { LabelObjectCreated } from '@app/interfaces/label-object-created';
-import { User } from '@app/interfaces/user';
 import { OrganizationService } from '@app/pages/organization/organization.service';
 import { OrganizationBase } from '@app/pages/organization/shared/organization-base';
 import { ApiService } from '@app/services/api.service';
@@ -17,7 +16,6 @@ import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faCheck } from '@fortawesome/free-solid-svg-icons/faCheck';
 import { faTrash } from '@fortawesome/free-solid-svg-icons/faTrash';
 import { BsModalRef, PopoverConfig } from 'ngx-bootstrap';
-import { MarkdownService } from 'ngx-markdown';
 
 export function getPopoverConfig(): PopoverConfig {
   return Object.assign(new PopoverConfig(), {
@@ -47,12 +45,7 @@ export class CardModalComponent extends OrganizationBase implements OnInit {
   /**
    * Card details
    */
-  card: Card;
-
-  /**
-   * List of users
-   */
-  users: User[];
+  @Input() card: Card;
 
   /**
    * Columns to be selected

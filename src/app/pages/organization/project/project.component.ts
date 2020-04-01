@@ -135,7 +135,7 @@ export class ProjectComponent extends OrganizationBase implements OnInit {
      */
     this.route.queryParamMap.subscribe(queryParams => {
       if (queryParams.get('card')) {
-          // Load card data
+        // Load card data
         this.api.getCard(Number(queryParams.get('card'))).subscribe((card: Card): void => {
           this.card = card;
           this.editCard();
@@ -167,8 +167,7 @@ export class ProjectComponent extends OrganizationBase implements OnInit {
       class: 'modal-lg',
       initialState: {
         card: this.card,
-        users: this.users,
-      }
+      },
     });
   }
 

@@ -49,7 +49,7 @@ const routes: Routes = [{
     FontAwesomeModule,
     TooltipModule.forRoot(),
     PopoverModule.forRoot(),
-    MarkdownModule.forChild(),
+    MarkdownModule.forRoot(),
     ReactiveFormsModule,
   ],
   providers: [
