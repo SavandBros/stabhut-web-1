@@ -1,15 +1,121 @@
 <!-- Header -->
 <div class="modal-header">
-  <p class="modal-title">Edit Card</p>
-  <button type="button" class="close" (click)="bsModalRef.hide()">&times;</button>
+  <p class="modal-title">{{ card.content }}</p>
+  <button type="button" class="close" (click)="cancel()">&times;</button>
 </div>
+
 <!-- Body -->
 <div class="modal-body">
-  <h1>This is Body</h1>
-</div>
-<!-- Footer -->
-<div class="modal-footer bg-light">
-  <div class="text-center">
-    <button class="btn btn-primary rounded btn-block" (click)="bsModalRef.hide()">Cancel</button>
+  <div class="row">
+    <!-- Edit content -->
+    <div class="col-lg-8">
+      <!-- Content -->
+      <span class="white-space-pre" *ngIf="!isEditing">
+        <markdown [data]="card.content"></markdown>
+      </span>
+      <!-- Editing input -->
+      <div class="form-group mb-0" *ngIf="isEditing">
+        <textarea class="form-control" name="content" rows="10" #contentInput [formControl]="content"
+                  [class.is-invalid]="content.hasError('required')">
+        </textarea>
+        <!-- Error -->
+        <small class="text-danger" *ngIf="content.hasError('required')">This field is required!</small>
+      </div>
+    </div>
+    <!-- Options -->
+    <div class="col-lg-4">
+      <ul class="list-group">
+        <!-- Column -->
+        <li class="list-group-item list-group-item-action" [popover]="columnPopover">
+          <span class="badge badge-light">Column</span>
+          <span class="float-right">{{ card.column.name }}</span>
+        </li>
+        <!-- Assignee -->
+        <li class="list-group-item list-group-item-action" [popover]="userPopover">
+          <span class="badge badge-light">Assignee</span>
+          <span class="float-right">
+            <span *ngIf="getUser(card.assignee)">{{ getUser(card.assignee).username }}</span>
+            <span *ngIf="!getUser(card.assignee)">No one</span>
+          </span>
+        </li>
+        <!-- Labels -->
+        <li class="list-group-item list-group-item-action"
+            [popover]="labelPopover" (onHidden)="updateCardLabels()">
+          <span class="badge badge-light">Labels</span>
+          <span class="float-right text-secondary" *ngIf="!card.labels">No label</span>
+        </li>
+        <!-- Updated -->
+        <li class="list-group-item">
+          <span class="badge badge-light">Updated</span>
+          <span class="float-right" [tooltip]="card.updated | date">
+            <span *ngIf="cardCreated() === cardUpdated()" class="text-secondary">Never</span>
+            <span *ngIf="cardCreated() !== cardUpdated()">{{ card.updated | date:'hh:MM a' }}</span>
+          </span>
+        </li>
+        <!-- Created -->
+        <li class="list-group-item">
+          <span class="badge badge-light">Created</span>
+          <span class="float-right" [tooltip]="card.created | date">{{ card.created | date: 'hh:MM a' }}</span>
+        </li>
+      </ul>
+    </div>
   </div>
 </div>
+
+<!-- Footer -->
+<div class="modal-footer bg-light">
+  <div *ngIf="isEditing">
+    <!-- Cancel -->
+    <a class="btn btn-link text-secondary" (click)="editCard(false)">Cancel</a>
+    <!-- Update -->
+    <button class="btn btn-primary" [disabled]="content.hasError('required')"
+            (click)="update({ content: content.value }); isEditing = false">Update
+    </button>
+  </div>
+  <div *ngIf="!isEditing">
+    <!-- Edit -->
+    <a class="btn btn-link" (click)="editCard(true)">Edit</a>
+    <!-- Delete -->
+    <a class="btn btn-link text-secondary" (click)="deleteCard()">
+      <fa-icon [icon]="trash"></fa-icon>
+    </a>
+  </div>
+</div>
+
+<!-- Column popover -->
+<ng-template #columnPopover>
+  <ul class="nav nav-pills flex-column">
+    <li class="nav-item" *ngFor="let column of columns">
+      <a class="nav-link"
+         [class.active]="card.column.id === column.id"
+         (click)="update({column: column.id})">
+        {{ column.name }}
+      </a>
+    </li>
+  </ul>
+</ng-template>
+
+<!-- User popover -->
+<ng-template #userPopover>
+  <ul class="nav nav-pills flex-column">
+    <li class="nav-item" *ngFor="let user of users">
+      <a class="nav-link"
+         [class.active]="card.assignee === user.id"
+         (click)="update({assignee: user.id})">
+        {{ user.username }}
+      </a>
+    </li>
+  </ul>
+</ng-template>
+
+<!-- Label popover -->
+<ng-template #labelPopover>
+  <ul class="nav nav-pills flex-column">
+    <li class="nav-item" *ngFor="let label of labels">
+      <a class="nav-link" (click)="label.selected = !label.selected">
+        {{ label.name }}
+        <fa-icon [icon]="check" class="float-right ml-2 text-primary" size="sm" *ngIf="label.selected"></fa-icon>
+      </a>
+    </li>
+  </ul>
+</ng-template>

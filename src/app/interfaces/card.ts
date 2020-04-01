@@ -3,7 +3,7 @@ import { Column } from '@app/interfaces/column';
 
 export interface Card {
   id: number;
-  column: Column | number;
+  column: Column;
   content: string;
   assignee: number;
   order: number;

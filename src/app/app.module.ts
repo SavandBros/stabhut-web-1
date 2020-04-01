@@ -1,5 +1,6 @@
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -7,6 +8,7 @@ import { AppComponent } from '@app/app.component';
 import { ApiInterceptorService } from '@app/services/api-interceptor.service';
 import { ApiService } from '@app/services/api.service';
 import { AuthService } from '@app/services/auth.service';
+import { CardModalComponent } from '@app/shared/card-modal/card-modal.component';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -15,9 +17,9 @@ import { faArrowCircleRight } from '@fortawesome/free-solid-svg-icons/faArrowCir
 import { faCog } from '@fortawesome/free-solid-svg-icons/faCog';
 import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus';
 import { faTrash } from '@fortawesome/free-solid-svg-icons/faTrash';
-import { BsDropdownModule } from 'ngx-bootstrap';
+import { BsDropdownModule, TooltipModule, PopoverModule } from 'ngx-bootstrap';
 import { CookieService } from 'ngx-cookie-service';
-import { CardModalComponent } from './shared/card-modal/card-modal.component';
+import { MarkdownModule } from 'ngx-markdown';
 
 const routes: Routes = [{
   path: 'sign-in',
@@ -45,6 +47,10 @@ const routes: Routes = [{
     HttpClientModule,
     BsDropdownModule.forRoot(),
     FontAwesomeModule,
+    TooltipModule.forRoot(),
+    PopoverModule.forRoot(),
+    MarkdownModule.forChild(),
+    ReactiveFormsModule,
   ],
   providers: [
     {

@@ -12,6 +12,7 @@ import { User } from '@app/interfaces/user';
 import { OrganizationBase } from '@app/pages/organization/shared/organization-base';
 import { ApiService } from '@app/services/api.service';
 import { AuthService } from '@app/services/auth.service';
+import { CardModalComponent } from '@app/shared/card-modal/card-modal.component';
 import { CardNewComponent } from '@app/shared/card-new/card-new.component';
 import { BsModalService } from 'ngx-bootstrap';
 
@@ -36,6 +37,11 @@ export class ProjectComponent extends OrganizationBase implements OnInit {
    * Selected project of this organization
    */
   projectSelected: Project;
+
+  /**
+   * Card details in card modal
+   */
+  card: Card;
 
   /**
    * Show chats or tasks in the side panel (default view is chats)
@@ -123,6 +129,19 @@ export class ProjectComponent extends OrganizationBase implements OnInit {
         this.users = data.results;
       });
     });
+
+    /**
+     * Watch query param changes
+     */
+    this.route.queryParamMap.subscribe(queryParams => {
+      if (queryParams.get('card')) {
+          // Load card data
+        this.api.getCard(Number(queryParams.get('card'))).subscribe((card: Card): void => {
+          this.card = card;
+          this.editCard();
+        });
+      }
+    });
   }
 
   /**
@@ -141,9 +160,16 @@ export class ProjectComponent extends OrganizationBase implements OnInit {
   }
 
   /**
-   * Edit Card
+   * Open card modal
    */
   editCard(): void {
+    this.modal.show(CardModalComponent, {
+      class: 'modal-lg',
+      initialState: {
+        card: this.card,
+        users: this.users,
+      }
+    });
   }
 
   /**
