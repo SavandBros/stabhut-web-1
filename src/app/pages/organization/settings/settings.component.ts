@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Column } from '@app/interfaces/column';
 import { Label } from '@app/interfaces/label';
 import { Organization } from '@app/interfaces/organization';
@@ -44,7 +44,8 @@ export class SettingsComponent implements OnInit {
   projectTab = 'columns';
 
   constructor(private route: ActivatedRoute,
-              private api: ApiService) {
+              private api: ApiService,
+              private router: Router) {
   }
 
   ngOnInit(): void {
@@ -82,6 +83,34 @@ export class SettingsComponent implements OnInit {
     this.api.createProject(this.organization.id, name).subscribe(data => {
       data.columns = [];
       this.projects.push(data);
+    });
+  }
+
+  /**
+   * Update a project
+   */
+  updateProject(): void {
+    let project: Project;
+    this.api.updateProject(this.projectSelected.id, {
+      name: this.projectSelected.name,
+      organization: this.organization.id,
+    }).subscribe(data => {
+      project = data;
+    });
+  }
+
+  /**
+   * Delete a Project
+   *
+   */
+  deleteProject(): void {
+    if (!confirm('Are you sure you want to delete this project?')) {
+      return;
+    }
+    this.api.deleteProject(this.projectSelected.id).subscribe(() => {
+      const index = this.projects.indexOf(this.projectSelected);
+      this.projects.splice(index, 1);
+      this.projectSelected = this.projects[0];
     });
   }
 
