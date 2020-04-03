@@ -4,6 +4,7 @@ import { Column } from '@app/interfaces/column';
 export interface Card {
   id: number;
   column: Column | number;
+  title: string;
   content: string;
   assignee: number;
   order: number;

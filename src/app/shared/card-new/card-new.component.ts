@@ -29,7 +29,8 @@ export class CardNewComponent implements OnInit {
   ngOnInit(): void {
     this.form = this.formBuilder.group({
       column: [this.column.id, Validators.required],
-      content: ['', Validators.required],
+      title: ['', Validators.required],
+      content: [''],
       assignee: [''],
     });
   }
