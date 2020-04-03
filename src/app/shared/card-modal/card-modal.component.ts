@@ -36,6 +36,7 @@ export class CardModalComponent extends OrganizationBase implements OnInit {
   readonly check: IconDefinition = faCheck;
 
   @ViewChild('contentInput') contentInput: ElementRef<HTMLTextAreaElement>;
+  @ViewChild('titleInput') titleInput: ElementRef<HTMLTextAreaElement>;
 
   /**
    * API loading
@@ -60,7 +61,12 @@ export class CardModalComponent extends OrganizationBase implements OnInit {
   /**
    * Content form control
    */
-  content: FormControl = new FormControl('', Validators.required);
+  content: FormControl = new FormControl('');
+
+  /**
+   * title form control
+   */
+  title: FormControl = new FormControl('', Validators.required);
 
   /**
    * Determines whether or not the user is editing card
@@ -81,6 +87,7 @@ export class CardModalComponent extends OrganizationBase implements OnInit {
      * At once fill the content form control
      */
     this.content.setValue(this.card.content);
+    this.title.setValue(this.card.title);
     /**
      * Get list of labels
      */
@@ -108,6 +115,24 @@ export class CardModalComponent extends OrganizationBase implements OnInit {
   }
 
   /**
+   * Start editing
+   *
+   * @param value Whether or not cancel editing
+   */
+  editCard(value: boolean): void {
+    this.isEditing = value;
+    if (!value) {
+      this.content.setValue(this.card.content);
+      this.title.setValue(this.card.title);
+      return;
+    }
+    this.changeDetectorRef.detectChanges();
+    this.contentInput.nativeElement.focus();
+    this.titleInput.nativeElement.focus();
+  }
+
+
+  /**
    * Update a card property
    */
   update(payload: ApiPayload): void {
@@ -117,6 +142,7 @@ export class CardModalComponent extends OrganizationBase implements OnInit {
       this.api.getCard(this.card.id).subscribe(card => {
         this.card = card;
         this.content.setValue(card.content);
+        this.title.setValue(card.title);
       });
     });
   }
@@ -137,21 +163,6 @@ export class CardModalComponent extends OrganizationBase implements OnInit {
     }, (): void => {
       this.loading = false;
     });
-  }
-
-  /**
-   * Start editing
-   *
-   * @param value Whether or not cancel editing
-   */
-  editCard(value: boolean): void {
-    this.isEditing = value;
-    if (!value) {
-      this.content.setValue(this.card.content);
-      return;
-    }
-    this.changeDetectorRef.detectChanges();
-    this.contentInput.nativeElement.focus();
   }
 
   /**

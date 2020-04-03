@@ -1,6 +1,15 @@
 <!-- Header -->
 <div class="modal-header">
-  <p class="modal-title">{{ card.content }}</p>
+  <!-- Title -->
+  <p class="modal-title" *ngIf="!isEditing">{{ card.title }}</p>
+  <!-- Edit title -->
+  <div class="modal-title form-group w-100" *ngIf="isEditing">
+    <input class="form-control" name="title" #titleInput [formControl]="title"
+           [class.is-invalid]="title.hasError('required')">
+    <!-- Error -->
+    <small class="text-danger" *ngIf="title.hasError('required')">This field is required!</small>
+  </div>
+  <!-- Close -->
   <button type="button" class="close" (click)="cancel()">&times;</button>
 </div>
 
@@ -69,7 +78,7 @@
     <a class="btn btn-link text-secondary" (click)="editCard(false)">Cancel</a>
     <!-- Update -->
     <button class="btn btn-primary" [disabled]="content.hasError('required')"
-            (click)="update({ content: content.value }); isEditing = false">Update
+            (click)="update({ content: content.value, title: title.value}); isEditing = false">Update
     </button>
   </div>
   <div *ngIf="!isEditing">
