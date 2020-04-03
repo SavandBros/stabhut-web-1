@@ -5,9 +5,15 @@
   </div>
   <div class="modal-body text-center">
     <div class="form-group">
+      <!-- Title -->
+      <div class="form-group">
+        <input class="form-control" formControlName="title" placeholder="Title">
+      </div>
+      <!-- Content -->
       <div class="form-group">
         <textarea formControlName="content" rows="10" placeholder="Content" class="form-control"></textarea>
       </div>
+      <!-- Assignee -->
       <div class="form-group mb-0">
         <select formControlName="assignee" class="form-control">
           <option value>Assignee</option>
@@ -18,6 +24,7 @@
   </div>
   <div class="modal-footer bg-light">
     <div class="text-center">
+      <!-- Submit -->
       <button class="btn btn-primary rounded btn-block" [disabled]="loading || form.invalid">Submit</button>
     </div>
   </div>
