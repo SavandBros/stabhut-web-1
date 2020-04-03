@@ -50,7 +50,7 @@
                  [cdkDragDisabled]="card.loading" [cdkDragData]="card">
               <div class="card-body">
                 <!-- Content -->
-                <a class="text-dark d-block" [routerLink]="['./card', card.id]">{{ card.content }}</a>
+                <a class="text-dark d-block" [routerLink]="['./card', card.id]">{{ card.title }}</a>
                 <!-- Assignee -->
                 <span class="badge badge-primary font-weight-light mr-1" *ngIf="users && card.assignee">
                   {{ getUser(card.assignee).username }}
