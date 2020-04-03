@@ -81,6 +81,25 @@ export class ApiService {
   }
 
   /**
+   * Update a project
+   *
+   * @param id Project ID
+   * @param payload Project data to update to
+   */
+  updateProject(id: number, payload: ApiPayload): Observable<Project> {
+    return this.http.put<Project>(`${ApiService.BASE}project/${id}/`, payload);
+  }
+
+  /**
+   * Delete a project
+   *
+   * @param id Project ID
+   */
+  deleteProject(id: number): Observable<void> {
+    return this.http.delete<void>(`${ApiService.BASE}project/${id}/`);
+  }
+
+  /**
    * Get a column data
    *
    * @param column Column ID
