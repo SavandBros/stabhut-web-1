@@ -165,6 +165,7 @@ export class ProjectComponent extends OrganizationBase implements OnInit {
   editCard(): void {
     this.modal.show(CardModalComponent, {
       class: 'modal-lg',
+      ignoreBackdropClick: true,
       initialState: {
         card: this.card,
       },
