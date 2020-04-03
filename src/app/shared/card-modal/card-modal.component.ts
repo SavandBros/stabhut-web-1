@@ -27,7 +27,6 @@ export function getPopoverConfig(): PopoverConfig {
 @Component({
   selector: 'app-card-modal',
   templateUrl: './card-modal.component.html',
-  styleUrls: ['./card-modal.component.scss'],
   providers: [DatePipe, { provide: PopoverConfig, useFactory: getPopoverConfig }],
 })
 export class CardModalComponent extends OrganizationBase implements OnInit {
