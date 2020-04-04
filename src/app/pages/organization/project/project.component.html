@@ -54,7 +54,7 @@
                    [routerLink]="['.']"
                    [queryParams]="{ card:card.id }"
                    [queryParamsHandling]="'merge'">
-                  {{ card.content }}
+                  {{ card.title }}
                 </a>
                 <!-- Assignee -->
                 <span class="badge badge-primary font-weight-light mr-1" *ngIf="users && card.assignee">
