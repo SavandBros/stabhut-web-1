@@ -163,12 +163,15 @@ export class ProjectComponent extends OrganizationBase implements OnInit {
    * Open card modal
    */
   editCard(): void {
+    console.log(this.projectSelected);
     this.modal.show(CardModalComponent, {
       class: 'modal-lg',
-      ignoreBackdropClick: true,
       initialState: {
         card: this.card,
+        columns: this.projectSelected.columns,
       },
+    }).content.update.subscribe((card: Card): void => {
+      this.card = card;
     });
   }
 

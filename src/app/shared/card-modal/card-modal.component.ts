@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef, Input } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { LabelKind } from '@app/enums/label-kind.enum';
 import { ApiPayload } from '@app/interfaces/api-payload';
 import { Card } from '@app/interfaces/card';
@@ -14,8 +14,10 @@ import { OrganizationBase } from '@app/pages/organization/shared/organization-ba
 import { ApiService } from '@app/services/api.service';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faCheck } from '@fortawesome/free-solid-svg-icons/faCheck';
+import { faTimes } from '@fortawesome/free-solid-svg-icons/faTimes';
 import { faTrash } from '@fortawesome/free-solid-svg-icons/faTrash';
-import { BsModalRef, PopoverConfig } from 'ngx-bootstrap';
+import { BsModalRef } from 'ngx-bootstrap/modal';
+import { PopoverConfig } from 'ngx-bootstrap/popover';
 
 export function getPopoverConfig(): PopoverConfig {
   return Object.assign(new PopoverConfig(), {
@@ -33,9 +35,22 @@ export class CardModalComponent extends OrganizationBase implements OnInit {
 
   readonly trash: IconDefinition = faTrash;
   readonly check: IconDefinition = faCheck;
+  readonly close: IconDefinition = faTimes;
 
-  @ViewChild('contentInput') contentInput: ElementRef<HTMLTextAreaElement>;
-  @ViewChild('titleInput') titleInput: ElementRef<HTMLTextAreaElement>;
+  /**
+   * On update event emitter
+   */
+  @Output() update = new EventEmitter<Card>();
+
+  /**
+   * Card to view
+   */
+  @Input() card: Card;
+
+  /**
+   * Columns that card can be in
+   */
+  @Input() columns: Column[];
 
   /**
    * API loading
@@ -43,50 +58,32 @@ export class CardModalComponent extends OrganizationBase implements OnInit {
   loading = false;
 
   /**
-   * Card details
-   */
-  @Input() card: Card;
-
-  /**
-   * Columns to be selected
-   */
-  columns: Column[];
-
-  /**
-   * Labels list
-   */
-  labels: Label[] = [];
-
-  /**
-   * Content form control
-   */
-  content: FormControl = new FormControl('');
-
-  /**
-   * title form control
-   */
-  title: FormControl = new FormControl('', Validators.required);
-
-  /**
    * Determines whether or not the user is editing card
    */
   isEditing: boolean;
 
-  constructor(public bsModalRef: BsModalRef,
+  /**
+   * Edit form
+   */
+  form: FormGroup;
+
+
+  constructor(public modal: BsModalRef,
+              private formBuilder: FormBuilder,
               private route: ActivatedRoute,
-              private api: ApiService,
-              private router: Router,
-              private changeDetectorRef: ChangeDetectorRef,
-              private datePipe: DatePipe) {
+              private api: ApiService) {
     super();
   }
 
   ngOnInit(): void {
+    super.ngOnInit();
     /**
-     * At once fill the content form control
+     * Setup edit form
      */
-    this.content.setValue(this.card.content);
-    this.title.setValue(this.card.title);
+    this.form = this.formBuilder.group({
+      title: ['', Validators.required],
+      content: [''],
+    });
     /**
      * Get list of labels
      */
@@ -103,62 +100,43 @@ export class CardModalComponent extends OrganizationBase implements OnInit {
         label.selected = !!foundLabel;
       });
     });
-    /**
-     * Load projects of cards organization for selection
-     */
-    this.api.getColumns(
-      null, this.card.column.project as number,
-    ).subscribe((data: Column[]): void => {
-      this.columns = data;
+  }
+
+  /**
+   * Setup editing the card
+   * To cancel editing, just set isEditing to false
+   */
+  edit(): void {
+    this.isEditing = true;
+    this.form.setValue({
+      title: this.card.title,
+      content: this.card.content,
     });
   }
 
   /**
-   * Start editing
-   *
-   * @param value Whether or not cancel editing
-   */
-  editCard(value: boolean): void {
-    this.isEditing = value;
-    if (!value) {
-      this.content.setValue(this.card.content);
-      this.title.setValue(this.card.title);
-      return;
-    }
-    this.changeDetectorRef.detectChanges();
-    this.contentInput.nativeElement.focus();
-    this.titleInput.nativeElement.focus();
-  }
-
-
-  /**
    * Update a card property
    */
-  update(payload: ApiPayload): void {
+  save(payload: ApiPayload): void {
     this.loading = true;
-    this.api.updateCard(this.card.id, payload).subscribe((): void => {
+    this.api.updateCard(this.card.id, payload).subscribe((data: Card): void => {
       this.loading = false;
-      this.api.getCard(this.card.id).subscribe(card => {
-        this.card = card;
-        this.content.setValue(card.content);
-        this.title.setValue(card.title);
-      });
+      this.card = data;
+      this.isEditing = false;
+      this.update.emit(this.card);
     });
   }
 
   /**
    * Delete card
    */
-  deleteCard(): void {
+  delete(): void {
     if (!confirm('Delete card?\nThis action is not undoable.')) {
       return;
     }
     this.loading = true;
     this.api.deleteCard(this.card.id).subscribe((): void => {
-      /**
-       * Close the modal
-       */
-      this.cancel();
+      this.modal.hide();
     }, (): void => {
       this.loading = false;
     });
@@ -172,45 +150,22 @@ export class CardModalComponent extends OrganizationBase implements OnInit {
       /**
        * Find label
        */
-      const foundLabel: CardLabel = this.card.labels
-        .find((cardLabel: CardLabel): boolean => cardLabel.label === label.id);
+      const foundLabel: CardLabel = this.card.labels.find((cardLabel: CardLabel): boolean => {
+        return cardLabel.label === label.id;
+      });
       /**
        * Assign label if it was selected and was not in the card's label list, and remove label
        * if it was deselected and was in the card's label list.
        */
       if (label.selected && !foundLabel) {
-        this.api.assignLabel(LabelKind.CARD, this.card.id, label.id)
-          .subscribe((data: LabelObjectCreated): void => {
-            this.card.labels.push({ label: data.label, id: data.id });
-          });
+        this.api.assignLabel(LabelKind.CARD, this.card.id, label.id).subscribe((data: LabelObjectCreated): void => {
+          this.card.labels.push({ label: data.label, id: data.id });
+        });
       } else if (!label.selected && foundLabel) {
         this.api.deAttachLabel(foundLabel.id).subscribe((): void => {
           this.card.labels.splice(this.card.labels.indexOf(foundLabel), 1);
         });
       }
     });
-  }
-
-  /**
-   * Card created date
-   */
-  cardCreated() {
-    return this.datePipe.transform(this.card.created);
-  }
-
-  /**
-   * Card updated date
-   */
-  cardUpdated() {
-    return this.datePipe.transform(this.card.updated);
-  }
-
-  /**
-   * Clear queryParams and Close the modal
-   */
-  cancel(): void {
-    const url: string = this.router.url.substring(0, this.router.url.indexOf('&'));
-    this.router.navigateByUrl(url);
-    this.bsModalRef.hide();
   }
 }

@@ -3,14 +3,13 @@
   <!-- Title -->
   <p class="modal-title" *ngIf="!isEditing">{{ card.title }}</p>
   <!-- Edit title -->
-  <div class="modal-title form-group w-100" *ngIf="isEditing">
-    <input class="form-control" name="title" #titleInput [formControl]="title"
-           [class.is-invalid]="title.hasError('required')">
-    <!-- Error -->
-    <small class="text-danger" *ngIf="title.hasError('required')">This field is required!</small>
+  <div class="modal-title form-group w-100" *ngIf="isEditing" [formGroup]="form">
+    <input class="form-control" name="title" formControlName="title">
   </div>
   <!-- Close -->
-  <button type="button" class="close" (click)="cancel()">&times;</button>
+  <button type="button" class="close" (click)="modal.hide()">
+    <fa-icon [icon]="close" [fixedWidth]="true" size="sm"></fa-icon>
+  </button>
 </div>
 
 <!-- Body -->
@@ -19,16 +18,10 @@
     <!-- Edit content -->
     <div class="col-lg-8">
       <!-- Content -->
-      <span class="white-space-pre" *ngIf="!isEditing">
-        <markdown [data]="card.content"></markdown>
-      </span>
+      <markdown [data]="card.content" *ngIf="!isEditing"></markdown>
       <!-- Editing input -->
-      <div class="form-group mb-0" *ngIf="isEditing">
-        <textarea class="form-control" name="content" rows="10" #contentInput [formControl]="content"
-                  [class.is-invalid]="content.hasError('required')">
-        </textarea>
-        <!-- Error -->
-        <small class="text-danger" *ngIf="content.hasError('required')">This field is required!</small>
+      <div class="form-group mb-0" [formGroup]="form" *ngIf="isEditing">
+        <textarea class="form-control" name="content" rows="10" formControlName="content"></textarea>
       </div>
     </div>
     <!-- Options -->
@@ -51,15 +44,12 @@
         <li class="list-group-item list-group-item-action"
             [popover]="labelPopover" (onHidden)="updateCardLabels()">
           <span class="badge badge-light">Labels</span>
-          <span class="float-right text-secondary" *ngIf="!card.labels">No label</span>
+          <span class="float-right text-secondary">{{ card.labels.length }}</span>
         </li>
         <!-- Updated -->
-        <li class="list-group-item">
+        <li class="list-group-item" *ngIf="card.created !== card.updated">
           <span class="badge badge-light">Updated</span>
-          <span class="float-right" [tooltip]="card.updated | date">
-            <span *ngIf="cardCreated() === cardUpdated()" class="text-secondary">Never</span>
-            <span *ngIf="cardCreated() !== cardUpdated()">{{ card.updated | date:'hh:MM a' }}</span>
-          </span>
+          <span class="float-right" [tooltip]="card.updated | date">{{ card.updated | date:'hh:MM a' }}</span>
         </li>
         <!-- Created -->
         <li class="list-group-item">
@@ -75,19 +65,17 @@
 <div class="modal-footer bg-light">
   <div *ngIf="isEditing">
     <!-- Cancel -->
-    <a class="btn btn-link text-secondary" (click)="editCard(false)">Cancel</a>
+    <button class="btn btn-light mr-2" (click)="isEditing = false">Cancel</button>
     <!-- Update -->
-    <button class="btn btn-primary" [disabled]="content.hasError('required')"
-            (click)="update({ content: content.value, title: title.value}); isEditing = false">Update
-    </button>
+    <button class="btn btn-primary" [disabled]="loading" (click)="save(form.value)">Save</button>
   </div>
   <div *ngIf="!isEditing">
     <!-- Edit -->
-    <a class="btn btn-link" (click)="editCard(true)">Edit</a>
+    <button class="btn btn-light mr-2" (click)="edit()">Edit</button>
     <!-- Delete -->
-    <a class="btn btn-link text-secondary" (click)="deleteCard()">
+    <button class="btn btn-light" (click)="delete()">
       <fa-icon [icon]="trash"></fa-icon>
-    </a>
+    </button>
   </div>
 </div>
 
@@ -97,7 +85,7 @@
     <li class="nav-item" *ngFor="let column of columns">
       <a class="nav-link"
          [class.active]="card.column.id === column.id"
-         (click)="update({column: column.id})">
+         (click)="save({column: column.id})">
         {{ column.name }}
       </a>
     </li>
@@ -110,7 +98,7 @@
     <li class="nav-item" *ngFor="let user of users">
       <a class="nav-link"
          [class.active]="card.assignee === user.id"
-         (click)="update({assignee: user.id})">
+         (click)="save({assignee: user.id})">
         {{ user.username }}
       </a>
     </li>
@@ -120,10 +108,11 @@
 <!-- Label popover -->
 <ng-template #labelPopover>
   <ul class="nav nav-pills flex-column">
-    <li class="nav-item" *ngFor="let label of labels">
-      <a class="nav-link" (click)="label.selected = !label.selected">
+    <li class="nav-item mb-1" *ngFor="let label of labels">
+      <a class="nav-link"
+         (click)="label.selected = !label.selected"
+         [class.active]="label.selected">
         {{ label.name }}
-        <fa-icon [icon]="check" class="float-right ml-2 text-primary" size="sm" *ngIf="label.selected"></fa-icon>
       </a>
     </li>
   </ul>

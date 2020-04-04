@@ -1,11 +1,13 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CardModalComponent } from '@app/shared/card-modal/card-modal.component';
-import { TooltipModule, PopoverModule } from 'ngx-bootstrap';
+import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ModalModule } from 'ngx-bootstrap/modal';
-import { MarkdownModule } from 'ngx-markdown';
+import { PopoverModule } from 'ngx-bootstrap/popover';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { MarkdownModule } from 'ngx-markdown/';
 
-
+import { CardModalComponent } from './card-modal.component';
 
 @NgModule({
   declarations: [
@@ -17,9 +19,12 @@ import { MarkdownModule } from 'ngx-markdown';
     TooltipModule.forRoot(),
     PopoverModule.forRoot(),
     MarkdownModule.forRoot(),
+    FontAwesomeModule,
+    ReactiveFormsModule,
   ],
   entryComponents: [
     CardModalComponent,
   ],
 })
-export class CardModalModule { }
+export class CardModalModule {
+}
