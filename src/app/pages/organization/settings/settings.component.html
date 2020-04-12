@@ -65,13 +65,24 @@
           <div *ngIf="labelSelected">{{ labelSelected.name }}</div>
           <!-- Tabs -->
           <ul class="nav nav-tabs card-header-tabs" *ngIf="projectSelected">
+            <!-- Columns tsb -->
             <li class="nav-item">
-              <div class="nav-link pointer" [class.active]="projectTab === 'columns'" (click)="projectTab = 'columns'">
+              <div class="nav-link pointer" [class.active]="projectTab === 'columns'"
+                   (click)="projectTab = 'columns'">
                 Columns
               </div>
             </li>
+            <!-- Milestones tab -->
             <li class="nav-item">
-              <div class="nav-link pointer" [class.active]="projectTab === 'options'" (click)="projectTab = 'options'">
+              <div class="nav-link pointer" [class.active]="projectTab === 'milestone'"
+                   (click)="projectTab = 'milestone'">
+                Milestones
+              </div>
+            </li>
+            <!-- Options tab -->
+            <li class="nav-item">
+              <div class="nav-link pointer" [class.active]="projectTab === 'options'"
+                   (click)="projectTab = 'options'">
                 Options
               </div>
             </li>

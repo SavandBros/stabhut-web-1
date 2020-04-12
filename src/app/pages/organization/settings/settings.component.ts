@@ -39,7 +39,7 @@ export class SettingsComponent implements OnInit {
   labelSelected: Label;
 
   /**
-   * Selected project tab template variable ('columns' or 'options')
+   * Selected project tab template variable ('columns' or 'milestones' or 'options')
    */
   projectTab = 'columns';
 
