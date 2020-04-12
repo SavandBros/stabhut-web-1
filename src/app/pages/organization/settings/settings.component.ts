@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Column } from '@app/interfaces/column';
 import { Label } from '@app/interfaces/label';
+import { Milestone } from '@app/interfaces/milestone';
 import { Organization } from '@app/interfaces/organization';
 import { Project } from '@app/interfaces/project';
 import { ApiService } from '@app/services/api.service';
@@ -29,6 +30,11 @@ export class SettingsComponent implements OnInit {
   labels: Label[];
 
   /**
+   * Milestones of project
+   */
+  milestones: Milestone[];
+
+  /**
    * Selected project
    */
   projectSelected: Project;
@@ -39,7 +45,7 @@ export class SettingsComponent implements OnInit {
   labelSelected: Label;
 
   /**
-   * Selected project tab template variable ('columns' or 'options')
+   * Selected project tab template variable ('columns' or 'milestones' or 'options')
    */
   projectTab = 'columns';
 
@@ -70,7 +76,54 @@ export class SettingsComponent implements OnInit {
             project.columns = columns.filter(column => column.project === project.id);
           }
         });
+        this.getMilestones();
       });
+    });
+  }
+
+  /**
+   *  Load milestones of projects
+   */
+  getMilestones(): void {
+    this.api.getMilestones(this.projectSelected.id).subscribe(milestone => {
+      this.milestones = milestone;
+    });
+  }
+
+  /**
+   * Add a milestone to a project
+   *
+   * @param name Milestone name
+   */
+  addMilestone(name: string): void {
+    this.api.createMilestone({ project: this.projectSelected.id, name }).subscribe(data => {
+      this.milestones.push(data);
+    });
+  }
+
+  /**
+   * Update all milestones
+   */
+  updateMilestones(): void {
+    for (let milestone of this.milestones) {
+      this.api.updateMilestone(milestone.id, { name: milestone.name }).subscribe(data => {
+        milestone = data;
+      });
+    }
+  }
+
+  /**
+   * Delete a milestone
+   *
+   * @param milestone Milestone to delete
+   */
+  deleteMilestone(milestone: Milestone): void {
+    if (!confirm('Are you sure you want to delete this milestone?')) {
+      return;
+    }
+    this.api.deleteMilestone(milestone.id).subscribe(() => {
+      const index = this.milestones.indexOf(milestone);
+      this.milestones.splice(index, 1);
     });
   }
 

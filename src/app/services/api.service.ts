@@ -10,6 +10,7 @@ import { Chat } from '@app/interfaces/chat';
 import { Column } from '@app/interfaces/column';
 import { Label } from '@app/interfaces/label';
 import { LabelObjectCreated } from '@app/interfaces/label-object-created';
+import { Milestone } from '@app/interfaces/milestone';
 import { Organization } from '@app/interfaces/organization';
 import { Project } from '@app/interfaces/project';
 import { Task } from '@app/interfaces/task';
@@ -149,6 +150,45 @@ export class ApiService {
    */
   deleteColumn(column: number): Observable<void> {
     return this.http.delete<void>(`${ApiService.BASE}column/${column}/`);
+  }
+
+  /**
+   * Milestones of project
+   *
+   * @param project Project ID
+   */
+  getMilestones(project?: number): Observable<Milestone[]> {
+    return this.http.get<Milestone[]>(`${ApiService.BASE}milestone/`, {
+      params: {
+        project: project.toString(),
+      }
+    })
+  }
+
+  /**
+   * Create a milestone
+   */
+  createMilestone(payload: Partial<Milestone>): Observable<Milestone> {
+    return this.http.post<Milestone>(`${ApiService.BASE}milestone/`, payload);
+  }
+
+  /**
+   * Update a milestone
+   *
+   * @param id Milestone ID
+   * @param payload Milestone data to update to
+   */
+  updateMilestone(id: number, payload: Partial<Milestone>): Observable<Milestone> {
+    return this.http.patch<Milestone>(`${ApiService.BASE}milestone/${id}/`, payload);
+  }
+
+  /**
+   * Delete a milestone
+   *
+   * @param milestone Milestone ID
+   */
+  deleteMilestone(milestone: number): Observable<void> {
+    return this.http.delete<void>(`${ApiService.BASE}milestone/${milestone}/`);
   }
 
   /**
