@@ -89,6 +89,17 @@ export class SettingsComponent implements OnInit {
       this.milestones = milestone;
     });
   }
+
+  /**
+   * Add a milestone to a project
+   *
+   * @param name Milestone name
+   */
+  addMilestone(name: string): void {
+    this.api.createMilestone({ project: this.projectSelected.id, name }).subscribe(data => {
+      this.milestones.push(data);
+    });
+  }
       });
     });
   }

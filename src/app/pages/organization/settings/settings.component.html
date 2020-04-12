@@ -114,6 +114,9 @@
           <div class="form-group input-group" *ngFor="let milestone of milestones">
             <input type="text" class="form-control" [(ngModel)]="milestone.name">
           </div>
+          <!-- New milestone -->
+          <app-form-add name="milestone" [margin]="milestones.length > 0" (save)="addMilestone($event)">
+          </app-form-add>
         </div>
         <!-- Selected project options -->
         <div class="card-body" *ngIf="projectTab === 'options' && projectSelected">

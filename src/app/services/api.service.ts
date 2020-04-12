@@ -163,6 +163,13 @@ export class ApiService {
       }
     })
   }
+
+  /**
+   * Create a milestone
+   */
+  createMilestone(payload: Partial<Milestone>): Observable<Milestone> {
+    return this.http.post<Milestone>(`${ApiService.BASE}milestone/`, payload);
+  }
   /**
    * Get a card data
    *
