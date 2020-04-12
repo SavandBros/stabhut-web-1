@@ -101,6 +101,19 @@ export class SettingsComponent implements OnInit {
     });
   }
       });
+
+  /**
+   * Delete a milestone
+   *
+   * @param milestone Milestone to delete
+   */
+  deleteMilestone(milestone: Milestone): void {
+    if (!confirm('Are you sure you want to delete this milestone?')) {
+      return;
+    }
+    this.api.deleteMilestone(milestone.id).subscribe(() => {
+      const index = this.milestones.indexOf(milestone);
+      this.milestones.splice(index, 1);
     });
   }
 

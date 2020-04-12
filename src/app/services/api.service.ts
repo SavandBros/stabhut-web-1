@@ -170,6 +170,16 @@ export class ApiService {
   createMilestone(payload: Partial<Milestone>): Observable<Milestone> {
     return this.http.post<Milestone>(`${ApiService.BASE}milestone/`, payload);
   }
+
+  /**
+   * Delete a milestone
+   *
+   * @param milestone Milestone ID
+   */
+  deleteMilestone(milestone: number): Observable<void> {
+    return this.http.delete<void>(`${ApiService.BASE}milestone/${milestone}/`);
+  }
+
   /**
    * Get a card data
    *

@@ -113,6 +113,11 @@
           <!-- Milestones -->
           <div class="form-group input-group" *ngFor="let milestone of milestones">
             <input type="text" class="form-control" [(ngModel)]="milestone.name">
+            <div class="input-group-append">
+              <button class="btn btn-secondary" (click)="deleteMilestone(milestone)">
+                <fa-icon icon="trash"></fa-icon>
+              </button>
+            </div>
           </div>
           <!-- New milestone -->
           <app-form-add name="milestone" [margin]="milestones.length > 0" (save)="addMilestone($event)">
