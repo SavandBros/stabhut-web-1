@@ -122,6 +122,10 @@
           <!-- New milestone -->
           <app-form-add name="milestone" [margin]="milestones.length > 0" (save)="addMilestone($event)">
           </app-form-add>
+          <!-- Update button -->
+          <button class="btn btn-block btn-primary" *ngIf="milestones.length" (click)="updateMilestones()">
+            Update
+          </button>
         </div>
         <!-- Selected project options -->
         <div class="card-body" *ngIf="projectTab === 'options' && projectSelected">

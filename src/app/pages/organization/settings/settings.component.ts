@@ -100,7 +100,17 @@ export class SettingsComponent implements OnInit {
       this.milestones.push(data);
     });
   }
+
+  /**
+   * Update all milestones
+   */
+  updateMilestones(): void {
+    for (let milestone of this.milestones) {
+      this.api.updateMilestone(milestone.id, { name: milestone.name }).subscribe(data => {
+        milestone = data;
       });
+    }
+  }
 
   /**
    * Delete a milestone
