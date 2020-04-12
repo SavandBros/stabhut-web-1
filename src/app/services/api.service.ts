@@ -152,6 +152,18 @@ export class ApiService {
   }
 
   /**
+   * Milestones of project
+   *
+   * @param project Project ID
+   */
+  getMilestones(project?: number): Observable<Milestone[]> {
+    return this.http.get<Milestone[]>(`${ApiService.BASE}milestone/`, {
+      params: {
+        project: project.toString(),
+      }
+    })
+  }
+  /**
    * Get a card data
    *
    * @param card Card ID

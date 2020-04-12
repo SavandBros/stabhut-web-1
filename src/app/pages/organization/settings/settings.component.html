@@ -26,7 +26,7 @@
         <ul class="list-group list-group-flush pointer" *ngIf="projects">
           <li class="list-group-item"
               *ngFor="let project of projects"
-              (click)="projectSelected = project; labelSelected = null;"
+              (click)="projectSelected = project; labelSelected = null; getMilestones()"
               [class.active]="projectSelected === project">
             {{ project.name }}
           </li>
@@ -107,6 +107,13 @@
           <button class="btn btn-block btn-primary" (click)="updateColumns()" *ngIf="projectSelected.columns.length">
             Update
           </button>
+        </div>
+        <!-- Selected project milestones -->
+        <div class="card-body" *ngIf="projectTab === 'milestone' && projectSelected">
+          <!-- Milestones -->
+          <div class="form-group input-group" *ngFor="let milestone of milestones">
+            <input type="text" class="form-control" [(ngModel)]="milestone.name">
+          </div>
         </div>
         <!-- Selected project options -->
         <div class="card-body" *ngIf="projectTab === 'options' && projectSelected">

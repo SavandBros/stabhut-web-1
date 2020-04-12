@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Column } from '@app/interfaces/column';
 import { Label } from '@app/interfaces/label';
+import { Milestone } from '@app/interfaces/milestone';
 import { Organization } from '@app/interfaces/organization';
 import { Project } from '@app/interfaces/project';
 import { ApiService } from '@app/services/api.service';
@@ -27,6 +28,11 @@ export class SettingsComponent implements OnInit {
    * Labels of organization
    */
   labels: Label[];
+
+  /**
+   * Milestones of project
+   */
+  milestones: Milestone[];
 
   /**
    * Selected project
@@ -70,6 +76,19 @@ export class SettingsComponent implements OnInit {
             project.columns = columns.filter(column => column.project === project.id);
           }
         });
+        this.getMilestones();
+      });
+    });
+  }
+
+  /**
+   *  Load milestones of projects
+   */
+  getMilestones(): void {
+    this.api.getMilestones(this.projectSelected.id).subscribe(milestone => {
+      this.milestones = milestone;
+    });
+  }
       });
     });
   }
