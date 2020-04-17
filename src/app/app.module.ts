@@ -15,6 +15,7 @@ import { faArrowCircleRight } from '@fortawesome/free-solid-svg-icons/faArrowCir
 import { faCog } from '@fortawesome/free-solid-svg-icons/faCog';
 import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus';
 import { faTrash } from '@fortawesome/free-solid-svg-icons/faTrash';
+import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
 import { BsDropdownModule } from 'ngx-bootstrap';
 import { CookieService } from 'ngx-cookie-service';
 
@@ -43,6 +44,7 @@ const routes: Routes = [{
     HttpClientModule,
     BsDropdownModule.forRoot(),
     FontAwesomeModule,
+    LoadingBarHttpClientModule,
   ],
   providers: [
     {
