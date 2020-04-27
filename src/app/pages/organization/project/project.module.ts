@@ -6,6 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { CardModalModule } from '@app/shared/card-modal/card-modal.module';
 import { CardNewModule } from '@app/shared/card-new/card-new.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgArrayPipesModule } from 'ngx-pipes';
 
 import { ProjectComponent } from './project.component';
 
@@ -26,6 +27,7 @@ const routes: Routes = [{
     CardModalModule,
     CardNewModule,
     DragDropModule,
+    NgArrayPipesModule,
   ],
 })
 export class ProjectModule {

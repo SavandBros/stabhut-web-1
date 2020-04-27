@@ -1,8 +1,7 @@
 export interface Label {
-  organization: number;
+  id: number;
   name: string;
   color: string;
-  id: number;
   /**
    * Extra properties
    */

@@ -1,4 +1,4 @@
-<div class="card border-0 h-100" *ngIf="isOrganizationInitialised">
+<div class="card border-0 h-100" *ngIf="isDataInitialised">
 
   <!-- Projects and settings -->
   <div class="card-header px-5 pt-5">
@@ -31,7 +31,7 @@
     <!-- Columns -->
     <div class="w-100 h-100 overflow-auto">
       <div class="d-inline-flex h-100 pt-3" cdkDropListGroup>
-        <div class="column" *ngFor="let column of projectSelected.columns">
+        <div class="column" *ngFor="let column of columns">
 
           <!-- Column header -->
           <p class="text-center font-weight-bold text-secondary">
@@ -44,9 +44,10 @@
           </p>
 
           <!-- Cards -->
-          <div class="h-100 cards overflow-auto" [cdkDropListData]="column.cards" cdkDropList
+          <div class="h-100 cards overflow-auto" [cdkDropListData]="cards" cdkDropList
                (cdkDropListDropped)="drop($event, column)">
-            <div class="card column-card mb-2" *ngFor="let card of column.cards" cdkDrag
+            <div class="card column-card mb-2" *ngFor="let card of cards | filterBy:['column']:column.id"
+                 cdkDrag
                  [cdkDragDisabled]="card.loading" [cdkDragData]="card">
               <div class="card-body">
                 <!-- Content -->
@@ -94,7 +95,7 @@
       <div class="card-body p-3 d-flex" #chatsContainer [scrollTop]="chatsContainer.scrollHeight">
         <!-- Chats -->
         <div class="mt-auto flex-grow-1" *ngIf="sidePanelTab == 'chats'">
-          <div *ngFor="let chat of projectSelected.chats" title="{{ chat.created | date:'MMM dd, HH:MM a' }}"
+          <div *ngFor="let chat of chats" title="{{ chat.created | date:'MMM dd, HH:MM a' }}"
                class="mb-2">
             <div class="d-flex">
               <!-- Username -->
@@ -111,7 +112,7 @@
         </div>
         <!-- Tasks -->
         <div *ngIf="sidePanelTab == 'tasks'">
-          <div *ngFor="let task of projectSelected.tasks" [ngClass]="{'text-secondary': task.checked}"
+          <div *ngFor="let task of tasks" [ngClass]="{'text-secondary': task.checked}"
                class="custom-control custom-checkbox">
             <input type="checkbox" class="custom-control-input" id="task-{{ task.id }}"
                    [(ngModel)]="task.checked" (ngModelChange)="taskToggle(task)">

@@ -47,7 +47,8 @@ export class NewComponent implements OnInit {
         this.api.createColumn({ project: project.id, order: 0, name: 'Ready' }).subscribe((column: Column): void => {
           this.api.createCard({
             column: column.id,
-            content: 'Hey, I\'m a sample card here. Do whatever you want with me.',
+            title: 'Hey, I\'m a sample card here. Do whatever you want with me.',
+            content: 'Here\'s a placeholder card content.'
           }).subscribe();
         });
         this.api.createColumn({ project: project.id, order: 1, name: 'In Progress' }).subscribe();

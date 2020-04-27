@@ -3,12 +3,11 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { LabelKind } from '@app/enums/label-kind.enum';
-import { ApiPayload } from '@app/interfaces/api-payload';
 import { Card } from '@app/interfaces/card';
 import { CardLabel } from '@app/interfaces/card-label';
 import { Column } from '@app/interfaces/column';
 import { Label } from '@app/interfaces/label';
-import { LabelObjectCreated } from '@app/interfaces/label-object-created';
+import { LabelObject } from '@app/interfaces/label-object';
 import { OrganizationService } from '@app/pages/organization/organization.service';
 import { OrganizationBase } from '@app/pages/organization/shared/organization-base';
 import { ApiService } from '@app/services/api.service';
@@ -67,7 +66,6 @@ export class CardModalComponent extends OrganizationBase implements OnInit {
    */
   form: FormGroup;
 
-
   constructor(public modal: BsModalRef,
               private formBuilder: FormBuilder,
               private route: ActivatedRoute,
@@ -117,7 +115,7 @@ export class CardModalComponent extends OrganizationBase implements OnInit {
   /**
    * Update a card property
    */
-  save(payload: ApiPayload): void {
+  save(payload: Partial<Card>): void {
     this.loading = true;
     this.api.updateCard(this.card.id, payload).subscribe((data: Card): void => {
       this.loading = false;
@@ -136,6 +134,7 @@ export class CardModalComponent extends OrganizationBase implements OnInit {
     }
     this.loading = true;
     this.api.deleteCard(this.card.id).subscribe((): void => {
+      this.update.emit();
       this.modal.hide();
     }, (): void => {
       this.loading = false;
@@ -158,12 +157,14 @@ export class CardModalComponent extends OrganizationBase implements OnInit {
        * if it was deselected and was in the card's label list.
        */
       if (label.selected && !foundLabel) {
-        this.api.assignLabel(LabelKind.CARD, this.card.id, label.id).subscribe((data: LabelObjectCreated): void => {
+        this.api.assignLabel(LabelKind.CARD, this.card.id, label.id).subscribe((data: LabelObject): void => {
           this.card.labels.push({ label: data.label, id: data.id });
+          this.update.emit(this.card);
         });
       } else if (!label.selected && foundLabel) {
         this.api.deAttachLabel(foundLabel.id).subscribe((): void => {
           this.card.labels.splice(this.card.labels.indexOf(foundLabel), 1);
+          this.update.emit(this.card);
         });
       }
     });

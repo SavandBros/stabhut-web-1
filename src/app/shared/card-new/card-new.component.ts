@@ -1,21 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiError } from '@app/interfaces/api-error';
-import { ApiPayload } from '@app/interfaces/api-payload';
 import { Card } from '@app/interfaces/card';
 import { Column } from '@app/interfaces/column';
 import { User } from '@app/interfaces/user';
 import { ApiService } from '@app/services/api.service';
 import { BsModalRef } from 'ngx-bootstrap';
 
+/**
+ * @todo Emmit an event for adding card
+ */
 @Component({
   selector: 'app-card-new',
   templateUrl: './card-new.component.html',
 })
 export class CardNewComponent implements OnInit {
 
-  column: Column;
-  users: User[];
+  @Input() column: Column;
+  @Input() users: User[];
 
   form: FormGroup;
   loading: boolean;
@@ -36,12 +38,9 @@ export class CardNewComponent implements OnInit {
   }
 
   submit(): void {
-    const payload: ApiPayload = this.form.value;
-    payload.order = this.column.cards[0] ? (this.column.cards[0].order - 1) : 0;
     this.loading = true;
     this.errors = {};
     this.apiService.createCard(this.form.value).subscribe((data: Card): void => {
-      this.column.cards.unshift(data);
       this.bsModalRef.hide();
     }, data => {
       this.loading = false;
