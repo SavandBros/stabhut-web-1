@@ -1,6 +1,6 @@
 import { transferArrayItem, moveItemInArray, CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, Params } from '@angular/router';
+import { ActivatedRoute, Router, Params, ParamMap } from '@angular/router';
 import { ApiPayload } from '@app/interfaces/api-payload';
 import { ApiResponse } from '@app/interfaces/api-response';
 import { Card } from '@app/interfaces/card';
@@ -12,8 +12,9 @@ import { User } from '@app/interfaces/user';
 import { OrganizationBase } from '@app/pages/organization/shared/organization-base';
 import { ApiService } from '@app/services/api.service';
 import { AuthService } from '@app/services/auth.service';
+import { CardModalComponent } from '@app/shared/card-modal/card-modal.component';
 import { CardNewComponent } from '@app/shared/card-new/card-new.component';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-project',
@@ -33,9 +34,34 @@ export class ProjectComponent extends OrganizationBase implements OnInit {
   user: User;
 
   /**
+   * List of loaded columns
+   */
+  columns: Column[];
+
+  /**
+   * List of loaded cards
+   */
+  cards: Card[];
+
+  /**
+   * List of loaded chats
+   */
+  chats: Chat[];
+
+  /**
+   * List of loaded tasks
+   */
+  tasks: Task[];
+
+  /**
    * Selected project of this organization
    */
   projectSelected: Project;
+
+  /**
+   * Selected card of selected project
+   */
+  cardSelected: Card;
 
   /**
    * Show chats or tasks in the side panel (default view is chats)
@@ -63,58 +89,61 @@ export class ProjectComponent extends OrganizationBase implements OnInit {
     this.auth.user.subscribe((data: User): void => {
       this.user = data;
     });
+  }
+
+  onInitiation(): void {
     /**
      * Get and watch params (organization)
      */
     this.route.params.subscribe((params: Params): void => {
       /**
-       * Get organization projects
+       * Get and watch query params (project)
        */
-      this.api.getProjects(params.id).subscribe((projects: Project[]): void => {
-        this.projects = projects;
+      this.route.queryParams.subscribe((queryParams: Params): void => {
         /**
-         * Get and watch query params (project)
+         * Get selected project from params matching the loaded projects
          */
-        this.route.queryParams.subscribe((queryParams: Params): void => {
+        this.projectSelected = this.projects.find(project => project.id === Number(queryParams.project));
+        /**
+         * Load project data if project was set and found from params, otherwise select first project
+         */
+        if (!this.projectSelected && !queryParams.project) {
+          this.router.navigate(['.'], {
+            relativeTo: this.route,
+            queryParams: { project: this.projects[0].id },
+          });
+        } else if (this.projectSelected) {
           /**
-           * Get selected project from params matching the loaded projects
+           * Get chats
            */
-          this.projectSelected = this.projects.find(project => project.id === Number(queryParams.project));
+          this.api.getChats({ project: this.projectSelected.id.toString() }).subscribe((chats: Chat[]): void => {
+            this.chats = chats.reverse();
+          });
           /**
-           * Load project data if project was set and found from params, otherwise select first project
+           * Get tasks
            */
-          if (!this.projectSelected && !queryParams.project) {
-            this.router.navigate(['.'], {
-              relativeTo: this.route,
-              queryParams: { project: this.projects[0].id },
-            });
-          } else if (this.projectSelected && !this.projectSelected.columns) {
-            /**
-             * Get project chats
-             */
-            this.api.getChats(this.projectSelected.id).subscribe((chats: Chat[]): void => {
-              this.projectSelected.chats = chats.reverse();
-            });
-            /**
-             * Get project tasks
-             */
-            this.api.getTasks(this.projectSelected.id).subscribe((tasks: Task[]): void => {
-              this.projectSelected.tasks = tasks;
-            });
-            /**
-             * Get project columns
-             */
-            this.api.getColumns(null, this.projectSelected.id).subscribe((columns: Column[]): void => {
-              this.projectSelected.columns = columns;
-              // Load cards of each column
-              for (const column of columns) {
-                this.api.getCards(column.id).subscribe((cards: Card[]): void => {
-                  column.cards = cards;
-                });
-              }
-            });
-          }
-        });
+          this.api.getTasks({ project: this.projectSelected.id.toString() }).subscribe((tasks: Task[]): void => {
+            this.tasks = tasks;
+          });
+          /**
+           * Get columns
+           */
+          this.api.getColumns({
+            project: this.projectSelected.id.toString(),
+          }).subscribe((columns: Column[]): void => {
+            this.columns = columns;
+            // Load cards of each column
+            for (const column of columns) {
+            }
+          });
+          /**
+           * Get cards
+           */
+          this.api.getCards({ project: this.projectSelected.id.toString() }).subscribe((cards: Card[]): void => {
+            this.cards = cards;
+            this.handleQueryParams();
+          });
+        }
       });
       /**
        * Get organization users
@@ -123,10 +152,39 @@ export class ProjectComponent extends OrganizationBase implements OnInit {
         this.users = data.results;
       });
     });
+    /**
+     * Watch query param changes
+     */
+    this.route.queryParams.subscribe((queryParams: ParamMap): void => {
+      this.handleQueryParams(queryParams);
+    });
+  }
+
+  handleQueryParams(queryParams: Params = this.route.snapshot.queryParams) {
+    if (!this.projectSelected || !this.columns || this.cardSelected) {
+      return;
+    }
+    this.cardSelected = this.cards.find(card => card.id === Number(queryParams.card));
+    if (this.cardSelected) {
+      this.api.getCard(this.cardSelected.id).subscribe((card: Card): void => {
+        this.cardSelected = card;
+        this.modal.show(CardModalComponent, {
+          class: 'modal-lg',
+          initialState: {
+            card: this.cardSelected,
+            columns: this.columns,
+          },
+        }).content.update.subscribe((data: Card): void => {
+          const updatedCard: Card = this.cards.find(item => item.id === data.id);
+          Object.assign(updatedCard, data);
+        });
+      });
+    }
   }
 
   /**
    * Open up the modal to add card in
+   * @todo Watch for adding card and add it to the view
    *
    * @param column Column to add card to
    */
@@ -166,7 +224,7 @@ export class ProjectComponent extends OrganizationBase implements OnInit {
       project: this.projectSelected.id,
     }).subscribe((chat: Chat): void => {
       chat.user = this.user.id;
-      this.projectSelected.chats.push(chat);
+      this.chats.push(chat);
     });
   }
 
@@ -180,7 +238,7 @@ export class ProjectComponent extends OrganizationBase implements OnInit {
       content,
       project: this.projectSelected.id,
     }).subscribe((task: Task): void => {
-      this.projectSelected.tasks.unshift(task);
+      this.tasks.unshift(task);
     });
   }
 
@@ -204,10 +262,10 @@ export class ProjectComponent extends OrganizationBase implements OnInit {
    * @param payload Card properties
    */
   updateCard(id: number, index: number, column: Column, payload: ApiPayload): void {
-    column.cards[index].loading = true;
+    this.cards[index].loading = true;
     this.api.updateCard(id, payload).subscribe((data: Card): void => {
-      column.cards[index] = data;
-      column.cards[index].loading = false;
+      this.cards[index] = data;
+      this.cards[index].loading = false;
     });
   }
 
@@ -219,9 +277,9 @@ export class ProjectComponent extends OrganizationBase implements OnInit {
    */
   drop(event: CdkDragDrop<Card[]>, column: Column): void {
     // Previous card
-    const previousCard: Card = column.cards[event.currentIndex - 1];
+    const previousCard: Card = this.cards[event.currentIndex - 1];
     // Next card
-    const nextCard: Card = column.cards[event.currentIndex + 1];
+    const nextCard: Card = this.cards[event.currentIndex + 1];
     // Set order
     const order: number = ((previousCard ? previousCard.order : 0) + (nextCard ? nextCard.order : 0)) / 2;
     if (event.previousContainer === event.container) {
@@ -234,7 +292,10 @@ export class ProjectComponent extends OrganizationBase implements OnInit {
         event.previousIndex,
         event.currentIndex,
       );
-      this.updateCard(event.item.data.id, event.currentIndex, column, { column: column.id, order: event.currentIndex });
+      this.updateCard(event.item.data.id, event.currentIndex, column, {
+        column: column.id,
+        order: event.currentIndex,
+      });
     }
   }
 }

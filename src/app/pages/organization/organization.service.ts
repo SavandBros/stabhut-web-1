@@ -37,17 +37,6 @@ export class OrganizationService {
   }
 
   /**
-   * @returns Whether all organization data have been initialised (loaded)
-   */
-  static get isInitialised(): boolean {
-    return Boolean(
-      OrganizationService.usersSubject.value &&
-      OrganizationService.labelsSubject.value &&
-      OrganizationService.projectsSubject.value,
-    );
-  }
-
-  /**
    * Initialise or refresh organization data (users, labels and projects)
    */
   initialise(): void {

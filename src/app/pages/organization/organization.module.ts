@@ -16,9 +16,6 @@ const routes: Routes = [{
     path: 'new',
     loadChildren: () => import('./new/new.module').then(m => m.NewModule),
   }, {
-    path: ':id/card/:card',
-    loadChildren: () => import('./card/card.module').then(m => m.CardModule),
-  }, {
     path: ':id/settings',
     loadChildren: () => import('./settings/settings.module').then(m => m.SettingsModule),
   }, {

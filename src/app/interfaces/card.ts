@@ -1,16 +1,21 @@
-import { CardLabel } from '@app/interfaces/card-label';
-import { Column } from '@app/interfaces/column';
-
 export interface Card {
   id: number;
-  column: Column | number;
   title: string;
+  column: number;
   content: string;
-  assignee: number;
+  assignee?: number;
+  epic?: number;
+  is_epic: boolean;
+  milestone?: number;
+  points?: number;
+  points_estimate?: number;
   order: number;
-  updated: string;
   created: string;
-  labels: CardLabel[];
+  updated: string;
+  labels: {
+    id: number;
+    label: number;
+  }[];
   /**
    * Extra properties
    */
