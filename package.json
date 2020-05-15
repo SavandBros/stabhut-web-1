@@ -27,6 +27,8 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.25",
     "@fortawesome/free-regular-svg-icons": "^5.11.2",
     "@fortawesome/free-solid-svg-icons": "^5.11.2",
+    "@ngx-loading-bar/core": "^4.2.0",
+    "@ngx-loading-bar/http-client": "^4.2.0",
     "@uirouter/angular": "^4.0.0",
     "angular-cli-ghpages": "^0.6.0",
     "animate.css": "^3.7.0",
