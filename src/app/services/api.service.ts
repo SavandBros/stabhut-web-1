@@ -3,14 +3,12 @@ import { Injectable } from '@angular/core';
 import { LabelKind } from '@app/enums/label-kind.enum';
 
 import { ApiPayload } from '@app/interfaces/api-payload';
-import { ApiPayloadGet } from '@app/interfaces/api-payload-get';
 import { ApiResponse } from '@app/interfaces/api-response';
 import { Card } from '@app/interfaces/card';
 import { Chat } from '@app/interfaces/chat';
 import { Column } from '@app/interfaces/column';
 import { Label } from '@app/interfaces/label';
-import { LabelObjectCreated } from '@app/interfaces/label-object-created';
-import { Milestone } from '@app/interfaces/milestone';
+import { LabelObject } from '@app/interfaces/label-object';
 import { Organization } from '@app/interfaces/organization';
 import { Project } from '@app/interfaces/project';
 import { Task } from '@app/interfaces/task';
@@ -111,19 +109,9 @@ export class ApiService {
 
   /**
    * Column list of a project
-   *
-   * @param organization Organization ID
-   * @param project Project ID
    */
-  getColumns(organization?: number, project?: number): Observable<Column[]> {
-    const params: ApiPayloadGet = {};
-    if (organization) {
-      params.organization = organization.toString();
-    }
-    if (project) {
-      params.project = project.toString();
-    }
-    return this.http.get<Column[]>(`${ApiService.BASE}column/`, { params });
+  getColumns(filters: { organization?: string, project?: string }): Observable<Column[]> {
+    return this.http.get<Column[]>(`${ApiService.BASE}column/`, { params: filters });
   }
 
   /**
@@ -211,15 +199,9 @@ export class ApiService {
 
   /**
    * Cards of a column
-   *
-   * @param column Column ID
    */
-  getCards(column?: number): Observable<Card[]> {
-    return this.http.get<Card[]>(`${ApiService.BASE}card/`, {
-      params: {
-        column: column.toString(),
-      },
-    });
+  getCards(filters: { project?: string, column?: string }): Observable<Card[]> {
+    return this.http.get<Card[]>(`${ApiService.BASE}card/`, { params: filters });
   }
 
   /**
@@ -228,7 +210,7 @@ export class ApiService {
    * @param card Card ID to update
    * @param payload Task data
    */
-  updateCard(card: number, payload: ApiPayload): Observable<Card> {
+  updateCard(card: number, payload: Partial<Card>): Observable<Card> {
     return this.http.patch<Card>(`${ApiService.BASE}card/${card}/`, payload);
   }
 
@@ -237,7 +219,7 @@ export class ApiService {
    *
    * @param payload Card payload
    */
-  createCard(payload: ApiPayload): Observable<Card> {
+  createCard(payload: Partial<Card>): Observable<Card> {
     return this.http.post<Card>(`${ApiService.BASE}card/`, payload);
   }
 
@@ -269,8 +251,8 @@ export class ApiService {
    * @param to ID to assign label to
    * @param labelId Label ID
    */
-  assignLabel(kind: LabelKind, to: number, labelId: number): Observable<LabelObjectCreated> {
-    return this.http.post<LabelObjectCreated>(`${ApiService.BASE}label-object/`, { kind, to, label: labelId });
+  assignLabel(kind: LabelKind, to: number, labelId: number): Observable<LabelObject> {
+    return this.http.post<LabelObject>(`${ApiService.BASE}label-object/`, { kind, to, label: labelId });
   }
 
   /**
@@ -319,15 +301,9 @@ export class ApiService {
 
   /**
    * Chat list of a project
-   *
-   * @param project Project ID
    */
-  getChats(project: number): Observable<Chat[]> {
-    return this.http.get<Chat[]>(`${ApiService.BASE}chat/`, {
-      params: {
-        project: project.toString(),
-      },
-    });
+  getChats(filters: { project: string }): Observable<Chat[]> {
+    return this.http.get<Chat[]>(`${ApiService.BASE}chat/`, { params: filters });
   }
 
   /**
@@ -341,15 +317,9 @@ export class ApiService {
 
   /**
    * Task list of a project
-   *
-   * @param project Project ID
    */
-  getTasks(project: number): Observable<Task[]> {
-    return this.http.get<Task[]>(`${ApiService.BASE}task/`, {
-      params: {
-        project: project.toString(),
-      },
-    });
+  getTasks(filters: { project: string }): Observable<Task[]> {
+    return this.http.get<Task[]>(`${ApiService.BASE}task/`, { params: filters });
   }
 
   /**

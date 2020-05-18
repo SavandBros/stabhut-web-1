@@ -1,0 +1,119 @@
+<!-- Header -->
+<div class="modal-header">
+  <!-- Title -->
+  <p class="modal-title" *ngIf="!isEditing">{{ card.title }}</p>
+  <!-- Edit title -->
+  <div class="modal-title form-group w-100" *ngIf="isEditing" [formGroup]="form">
+    <input class="form-control" name="title" formControlName="title">
+  </div>
+  <!-- Close -->
+  <button type="button" class="close" (click)="modal.hide()">
+    <fa-icon [icon]="close" [fixedWidth]="true" size="sm"></fa-icon>
+  </button>
+</div>
+
+<!-- Body -->
+<div class="modal-body">
+  <div class="row">
+    <!-- Edit content -->
+    <div class="col-lg-8">
+      <!-- Content -->
+      <markdown [data]="card.content" *ngIf="!isEditing"></markdown>
+      <!-- Editing input -->
+      <div class="form-group mb-0" [formGroup]="form" *ngIf="isEditing">
+        <textarea class="form-control" name="content" rows="10" formControlName="content"></textarea>
+      </div>
+    </div>
+    <!-- Options -->
+    <div class="col-lg-4">
+      <ul class="list-group">
+        <!-- Column -->
+        <li class="list-group-item list-group-item-action" [popover]="columnPopover">
+          <span class="badge badge-light">Column</span>
+          <span class="float-right">{{ card.column['name'] }}</span>
+        </li>
+        <!-- Assignee -->
+        <li class="list-group-item list-group-item-action" [popover]="userPopover">
+          <span class="badge badge-light">Assignee</span>
+          <span class="float-right">
+            <span *ngIf="getUser(card.assignee)">{{ getUser(card.assignee).username }}</span>
+            <span *ngIf="!getUser(card.assignee)">No one</span>
+          </span>
+        </li>
+        <!-- Labels -->
+        <li class="list-group-item list-group-item-action"
+            [popover]="labelPopover" (onHidden)="updateCardLabels()">
+          <span class="badge badge-light">Labels</span>
+          <span class="float-right text-secondary">{{ card.labels.length }}</span>
+        </li>
+        <!-- Updated -->
+        <li class="list-group-item" *ngIf="card.created !== card.updated">
+          <span class="badge badge-light">Updated</span>
+          <span class="float-right" [tooltip]="card.updated | date">{{ card.updated | date:'hh:MM a' }}</span>
+        </li>
+        <!-- Created -->
+        <li class="list-group-item">
+          <span class="badge badge-light">Created</span>
+          <span class="float-right" [tooltip]="card.created | date">{{ card.created | date: 'hh:MM a' }}</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="modal-footer bg-light">
+  <div *ngIf="isEditing">
+    <!-- Cancel -->
+    <button class="btn btn-light mr-2" (click)="isEditing = false">Cancel</button>
+    <!-- Update -->
+    <button class="btn btn-primary" [disabled]="loading" (click)="save(form.value)">Save</button>
+  </div>
+  <div *ngIf="!isEditing">
+    <!-- Edit -->
+    <button class="btn btn-light mr-2" (click)="edit()">Edit</button>
+    <!-- Delete -->
+    <button class="btn btn-light" (click)="delete()">
+      <fa-icon [icon]="trash"></fa-icon>
+    </button>
+  </div>
+</div>
+
+<!-- Column popover -->
+<ng-template #columnPopover>
+  <ul class="nav nav-pills flex-column">
+    <li class="nav-item" *ngFor="let column of columns">
+      <a class="nav-link"
+         [class.active]="card.column.id === column.id"
+         (click)="save({column: column.id})">
+        {{ column.name }}
+      </a>
+    </li>
+  </ul>
+</ng-template>
+
+<!-- User popover -->
+<ng-template #userPopover>
+  <ul class="nav nav-pills flex-column">
+    <li class="nav-item" *ngFor="let user of users">
+      <a class="nav-link"
+         [class.active]="card.assignee === user.id"
+         (click)="save({assignee: user.id})">
+        {{ user.username }}
+      </a>
+    </li>
+  </ul>
+</ng-template>
+
+<!-- Label popover -->
+<ng-template #labelPopover>
+  <ul class="nav nav-pills flex-column">
+    <li class="nav-item mb-1" *ngFor="let label of labels">
+      <a class="nav-link"
+         (click)="label.selected = !label.selected"
+         [class.active]="label.selected">
+        {{ label.name }}
+      </a>
+    </li>
+  </ul>
+</ng-template>

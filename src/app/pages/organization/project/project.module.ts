@@ -3,8 +3,10 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
+import { CardModalModule } from '@app/shared/card-modal/card-modal.module';
 import { CardNewModule } from '@app/shared/card-new/card-new.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgArrayPipesModule } from 'ngx-pipes';
 
 import { ProjectComponent } from './project.component';
 
@@ -22,8 +24,10 @@ const routes: Routes = [{
     RouterModule.forChild(routes),
     FormsModule,
     FontAwesomeModule,
+    CardModalModule,
     CardNewModule,
     DragDropModule,
+    NgArrayPipesModule,
   ],
 })
 export class ProjectModule {

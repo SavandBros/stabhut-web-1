@@ -208,7 +208,7 @@ export class SettingsComponent implements OnInit {
    * Update all columns
    */
   updateColumns(): void {
-    for (let column of this.projectSelected.columns) {
+    for (let column of this.columns) {
       this.api.updateColumn(column.id, { name: column.name }).subscribe(data => {
         column = data;
       });

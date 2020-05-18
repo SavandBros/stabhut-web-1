@@ -1,5 +1,6 @@
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -44,6 +45,7 @@ const routes: Routes = [{
     HttpClientModule,
     BsDropdownModule.forRoot(),
     FontAwesomeModule,
+    ReactiveFormsModule,
     LoadingBarHttpClientModule,
   ],
   providers: [

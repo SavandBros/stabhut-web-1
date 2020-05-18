@@ -1,12 +1,10 @@
-import { Project } from '@app/interfaces/project';
-
 export interface Milestone {
-  id: number
+  id: number;
   name: string;
   content: string;
   closed: boolean;
-  due_date: string;
+  due_date?: string;
   created: string;
   updated: string;
-  project: number | Project[];
+  project: number;
 }
