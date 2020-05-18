@@ -30,14 +30,14 @@
         <!-- Column -->
         <li class="list-group-item list-group-item-action" [popover]="columnPopover">
           <span class="badge badge-light">Column</span>
-          <span class="float-right">{{ card.column['name'] }}</span>
+          <span class="float-right">{{ columnSelected.name }}</span>
         </li>
         <!-- Assignee -->
         <li class="list-group-item list-group-item-action" [popover]="userPopover">
           <span class="badge badge-light">Assignee</span>
           <span class="float-right">
             <span *ngIf="getUser(card.assignee)">{{ getUser(card.assignee).username }}</span>
-            <span *ngIf="!getUser(card.assignee)">No one</span>
+            <span *ngIf="!card.assignee">Unassigned</span>
           </span>
         </li>
         <!-- Labels -->
@@ -84,7 +84,7 @@
   <ul class="nav nav-pills flex-column">
     <li class="nav-item" *ngFor="let column of columns">
       <a class="nav-link"
-         [class.active]="card.column.id === column.id"
+         [class.active]="card.column === column.id"
          (click)="save({column: column.id})">
         {{ column.name }}
       </a>
@@ -95,6 +95,9 @@
 <!-- User popover -->
 <ng-template #userPopover>
   <ul class="nav nav-pills flex-column">
+    <li class="nav-item">
+      <a class="nav-link" [class.active]="!card.assignee" (click)="save({assignee: null})">Unassigned</a>
+    </li>
     <li class="nav-item" *ngFor="let user of users">
       <a class="nav-link"
          [class.active]="card.assignee === user.id"

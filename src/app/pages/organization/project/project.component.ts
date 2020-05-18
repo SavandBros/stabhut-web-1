@@ -89,6 +89,19 @@ export class ProjectComponent extends OrganizationBase implements OnInit {
     this.auth.user.subscribe((data: User): void => {
       this.user = data;
     });
+    /**
+     * Watch modal close
+     */
+    this.modal.onHidden.subscribe((): void => {
+      if (this.route.snapshot.queryParams.card) {
+        this.router.navigate(['.'], {
+          queryParamsHandling: 'merge',
+          queryParams: { card: null },
+          relativeTo: this.route,
+        });
+        this.cardSelected = null;
+      }
+    });
   }
 
   onInitiation(): void {
@@ -296,6 +309,15 @@ export class ProjectComponent extends OrganizationBase implements OnInit {
         column: column.id,
         order: event.currentIndex,
       });
+    }
+  }
+
+  /**
+   * @returns Filtered cards of a column
+   */
+  getColumnCards(column: Column): Card[] {
+    if (this.cards) {
+      return this.cards.filter(card => card.column === column.id);
     }
   }
 }

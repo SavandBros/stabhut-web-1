@@ -78,9 +78,10 @@
           </ul>
         </div>
         <!-- Selected project columns -->
-        <div class="card-body" *ngIf="projectTab === 'columns' && projectSelected && projectSelected.columns">
+        <div class="card-body" *ngIf="projectTab === 'columns' && projectSelected">
           <!-- Columns -->
-          <div class="form-group input-group" *ngFor="let column of projectSelected.columns">
+          <div class="form-group input-group" *ngFor="let column of columns"
+               [hidden]="column.project !== projectSelected.id">
             <input type="text" class="form-control" [(ngModel)]="column.name">
             <div class="input-group-append">
               <button class="btn btn-secondary" (click)="deleteColumn(column)">
@@ -89,13 +90,9 @@
             </div>
           </div>
           <!-- New column -->
-          <app-form-add name="column"
-                        [margin]="projectSelected.columns.length > 0"
-                        (save)="addColumn($event)"></app-form-add>
+          <app-form-add name="column" [margin]="columns.length > 0" (save)="addColumn($event)"></app-form-add>
           <!-- Update button -->
-          <button class="btn btn-block btn-primary" (click)="updateColumns()" *ngIf="projectSelected.columns.length">
-            Update
-          </button>
+          <button class="btn btn-block btn-primary" (click)="updateColumns()" *ngIf="columns.length">Update</button>
         </div>
         <!-- Selected project options -->
         <div class="card-body" *ngIf="projectTab === 'options' && projectSelected">
