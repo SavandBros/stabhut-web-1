@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { Column } from '@app/interfaces/column';
 import { Label } from '@app/interfaces/label';
 import { Organization } from '@app/interfaces/organization';
@@ -24,6 +24,11 @@ export class SettingsComponent implements OnInit {
   projects: Project[];
 
   /**
+   * Columns of projects
+   */
+  columns: Column[];
+
+  /**
    * Labels of organization
    */
   labels: Label[];
@@ -44,15 +49,14 @@ export class SettingsComponent implements OnInit {
   projectTab = 'columns';
 
   constructor(private route: ActivatedRoute,
-              private api: ApiService,
-              private router: Router) {
+              private api: ApiService) {
   }
 
   ngOnInit(): void {
     // Get current project ID from router params
     this.route.params.subscribe((params: Params): void => {
       // Load organisation data
-      this.api.getOrganization(params.id).subscribe(organization => {
+      this.api.getOrganization(params.id).subscribe((organization: Organization): void => {
         this.organization = organization;
       });
       // Load labels of organization
@@ -60,16 +64,13 @@ export class SettingsComponent implements OnInit {
         this.labels = labels;
       });
       // Load projects of organization
-      this.api.getProjects(params.id).subscribe(projects => {
+      this.api.getProjects(params.id).subscribe((projects: Project[]): void => {
         this.projects = projects;
         this.projectSelected = this.projects[0];
-        // Load columns of organization
-        this.api.getColumns(params.id).subscribe(columns => {
-          // Assign columns to their projects
-          for (const project of this.projects) {
-            project.columns = columns.filter(column => column.project === project.id);
-          }
-        });
+      });
+      // Load columns of organization
+      this.api.getColumns({ organization: params.id }).subscribe((columns: Column[]): void => {
+        this.columns = columns;
       });
     });
   }
@@ -80,8 +81,7 @@ export class SettingsComponent implements OnInit {
    * @param name Project name
    */
   addProject(name: string) {
-    this.api.createProject(this.organization.id, name).subscribe(data => {
-      data.columns = [];
+    this.api.createProject(this.organization.id, name).subscribe((data: Project): void => {
       this.projects.push(data);
     });
   }
@@ -90,26 +90,23 @@ export class SettingsComponent implements OnInit {
    * Update a project
    */
   updateProject(): void {
-    let project: Project;
     this.api.updateProject(this.projectSelected.id, {
       name: this.projectSelected.name,
       organization: this.organization.id,
     }).subscribe(data => {
-      project = data;
+      this.projectSelected.name = data.name;
     });
   }
 
   /**
    * Delete a Project
-   *
    */
   deleteProject(): void {
     if (!confirm('Are you sure you want to delete this project?')) {
       return;
     }
-    this.api.deleteProject(this.projectSelected.id).subscribe(() => {
-      const index = this.projects.indexOf(this.projectSelected);
-      this.projects.splice(index, 1);
+    this.api.deleteProject(this.projectSelected.id).subscribe((): void => {
+      this.projects.splice(this.projects.indexOf(this.projectSelected), 1);
       this.projectSelected = this.projects[0];
     });
   }
@@ -132,7 +129,7 @@ export class SettingsComponent implements OnInit {
    */
   addColumn(name: string): void {
     this.api.createColumn({ project: this.projectSelected.id, name }).subscribe(data => {
-      this.projectSelected.columns.push(data);
+      this.columns.push(data);
     });
   }
 
@@ -146,8 +143,8 @@ export class SettingsComponent implements OnInit {
       return;
     }
     this.api.deleteColumn(column.id).subscribe(() => {
-      const index = this.projectSelected.columns.indexOf(column);
-      this.projectSelected.columns.splice(index, 1);
+      const index = this.columns.indexOf(column);
+      this.columns.splice(index, 1);
     });
   }
 
@@ -156,9 +153,11 @@ export class SettingsComponent implements OnInit {
    */
   updateColumns(): void {
     for (let column of this.columns) {
-      this.api.updateColumn(column.id, { name: column.name }).subscribe(data => {
-        column = data;
-      });
+      if (column.project === this.projectSelected.id) {
+        this.api.updateColumn(column.id, { name: column.name }).subscribe((data: Column): void => {
+          column = data;
+        });
+      }
     }
   }
 

@@ -73,6 +73,13 @@ export class CardModalComponent extends OrganizationBase implements OnInit {
     super();
   }
 
+  /**
+   * @returns Selected card column object
+   */
+  get columnSelected(): Column {
+    return this.columns.find(column => column.id === this.card.column);
+  }
+
   ngOnInit(): void {
     super.ngOnInit();
     /**

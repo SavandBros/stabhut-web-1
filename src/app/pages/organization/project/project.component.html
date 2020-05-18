@@ -46,7 +46,7 @@
           <!-- Cards -->
           <div class="h-100 cards overflow-auto" [cdkDropListData]="cards" cdkDropList
                (cdkDropListDropped)="drop($event, column)">
-            <div class="card column-card mb-2" *ngFor="let card of cards | filterBy:['column']:column.id"
+            <div class="card column-card mb-2" *ngFor="let card of getColumnCards(column)"
                  cdkDrag
                  [cdkDragDisabled]="card.loading" [cdkDragData]="card">
               <div class="card-body">

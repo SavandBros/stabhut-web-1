@@ -16,14 +16,6 @@ export class OrganizationBase implements OnInit {
   isDataInitialised: boolean;
 
   ngOnInit(): void {
-    // forkJoin([
-    //   OrganizationService.organization,
-    //   OrganizationService.projects,
-    //   OrganizationService.labels,
-    //   OrganizationService.users,
-    // ]).subscribe(([a, b, c, d]) => {
-    //   console.log(a, b, c, d);
-    // });
     OrganizationService.organization.subscribe((data: Organization): void => {
       this.organization = data;
       this.checkInitiation();
